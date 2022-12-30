@@ -1,0 +1,158 @@
+import 'dart:async';
+
+import 'package:apiraiser/apiraiser.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/widgets/up_button.dart';
+import 'package:flutter_up/widgets/up_textfield.dart';
+import 'package:flutter_up/locator.dart';
+import 'package:flutter_up/services/up_dialog.dart';
+import 'package:flutter_up/services/up_navigation.dart';
+import 'package:flutter_up/dialogs/up_loading.dart';
+import 'package:flutter_up/dialogs/up_info.dart';
+import 'package:shop/constants.dart';
+
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _SignupPageState createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  String _username = "", _fullname = "", _email = "", _password = "";
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  _gotoHome() {
+    Timer(
+        const Duration(seconds: 1),
+        () => ServiceManager<UpNavigationService>()
+            .navigateToNamed(Routes.simplehome));
+  }
+
+  _signup() async {
+    var formState = _formKey.currentState;
+
+    if (formState!.validate()) {
+      formState.save();
+      String loadingDialogCompleterId = ServiceManager<UpDialogService>()
+          .showDialog(context, UpLoadingDialog(),
+              data: {'text': 'Signing up...'});
+
+      APIResult result = await Apiraiser.authentication.signup(
+        SignupRequest(
+          username: _username,
+          fullName: _fullname,
+          email: _email,
+          password: _password,
+        ),
+      );
+
+      ServiceManager<UpDialogService>().completeDialog(
+          context: context,
+          completerId: loadingDialogCompleterId,
+          result: null);
+
+      _handleSignupResult(result);
+    } else {
+      ServiceManager<UpDialogService>().showDialog(context, UpInfoDialog(),
+          data: {'title': 'Error', 'text': 'Please fill all fields.'});
+    }
+  }
+
+  void _handleSignupResult(APIResult result) {
+    if (result.success) {
+      _saveSession(result);
+      ServiceManager<UpNavigationService>().navigateToNamed(Routes.simplehome);
+      // _gotoHome();
+    } else {
+      ServiceManager<UpDialogService>().showDialog(context, UpInfoDialog(),
+          data: {'title': 'Error', 'text': result.message});
+    }
+  }
+
+  void _saveSession(APIResult result) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.setString('email', _email);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // if (ServiceManager<AuthService>().user != null) {
+      //   _gotoHome();
+      // }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: _formKey,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpTextField(
+                    minLength: 6,
+                    label: "Username",
+                    onSaved: (input) => _username = input!,
+                    decoration: const InputDecoration(
+                      labelText: "Username",
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpTextField(
+                    minLength: 1,
+                    onSaved: (input) => _fullname = input!,
+                    decoration: const InputDecoration(
+                      labelText: "Fullname",
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpTextField(
+                    minLength: 1,
+                    onSaved: (input) => _email = input!,
+                    decoration: const InputDecoration(
+                      labelText: "Email",
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpTextField(
+                    minLength: 6,
+                    maxLines: 1,
+                    onSaved: (input) => _password = input!,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password",
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(
+                    width: 192,
+                    child: UpButton(
+                      isRounded: true,
+                      roundedBorderRadius: 3,
+                      buttonType: UpButtonType.elevated,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Signup"),
+                      ),
+                      onPress: () => _signup(),
+                    )),
+              ),
+            ],
+          ),
+        ));
+  }
+}
