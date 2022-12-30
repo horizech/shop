@@ -337,8 +337,6 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                     .where((element) => element.id == colors[i])
                     .first);
               }
-              debugPrint(colorVariation.toString());
-              debugPrint(sizeVariation.toString());
             } catch (e) {
               debugPrint(e.toString());
             }

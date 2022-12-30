@@ -28,7 +28,7 @@ class NotFoundErrorWidget extends StatelessWidget {
               height: 5,
             ),
             const Text(
-              'No one is here',
+              'Are you sure this is the right way',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,

@@ -32,7 +32,7 @@ class _SizeVariationWidgetState extends State<SizeVariationWidget> {
   reset() {
     currentSelections.clear();
     newSelections.clear();
-    debugPrint("reset");
+
     setState(() {
       currentSelections = [];
     });

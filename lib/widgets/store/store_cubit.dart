@@ -36,7 +36,7 @@ class StoreCubit extends Cubit<StoreState> {
         Apiraiser.data.get("Keywords", 0),
         Apiraiser.data.get("ProductOptions", 0),
         Apiraiser.data.get("ProductOptionValues", 0),
-        Apiraiser.data.get("MediaGroups", 0),
+        Apiraiser.data.get("Gallery", 0),
       ]);
 
       List<APIResult> result = futureResult as List<APIResult>;

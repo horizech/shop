@@ -1,11 +1,11 @@
-// import 'package:lazyboymcr_store/models/category.dart';
-// import 'package:lazyboymcr_store/models/product.dart';
-// import 'package:lazyboymcr_store/pages/products_page/products.dart';
-// import 'package:lazyboymcr_store/widgets/dummy/dummy_subcategory_page.dart';
-// import 'package:lazyboymcr_store/widgets/products/products_service.dart';
+// import 'package:shop/models/category.dart';
+// import 'package:shop/models/product.dart';
+// import 'package:shop/pages/products_page/products.dart';
+// import 'package:shop/widgets/dummy/dummy_subcategory_page.dart';
+// import 'package:shop/widgets/products/products_service.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:lazyboymcr_store/pages/authentication/authentication_cubit.dart';
+// import 'package:shop/pages/authentication/authentication_cubit.dart';
 
 // class ProductCategoryPreview extends StatelessWidget {
 //   final List<Category> categories;

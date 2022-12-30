@@ -1,8 +1,8 @@
 // import 'dart:ui';
 
-// import 'package:lazyboymcr_store/models/collection.dart';
-// import 'package:lazyboymcr_store/pages/Category/sub_category_page.dart';
-// import 'package:lazyboymcr_store/widgets/media/media_widget.dart';
+// import 'package:shop/models/collection.dart';
+// import 'package:shop/pages/Category/sub_category_page.dart';
+// import 'package:shop/widgets/media/media_widget.dart';
 // import 'package:flutter/material.dart';
 
 // class ParentCategories extends StatelessWidget {

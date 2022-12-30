@@ -1,8 +1,8 @@
 // import 'dart:ui';
 
-// import 'package:lazyboymcr_store/models/product.dart';
-// import 'package:lazyboymcr_store/pages/product-detail/product_detail.dart';
-// import 'package:lazyboymcr_store/widgets/media/media_widget.dart';
+// import 'package:shop/models/product.dart';
+// import 'package:shop/pages/product-detail/product_detail.dart';
+// import 'package:shop/widgets/media/media_widget.dart';
 // import 'package:flutter/material.dart';
 
 // class ProductCard extends StatelessWidget {

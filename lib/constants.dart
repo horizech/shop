@@ -8,7 +8,7 @@ class Routes {
 }
 
 class Constants {
-  static const String title = "LazyBoy";
+  static const String title = "Shop";
   static const String authLogin = "Login";
   static const String authLogout = "Logout";
   static const String authSignup = "Signup";

@@ -387,7 +387,6 @@ class _PaymentFormState extends State<PaymentForm> {
       }
     }
 
-    debugPrint(customerInfo.toString());
     initailizeForm(customerInfo);
   }
 
@@ -443,7 +442,6 @@ class _PaymentFormState extends State<PaymentForm> {
   setSharedPrefrence(String info) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("CustomerProfile", info);
-    debugPrint(prefs.getString("CustomerProfile"));
   }
 
   initailizeForm(Map<String, String>? profile) {

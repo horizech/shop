@@ -38,6 +38,26 @@ class _AllProductsState extends State<Products> {
     });
   }
 
+  List<int> _getCollectionsByParent(
+    StoreState state,
+    int parent,
+    List<int> collections,
+  ) {
+    collections.add(parent);
+    if (state.collections != null &&
+        state.collections!.any(
+          (element) => element.parent == parent,
+        )) {
+      state.collections!
+          .where((element) => element.parent == parent)
+          .forEach((child) {
+        collections = _getCollectionsByParent(state, child.id, collections);
+      });
+    }
+
+    return collections;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<int> collections = [];
@@ -74,24 +94,9 @@ class _AllProductsState extends State<Products> {
                   builder: (context, state) {
                     collections = [];
                     if (collection != null) {
-                      int? parent = collection;
-                      collections.add(parent);
-
-                      while (true) {
-                        if (state.collections!
-                            .any((element) => element.parent == parent)) {
-                          parent = state.collections!
-                              .where((element) => element.parent == parent)
-                              .first
-                              .id;
-                          collections.add(parent);
-                        } else {
-                          break;
-                        }
-                      }
+                      int parent = collection;
+                      collections = _getCollectionsByParent(state, parent, []);
                     }
-
-                    debugPrint(collections.toString());
                     return Column(
                       children: [
                         const HeaderWidget(),

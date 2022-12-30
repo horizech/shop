@@ -1,5 +1,5 @@
-// import 'package:lazyboymcr_store/models/variation.dart';
-// import 'package:lazyboymcr_store/models/variations_type.dart';
+// import 'package:shop/models/variation.dart';
+// import 'package:shop/models/variations_type.dart';
 // import 'package:apiraiser/api/apiraiser.dart';
 // import 'package:apiraiser/models/api_result.dart';
 

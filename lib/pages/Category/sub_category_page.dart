@@ -1,9 +1,9 @@
-// import 'package:lazyboymcr_store/models/collection.dart';
-// import 'package:lazyboymcr_store/pages/products_page/products.dart';
-// import 'package:lazyboymcr_store/widgets/appbar/custom_appbar.dart';
-// import 'package:lazyboymcr_store/widgets/media/media_widget.dart';
-// import 'package:lazyboymcr_store/widgets/orientation_switcher.dart';
-// import 'package:lazyboymcr_store/widgets/store/store_cubit.dart';
+// import 'package:shop/models/collection.dart';
+// import 'package:shop/pages/products_page/products.dart';
+// import 'package:shop/widgets/appbar/custom_appbar.dart';
+// import 'package:shop/widgets/media/media_widget.dart';
+// import 'package:shop/widgets/orientation_switcher.dart';
+// import 'package:shop/widgets/store/store_cubit.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 

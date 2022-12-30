@@ -41,7 +41,7 @@ class ProductService {
           String sizes = "";
           sizes =
               selectedVariationsValues[VariationTypes.size.index]!.join(",");
-          debugPrint(sizes);
+
           // jsonQuery["sizes"] = "ARRAY[$sizes]";
           filters.add('"Size": "{$sizes}"');
         }
@@ -50,7 +50,7 @@ class ProductService {
           String colors = "";
           colors =
               selectedVariationsValues[VariationTypes.color.index]!.join(",");
-          debugPrint(colors);
+
           // jsonQuery["colors"] = "ARRAY[$colors]";
           filters.add('"Color": "{$colors}"');
         }

@@ -1,5 +1,5 @@
-// import 'package:lazyboymcr_store/pages/simple-home/simple_homepage.dart';
-// import 'package:lazyboymcr_store/widgets/store/store_cubit.dart';
+// import 'package:shop/pages/simple-home/simple_homepage.dart';
+// import 'package:shop/widgets/store/store_cubit.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 

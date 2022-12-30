@@ -42,7 +42,7 @@ class ProductDetailService {
     dynamic futureResult = await Future.wait([
       Apiraiser.data.getByConditions("Products", productConditions),
       Apiraiser.data.getByConditions("ProductVariations", variationConditions),
-      Apiraiser.data.getByConditions("Stock", stockConditions),
+      Apiraiser.data.getByConditions("ProductStock", stockConditions),
     ]);
 
     List<APIResult> result = futureResult as List<APIResult>;

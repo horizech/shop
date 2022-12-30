@@ -97,7 +97,7 @@ class _PaymentMethodsFormState extends State<PaymentMethodsForm> {
   Future<String> loadLastUsedInfo() async {
     final prefs = await SharedPreferences.getInstance();
     String lastUsedInformation = prefs.getString("CustomerProfile") ?? "";
-    debugPrint(lastUsedInformation);
+
     return lastUsedInformation;
   }
 
@@ -278,7 +278,6 @@ class _PaymentMethodsFormState extends State<PaymentMethodsForm> {
                                 onChanged: (value) {
                                   setState(() {
                                     _groupValue = value.toString();
-                                    debugPrint(_groupValue);
                                   });
 
                                   if (value == "Card") {

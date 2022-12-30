@@ -38,7 +38,6 @@ class CartCubit extends Cubit<CartState> {
       }
     }
 
-    debugPrint(item.quantity.toString());
     emit(CartState(cart));
   }
 
