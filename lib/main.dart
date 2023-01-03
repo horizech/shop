@@ -5,6 +5,7 @@ import 'package:shop/environment.dart';
 import 'package:shop/locator.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
   await Apiraiser.init(Environment.apiUrl);
   // setPathUrlStrategy();
