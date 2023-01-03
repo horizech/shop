@@ -18,6 +18,7 @@ class _MainMenuState extends State<MainMenu> {
   OverlayState? overlayState;
   OverlayEntry? overlayEntry;
   bool showOverlay = false;
+  bool mouseOver = false;
 
   final layerLink = LayerLink();
   final List<FocusNode> rootFocusNodes = [];
@@ -49,6 +50,7 @@ class _MainMenuState extends State<MainMenu> {
                         ],
                       ),
                       onTap: () {
+                        // removeOverlay();
                         ServiceManager<UpNavigationService>()
                             .navigateToNamed(Routes.products, queryParams: {
                           'collection': '${e.id}',
@@ -76,6 +78,7 @@ class _MainMenuState extends State<MainMenu> {
             ? collections
                 .map((e) => GestureDetector(
                       onTap: () {
+                        // removeOverlay();
                         ServiceManager<UpNavigationService>().navigateToNamed(
                           Routes.products,
                           queryParams: {'collection': '${e.id}'},
@@ -182,9 +185,14 @@ class _MainMenuState extends State<MainMenu> {
               onHover: (val) {
                 if (val && showOverlay) {
                   rootFocusNodes[index].requestFocus();
+                  mouseOver = true;
                 } else {
                   rootFocusNodes[index].unfocus();
+                  mouseOver = false;
                 }
+              },
+              onFocusChange: (value) {
+                removeOverlay();
               },
               child: getWidgets(context, tree, index)[0],
             ),
@@ -252,6 +260,9 @@ class _MainMenuState extends State<MainMenu> {
                               if (val) {
                                 rootFocusNodes[entry.key].requestFocus();
                                 showOverlay = true;
+                              } else if (!mouseOver) {
+                                rootFocusNodes[entry.key].unfocus();
+                                // mouseOver = false;
                               }
                             },
                             onPressed: () {},
