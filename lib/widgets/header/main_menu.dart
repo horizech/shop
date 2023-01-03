@@ -50,6 +50,11 @@ class _MainMenuState extends State<MainMenu> {
                         ],
                       ),
                       onTap: () {
+                        for (var element in rootFocusNodes) {
+                          element.unfocus();
+                        }
+                        mouseOver = false;
+
                         // removeOverlay();
                         ServiceManager<UpNavigationService>()
                             .navigateToNamed(Routes.products, queryParams: {
@@ -78,6 +83,10 @@ class _MainMenuState extends State<MainMenu> {
             ? collections
                 .map((e) => GestureDetector(
                       onTap: () {
+                        for (var element in rootFocusNodes) {
+                          element.unfocus();
+                        }
+                        mouseOver = false;
                         // removeOverlay();
                         ServiceManager<UpNavigationService>().navigateToNamed(
                           Routes.products,
@@ -183,12 +192,14 @@ class _MainMenuState extends State<MainMenu> {
             child: TextButton(
               onPressed: () {},
               onHover: (val) {
-                if (val && showOverlay) {
-                  rootFocusNodes[index].requestFocus();
-                  mouseOver = true;
-                } else {
-                  rootFocusNodes[index].unfocus();
-                  mouseOver = false;
+                if (mounted) {
+                  if (val && showOverlay) {
+                    rootFocusNodes[index].requestFocus();
+                    mouseOver = true;
+                  } else {
+                    rootFocusNodes[index].unfocus();
+                    mouseOver = false;
+                  }
                 }
               },
               onFocusChange: (value) {
@@ -257,12 +268,14 @@ class _MainMenuState extends State<MainMenu> {
                           child: TextButton(
                             focusNode: rootFocusNodes[entry.key],
                             onHover: (val) {
-                              if (val) {
-                                rootFocusNodes[entry.key].requestFocus();
-                                showOverlay = true;
-                              } else if (!mouseOver) {
-                                rootFocusNodes[entry.key].unfocus();
-                                // mouseOver = false;
+                              if (mounted) {
+                                if (val) {
+                                  rootFocusNodes[entry.key].requestFocus();
+                                  showOverlay = true;
+                                } else if (!mouseOver) {
+                                  rootFocusNodes[entry.key].unfocus();
+                                  // mouseOver = false;
+                                }
                               }
                             },
                             onPressed: () {},
