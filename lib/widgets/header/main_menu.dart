@@ -50,18 +50,11 @@ class _MainMenuState extends State<MainMenu> {
                         ],
                       ),
                       onTap: () {
-                        for (var element in rootFocusNodes) {
-                          element.unfocus();
-                        }
-                        mouseOver = false;
-
-                        // removeOverlay();
+                        _unfocusAllNodes();
                         ServiceManager<UpNavigationService>()
                             .navigateToNamed(Routes.products, queryParams: {
                           'collection': '${e.id}',
                         });
-
-                        // print('Clicked');
                       },
                     ),
                   ),
@@ -83,17 +76,11 @@ class _MainMenuState extends State<MainMenu> {
             ? collections
                 .map((e) => GestureDetector(
                       onTap: () {
-                        for (var element in rootFocusNodes) {
-                          element.unfocus();
-                        }
-                        mouseOver = false;
-                        // removeOverlay();
+                        _unfocusAllNodes();
                         ServiceManager<UpNavigationService>().navigateToNamed(
                           Routes.products,
                           queryParams: {'collection': '${e.id}'},
                         );
-
-                        // print('Clicked');
                       },
                       child: Text(
                         e.name,
@@ -108,41 +95,6 @@ class _MainMenuState extends State<MainMenu> {
       ),
     );
   }
-  // getMenu(int index) {
-  //   collectionTree!.roots!
-  //                       .map(
-  //                         (e) =>
-  //                             // DropdownButton(
-  //                             //     isExpanded: true,
-  //                             //     items: const [
-  //                             //       DropdownMenuItem(child: Text("Abc")),
-  //                             //       DropdownMenuItem(child: Text("Xyz")),
-  //                             //     ],
-  //                             //     hint: const Text("Select City"),
-  //                             //     onChanged: null),
-  //                             TextButton(
-  //                           style: const ButtonStyle(),
-  //                           focusNode: rootFocusNodes[index],
-  //                           onHover: (val) {
-  //                             if (val) {
-  //                               rootFocusNodes[index].requestFocus();
-  //                               showOverlay = true;
-  //                               initializeOverLayWidgets(context, e.children);
-  //                             }
-  //                           },
-  //                           onPressed: () {},
-  //                           child: Column(
-  //                             children: [
-  //                               Text(e.name,
-  //                                   style:
-  //                                       Theme.of(context).textTheme.headline6),
-  //                             ],
-  //                           ),
-  //                         ),
-  //                       )
-  //                       .toList())
-
-  // }
 
   getWidgets(BuildContext context, CollectionTree tree, int index) => [
         Stack(
@@ -154,16 +106,16 @@ class _MainMenuState extends State<MainMenu> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 512,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     boxShadow: const [
                       BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5.0,
-                        offset: Offset(0, 10),
-                        spreadRadius: 0.4,
+                        color: Colors.pink,
+                        blurRadius: 0.0,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0.0,
                       ),
                     ],
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
@@ -203,112 +155,83 @@ class _MainMenuState extends State<MainMenu> {
                 }
               },
               onFocusChange: (value) {
-                removeOverlay();
+                _removeOverlay();
               },
               child: getWidgets(context, tree, index)[0],
             ),
           );
         });
-    // overlayState!.insert(overlayEntry!);
     overlayState!.insertAll([overlayEntry!]);
   }
 
-  void removeOverlay() {
+  void _removeOverlay() {
     overlayEntry!.remove();
+  }
+
+  void _prepareNodes(StoreState state) {
+    rootFocusNodes.clear();
+    for (int index = 0; index < state.collectionTree!.roots!.length; index++) {
+      rootFocusNodes.add(FocusNode());
+      rootFocusNodes[index].addListener(() {
+        if (rootFocusNodes[index].hasFocus) {
+          _showOverlay(context, state.collectionTree!, index);
+        } else {
+          _removeOverlay();
+        }
+      });
+    }
+  }
+
+  void _unfocusAllNodes() {
+    for (var element in rootFocusNodes) {
+      if (element.hasFocus) element.unfocus();
+    }
+    mouseOver = false;
   }
 
   @override
   void initState() {
     super.initState();
-    // for (int index in [0, 1]) {
-    //   if (rootFocusNodes.length - 1 < index) {
-    //     rootFocusNodes.add(FocusNode());
-    //     rootFocusNodes[index].addListener(() {
-    //       if (rootFocusNodes[index].hasFocus) {
-    //         _showOverlay(context, index);
-    //       } else {
-    //         removeOverlay();
-    //       }
-    //     });
-    //   }
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StoreCubit, StoreState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          // CollectionTree? collectionTree = state.collectionTree;
-          rootFocusNodes.clear();
-          for (int index = 0;
-              index < state.collectionTree!.roots!.length;
-              index++) {
-            rootFocusNodes.add(FocusNode());
-            rootFocusNodes[index].addListener(() {
-              if (rootFocusNodes[index].hasFocus) {
-                _showOverlay(context, state.collectionTree!, index);
-              } else {
-                removeOverlay();
-              }
-            });
-          }
-          return SizedBox(
-            height: 100,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: state.collectionTree!.roots!
-                    .asMap()
-                    .entries
-                    .map((entry) => MouseRegion(
-                          // onHover: (val) {
-                          //   rootFocusNodes[entry.key].requestFocus();
-                          //   showOverlay = true;
-                          // },
-                          child: TextButton(
-                            focusNode: rootFocusNodes[entry.key],
-                            onHover: (val) {
-                              if (mounted) {
-                                if (val) {
-                                  rootFocusNodes[entry.key].requestFocus();
-                                  showOverlay = true;
-                                } else if (!mouseOver) {
-                                  rootFocusNodes[entry.key].unfocus();
-                                  // mouseOver = false;
-                                }
-                              }
-                            },
-                            onPressed: () {},
-                            child: Text(entry.value.name),
-                          ),
-                        ))
-                    .toList()
-                //  [
-                //   TextButton(
-                //     focusNode: rootFocusNodes[0],
-                //     onHover: (val) {
-                //       if (val) {
-                //         rootFocusNodes[0].requestFocus();
-                //         showOverlay = true;
-                //       }
-                //     },
-                //     onPressed: () {},
-                //     child: const Text('Hover 1'),
-                //   ),
-                //   TextButton(
-                //     focusNode: rootFocusNodes[1],
-                //     onHover: (val) {
-                //       if (val) {
-                //         rootFocusNodes[1].requestFocus();
-                //         showOverlay = true;
-                //       }
-                //     },
-                //     onPressed: () {},
-                //     child: const Text('Hover 2'),
-                //   ),
-                // ],
-                ),
-          );
-        });
+      listener: (context, state) {},
+      builder: (context, state) {
+        _prepareNodes(state);
+
+        return SizedBox(
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: state.collectionTree!.roots!
+                .asMap()
+                .entries
+                .map(
+                  (entry) => MouseRegion(
+                    child: TextButton(
+                      focusNode: rootFocusNodes[entry.key],
+                      onHover: (val) {
+                        if (mounted) {
+                          if (val) {
+                            rootFocusNodes[entry.key].requestFocus();
+                            showOverlay = true;
+                          } else if (!mouseOver) {
+                            rootFocusNodes[entry.key].unfocus();
+                            // mouseOver = false;
+                          }
+                        }
+                      },
+                      onPressed: () {},
+                      child: Text(entry.value.name),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        );
+      },
+    );
   }
 }
