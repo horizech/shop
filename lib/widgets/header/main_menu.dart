@@ -142,6 +142,12 @@ class _MainMenuState extends State<MainMenu> {
             width: MediaQuery.of(context).size.width * 0.8,
             height: 512,
             child: TextButton(
+              style: ButtonStyle(
+                overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  return Colors.transparent;
+                }),
+              ),
               onPressed: () {},
               onHover: (val) {
                 if (mounted) {
@@ -211,6 +217,12 @@ class _MainMenuState extends State<MainMenu> {
                 .map(
                   (entry) => MouseRegion(
                     child: TextButton(
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          return Colors.transparent;
+                        }),
+                      ),
                       focusNode: rootFocusNodes[entry.key],
                       onHover: (val) {
                         if (mounted) {
