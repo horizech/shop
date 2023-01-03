@@ -217,12 +217,6 @@ class _MainMenuState extends State<MainMenu> {
                 .map(
                   (entry) => MouseRegion(
                     child: TextButton(
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                          return Colors.transparent;
-                        }),
-                      ),
                       focusNode: rootFocusNodes[entry.key],
                       onHover: (val) {
                         if (mounted) {
