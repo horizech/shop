@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
@@ -38,8 +39,10 @@ class NotFoundErrorWidget extends StatelessWidget {
               height: 30,
             ),
             UpButton(
-              roundedBorderRadius: 4,
-              isRounded: true,
+              styles: UpStyle(
+                isRounded: true,
+                borderRadius: 4,
+              ),
               onPress: () {
                 ServiceManager<UpNavigationService>().navigateToNamed(
                   Routes.simplehome,

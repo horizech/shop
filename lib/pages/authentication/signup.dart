@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 import 'package:flutter_up/locator.dart';
@@ -141,8 +142,10 @@ class _SignupPageState extends State<SignupPage> {
                 child: SizedBox(
                     width: 192,
                     child: UpButton(
-                      isRounded: true,
-                      roundedBorderRadius: 3,
+                      styles: UpStyle(
+                        isRounded: true,
+                        borderRadius: 3,
+                      ),
                       buttonType: UpButtonType.elevated,
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),

@@ -1,6 +1,7 @@
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/enums/up_color_type.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 
@@ -9,6 +10,8 @@ import 'package:flutter_up/services/up_dialog.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter_up/dialogs/up_loading.dart';
 import 'package:flutter_up/dialogs/up_info.dart';
+
+import 'package:flutter_up/themes/up_style.dart';
 
 import 'package:shop/constants.dart';
 
@@ -99,12 +102,16 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox(
                   width: 192,
                   child: UpButton(
-                    isRounded: true,
-                    roundedBorderRadius: 3,
+                    text: "Login",
+                    styles: UpStyle(
+                      isRounded: true,
+                      borderRadius: 8,
+                    ),
                     buttonType: UpButtonType.elevated,
+                    colorType: UpColorType.secondary,
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text("Login"),
+                      child: Text("Log in"),
                     ),
                     onPress: () => _login(),
                   )),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/pages/authentication/login.dart';
@@ -50,8 +51,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           child: SizedBox(
             width: 192,
             child: UpButton(
-              isRounded: true,
-              roundedBorderRadius: 3,
+              styles: UpStyle(
+                isRounded: true,
+                borderRadius: 3,
+              ),
               buttonType: UpButtonType.elevated,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

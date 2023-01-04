@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_circualar_progress.dart';
 
 import 'package:flutter/material.dart';
@@ -454,8 +455,10 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                           Center(
                             child: maxItems > 0
                                 ? UpButton(
-                                    isRounded: true,
-                                    roundedBorderRadius: 4,
+                                    styles: UpStyle(
+                                      isRounded: true,
+                                      borderRadius: 4,
+                                    ),
                                     onPress: () {
                                       if (widget.product.isVariedProduct) {
                                         if (quantity > 0 &&
@@ -524,9 +527,11 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                   )
                                 : UpButton(
                                     onPress: () {},
-                                    isButtonDisable: true,
-                                    isRounded: true,
-                                    roundedBorderRadius: 4,
+                                    styles: UpStyle(
+                                      isDisabled: true,
+                                      isRounded: true,
+                                      borderRadius: 4,
+                                    ),
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text("Add to cart"),
@@ -540,8 +545,10 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                             child: maxItems > 0
                                 ? UpButton(
                                     buttonType: UpButtonType.outlined,
-                                    isRounded: true,
-                                    roundedBorderRadius: 4,
+                                    styles: UpStyle(
+                                      isRounded: true,
+                                      borderRadius: 4,
+                                    ),
                                     onPress: () =>
                                         ServiceManager<UpNavigationService>()
                                             .navigateToNamed(
@@ -554,9 +561,11 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                   )
                                 : UpButton(
                                     buttonType: UpButtonType.outlined,
-                                    isRounded: true,
-                                    roundedBorderRadius: 4,
-                                    isButtonDisable: true,
+                                    styles: UpStyle(
+                                      isDisabled: true,
+                                      isRounded: true,
+                                      borderRadius: 4,
+                                    ),
                                     onPress: () {},
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
