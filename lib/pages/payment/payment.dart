@@ -579,9 +579,9 @@ class _PaymentFormState extends State<PaymentForm> {
                       minLength: 1,
                       label: "email",
                       // onSaved: (input) => email = input ?? "",
-                      decoration: const InputDecoration(
-                        labelText: "Email",
-                      ),
+                      // decoration: const InputDecoration(
+                      //   labelText: "Email",
+                      // ),
                     ),
                   ),
                 ),
@@ -601,9 +601,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               keyboardType: TextInputType.text,
                               minLength: 1,
                               label: "first Name",
-                              decoration: const InputDecoration(
-                                labelText: "First Name",
-                              ),
+                              // decoration: const InputDecoration(
+                              //   labelText: "First Name",
+                              // ),
                             ),
                           ),
                         ),
@@ -621,9 +621,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               autofillHint: AutofillHints.middleName,
                               label: "last Name",
                               minLength: 1,
-                              decoration: const InputDecoration(
-                                labelText: "Last Name",
-                              ),
+                              // decoration: const InputDecoration(
+                              //   labelText: "Last Name",
+                              // ),
                             ),
                           ),
                         ),
@@ -685,9 +685,9 @@ class _PaymentFormState extends State<PaymentForm> {
                       minLength: 1,
                       label: "address",
                       // onSaved: (input) => address = input ?? "",
-                      decoration: const InputDecoration(
-                        labelText: "Address",
-                      ),
+                      // decoration: const InputDecoration(
+                      //   labelText: "Address",
+                      // ),
                     ),
                   ),
                 ),
@@ -708,9 +708,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               label: "city",
                               minLength: 1,
                               // onSaved: (input) => city = input ?? "",
-                              decoration: const InputDecoration(
-                                labelText: "City",
-                              ),
+                              // decoration: const InputDecoration(
+                              //   labelText: "City",
+                              // ),
                             ),
                           ),
                         ),
@@ -726,9 +726,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               keyboardType: TextInputType.text,
                               label: "postal code",
                               minLength: 1,
-                              decoration: const InputDecoration(
-                                labelText: "Postal Code",
-                              ),
+                              // decoration: const InputDecoration(
+                              //   labelText: "Postal Code",
+                              // ),
                             ),
                           ),
                         ),
@@ -747,9 +747,9 @@ class _PaymentFormState extends State<PaymentForm> {
                       minLength: 1,
                       label: "phone no",
                       // onSaved: (input) => phoneNo = input ?? "",
-                      decoration: const InputDecoration(
-                        labelText: "Phone No",
-                      ),
+                      // decoration: const InputDecoration(
+                      //   labelText: "Phone No",
+                      // ),
                     ),
                   ),
                 ),

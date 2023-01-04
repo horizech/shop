@@ -455,11 +455,11 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                           Center(
                             child: maxItems > 0
                                 ? UpButton(
-                                    styles: UpStyle(
+                                    style: UpStyle(
                                       isRounded: true,
                                       borderRadius: 4,
                                     ),
-                                    onPress: () {
+                                    onPressed: () {
                                       if (widget.product.isVariedProduct) {
                                         if (quantity > 0 &&
                                             quantity <= maxItems &&
@@ -526,8 +526,8 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                     ),
                                   )
                                 : UpButton(
-                                    onPress: () {},
-                                    styles: UpStyle(
+                                    onPressed: () {},
+                                    style: UpStyle(
                                       isDisabled: true,
                                       isRounded: true,
                                       borderRadius: 4,
@@ -544,12 +544,12 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                           Center(
                             child: maxItems > 0
                                 ? UpButton(
-                                    buttonType: UpButtonType.outlined,
-                                    styles: UpStyle(
+                                    type: UpButtonType.outlined,
+                                    style: UpStyle(
                                       isRounded: true,
                                       borderRadius: 4,
                                     ),
-                                    onPress: () =>
+                                    onPressed: () =>
                                         ServiceManager<UpNavigationService>()
                                             .navigateToNamed(
                                       Routes.payment,
@@ -560,13 +560,13 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                     ),
                                   )
                                 : UpButton(
-                                    buttonType: UpButtonType.outlined,
-                                    styles: UpStyle(
+                                    type: UpButtonType.outlined,
+                                    style: UpStyle(
                                       isDisabled: true,
                                       isRounded: true,
                                       borderRadius: 4,
                                     ),
-                                    onPress: () {},
+                                    onPressed: () {},
                                     child: const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text("Buy Now"),

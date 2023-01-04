@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/enums/up_color_type.dart';
 import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/constants.dart';
@@ -51,17 +52,20 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           child: SizedBox(
             width: 192,
             child: UpButton(
-              styles: UpStyle(
-                isRounded: true,
-                borderRadius: 3,
-              ),
-              buttonType: UpButtonType.elevated,
+              text:
+                  "${_mode == Constants.authLogin ? 'Signup' : 'Login'} instead",
+              style: UpStyle(
+                  isRounded: true,
+                  borderRadius: 8,
+                  hoverForegroundColor: Colors.pink),
+              type: UpButtonType.elevated,
+              colorType: UpColorType.secondary,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                     "${_mode == Constants.authLogin ? 'Signup' : 'Login'} instead"),
               ),
-              onPress: () =>
+              onPressed: () =>
                   _mode == Constants.authLogin ? _gotoSignup() : _gotoLogin(),
             ),
           ),

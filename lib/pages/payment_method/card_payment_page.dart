@@ -153,9 +153,6 @@ class _CardPaymentFormState extends State<CardPaymentForm> {
                               label: "cardno",
                               minLength: 1,
                               // onSaved: (input) => cardNo = input ?? "",
-                              decoration: const InputDecoration(
-                                labelText: "Card",
-                              ),
                             ),
                           ),
                         ),
@@ -297,9 +294,9 @@ class _CardPaymentFormState extends State<CardPaymentForm> {
                           label: "CVN",
                           minLength: 1,
                           // onSaved: (input) => cvn = input ?? "",
-                          decoration: const InputDecoration(
-                            labelText: "CVN",
-                          ),
+                          // decoration: const InputDecoration(
+                          //   labelText: "CVN",
+                          // ),
                         ),
                       ),
                     ],

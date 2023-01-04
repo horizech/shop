@@ -2,7 +2,10 @@ import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
 import 'package:flutter_up/enums/up_color_type.dart';
+import 'package:flutter_up/enums/up_input_type.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
+import 'package:flutter_up/widgets/up_checkbox.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 
 import 'package:flutter_up/locator.dart';
@@ -10,8 +13,6 @@ import 'package:flutter_up/services/up_dialog.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter_up/dialogs/up_loading.dart';
 import 'package:flutter_up/dialogs/up_info.dart';
-
-import 'package:flutter_up/themes/up_style.dart';
 
 import 'package:shop/constants.dart';
 
@@ -79,22 +80,31 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _emailController,
                 minLength: 6,
                 onSaved: (input) => _email = input ?? "",
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                ),
               ),
+            ),
+            UpCheckbox(
+              style: UpStyle(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: UpTextField(
-                  controller: _passwordController,
-                  minLength: 6,
-                  maxLines: 1,
-                  onSaved: (input) => _password = input ?? "",
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                  )),
+                type: UpInputType.outline,
+                style: UpStyle(
+                  borderRadius: 8,
+                  iconColor: Colors.red,
+                  iconSize: 45,
+                ),
+                colorType: UpColorType.primary,
+                label: "Password",
+                controller: _passwordController,
+                minLength: 6,
+                maxLines: 1,
+                // prefixIcon: Icons.add,
+                // suffixIcon: Icons.add,
+                // icon: Icons.add,
+                onSaved: (input) => _password = input ?? "",
+                obscureText: true,
+              ),
             ),
             Padding(
               padding:
@@ -103,17 +113,17 @@ class _LoginPageState extends State<LoginPage> {
                   width: 192,
                   child: UpButton(
                     text: "Login",
-                    styles: UpStyle(
+                    style: UpStyle(
                       isRounded: true,
                       borderRadius: 8,
                     ),
-                    buttonType: UpButtonType.elevated,
-                    colorType: UpColorType.secondary,
+                    type: UpButtonType.elevated,
+                    colorType: UpColorType.primary,
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text("Log in"),
                     ),
-                    onPress: () => _login(),
+                    onPressed: () => _login(),
                   )),
             ),
           ],

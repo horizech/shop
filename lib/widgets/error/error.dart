@@ -39,11 +39,11 @@ class NotFoundErrorWidget extends StatelessWidget {
               height: 30,
             ),
             UpButton(
-              styles: UpStyle(
+              style: UpStyle(
                 isRounded: true,
                 borderRadius: 4,
               ),
-              onPress: () {
+              onPressed: () {
                 ServiceManager<UpNavigationService>().navigateToNamed(
                   Routes.simplehome,
                 );

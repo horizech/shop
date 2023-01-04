@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/enums/up_color_type.dart';
 import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
@@ -101,57 +102,50 @@ class _SignupPageState extends State<SignupPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                    minLength: 6,
-                    label: "Username",
-                    onSaved: (input) => _username = input!,
-                    decoration: const InputDecoration(
-                      labelText: "Username",
-                    )),
+                  minLength: 6,
+                  label: "Username",
+                  onSaved: (input) => _username = input!,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                    minLength: 1,
-                    onSaved: (input) => _fullname = input!,
-                    decoration: const InputDecoration(
-                      labelText: "Fullname",
-                    )),
+                  minLength: 1,
+                  onSaved: (input) => _fullname = input!,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                    minLength: 1,
-                    onSaved: (input) => _email = input!,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                    )),
+                  minLength: 1,
+                  onSaved: (input) => _email = input!,
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: UpTextField(
+                  padding: const EdgeInsets.all(8.0),
+                  child: UpTextField(
                     minLength: 6,
                     maxLines: 1,
                     onSaved: (input) => _password = input!,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                    )),
-              ),
+                  )),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: SizedBox(
                     width: 192,
                     child: UpButton(
-                      styles: UpStyle(
+                      text: "Signup",
+                      style: UpStyle(
                         isRounded: true,
-                        borderRadius: 3,
+                        borderRadius: 8,
                       ),
-                      buttonType: UpButtonType.elevated,
+                      type: UpButtonType.elevated,
+                      colorType: UpColorType.secondary,
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text("Signup"),
                       ),
-                      onPress: () => _signup(),
+                      onPressed: () => _signup(),
                     )),
               ),
             ],
