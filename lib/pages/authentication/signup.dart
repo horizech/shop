@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_up/enums/up_button_type.dart';
-import 'package:flutter_up/enums/up_color_type.dart';
-import 'package:flutter_up/themes/up_style.dart';
+import 'package:flutter_up/validation/up_valdation.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 import 'package:flutter_up/locator.dart';
@@ -102,7 +100,7 @@ class _SignupPageState extends State<SignupPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                  minLength: 6,
+                  validation: UpValidation(minLength: 6),
                   label: "Username",
                   onSaved: (input) => _username = input!,
                 ),
@@ -110,21 +108,24 @@ class _SignupPageState extends State<SignupPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                  minLength: 1,
+                  label: 'Full name',
+                  validation: UpValidation(isRequired: true),
                   onSaved: (input) => _fullname = input!,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: UpTextField(
-                  minLength: 1,
+                  label: 'Email',
+                  validation: UpValidation(isRequired: true, isEmail: true),
                   onSaved: (input) => _email = input!,
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: UpTextField(
-                    minLength: 6,
+                    label: 'Password',
+                    validation: UpValidation(isRequired: true, minLength: 6),
                     maxLines: 1,
                     onSaved: (input) => _password = input!,
                     obscureText: true,
@@ -135,12 +136,6 @@ class _SignupPageState extends State<SignupPage> {
                     width: 192,
                     child: UpButton(
                       text: "Signup",
-                      style: UpStyle(
-                        isRounded: true,
-                        borderRadius: 8,
-                      ),
-                      type: UpButtonType.elevated,
-                      colorType: UpColorType.secondary,
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text("Signup"),

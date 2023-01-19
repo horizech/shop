@@ -32,8 +32,7 @@ class ShopApp extends StatelessWidget {
         child: BlocProvider(
           create: (_) => StoreCubit(),
           child: FlutterUpApp(
-              themeCollection: UpThemes.predefinedThemesCollection,
-              defaultThemeId: UpThemes.vintage.id,
+              theme: UpThemes.generateThemeByColor(primaryColor: Colors.purple),
               title: 'Shop',
               initialRoute: Routes.simplehome,
               upRoutes: [

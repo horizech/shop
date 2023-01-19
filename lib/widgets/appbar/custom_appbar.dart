@@ -2,6 +2,7 @@ import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_up/widgets/up_app_bar.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/widgets/search/search.dart';
 
@@ -14,14 +15,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return AppBar(
+    return UpAppBar(
       excludeHeaderSemantics: true,
       automaticallyImplyLeading: false,
-      title: const Center(
-        child: Text(
-          "Lazy Boy MCR",
-        ),
-      ),
+      title: "Lazy Boy MCR",
       leading: width < 600
           ? IconButton(
               icon: const Icon(

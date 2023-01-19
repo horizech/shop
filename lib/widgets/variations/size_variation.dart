@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_up/themes/up_style.dart';
+import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/widgets/variations/variation_controller.dart';
 import 'package:shop/widgets/variations/variation_selection_mode.dart';
@@ -136,24 +138,27 @@ class _SizeVariationWidgetState extends State<SizeVariationWidget> {
                                       : Theme.of(context).colorScheme.secondary,
                               shape: BoxShape.rectangle,
                             ),
-                            child: Text(
-                              widget.sizeVariations!
-                                  .firstWhere(
-                                      (element) => element.id == entry.value)
-                                  .name,
-                              style: (widget.selectedValues ??
-                                          currentSelections)
-                                      .contains(entry.value)
-                                  ? Theme.of(context).textTheme.headline6
-                                  : (widget.disabledValues != null &&
-                                          widget.disabledValues!
-                                              .contains(entry.value))
-                                      ? Theme.of(context)
-                                          .textTheme
-                                          .headline3!
-                                          .copyWith(color: Colors.grey)
-                                      : Theme.of(context).textTheme.headline3,
-                            ),
+                            child: UpText(
+                                widget.sizeVariations!
+                                    .firstWhere(
+                                        (element) => element.id == entry.value)
+                                    .name,
+                                style: UpStyle(
+                                    // textColor: (widget.selectedValues ??
+                                    //             currentSelections)
+                                    //         .contains(entry.value)
+                                    //     ? FlutterUpConfig.of(context)?.theme.primaryColor
+                                    //     : (widget.disabledValues != null &&
+                                    //             widget.disabledValues!
+                                    //                 .contains(entry.value))
+                                    //         ? Theme.of(context)
+                                    //             .textTheme
+                                    //             .headline3!
+                                    //             .copyWith(color: Colors.grey)
+                                    //         : Theme.of(context)
+                                    //             .textTheme
+                                    //             .headline3,
+                                    )),
                           ),
                         ),
                       )

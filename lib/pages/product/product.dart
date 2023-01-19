@@ -8,8 +8,8 @@ import 'package:flutter_up/widgets/up_circualar_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_up/enums/up_button_type.dart';
 import 'package:flutter_up/widgets/up_button.dart';
+import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/models/cart_item.dart';
 import 'package:shop/models/media.dart';
@@ -362,9 +362,11 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                         children: [
                           Container(
                             alignment: Alignment.topLeft,
-                            child: Text(
+                            child: UpText(
                               widget.product.name,
-                              style: Theme.of(context).textTheme.headline1,
+                              style: UpStyle(
+                                  textFontSize: 25,
+                                  textFontWeight: FontWeight.w900),
                             ),
                           ),
                           const SizedBox(
@@ -390,12 +392,9 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  UpText(
                                     "Size",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(fontSize: 16),
+                                    style: UpStyle(textFontSize: 20),
                                   ),
                                   SizeVariationWidget(
                                     sizeVariations: sizeVariation,
@@ -406,12 +405,9 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                         VariationTypes.size.index],
                                     // selectedValues: selectedVariationsValues.,
                                   ),
-                                  Text(
+                                  UpText(
                                     "Color",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(fontSize: 16),
+                                    style: UpStyle(textFontSize: 16),
                                   ),
                                   ColorVariationWidget(
                                     colorVariations: colorVariation,
@@ -428,9 +424,9 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                           ),
                           Row(
                             children: [
-                              const Text("Quantity:  "),
+                              const UpText("Quantity:  "),
                               maxItems == -1
-                                  ? const Text(
+                                  ? const UpText(
                                       "Please select all variations first")
                                   : maxItems > 0
                                       ? Row(
@@ -439,14 +435,10 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                               onChange: onQuantityChange,
                                               maxItems: maxItems,
                                             ),
-                                            // Text("only $maxItems Items left"),
                                           ],
                                         )
-                                      : Text("OUT OF STOCK",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5!
-                                              .copyWith(color: Colors.red))
+                                      : UpText("OUT OF STOCK",
+                                          style: UpStyle(textColor: Colors.red))
                             ],
                           ),
                           const SizedBox(
@@ -467,7 +459,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                                 .any((element) =>
                                                     element > 0))) {
                                           SnackBar snackBar = SnackBar(
-                                            content: Text(
+                                            content: UpText(
                                                 '$quantity products added to cart'),
                                             duration:
                                                 const Duration(seconds: 3),
@@ -484,7 +476,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                           cubit.addToCart(item);
                                         } else {
                                           SnackBar snackBar = const SnackBar(
-                                            content: Text(
+                                            content: UpText(
                                                 'Select quantity and variations'),
                                             duration: Duration(seconds: 3),
                                           );
@@ -495,7 +487,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                         if (quantity > 0 &&
                                             quantity <= maxItems) {
                                           SnackBar snackBar = SnackBar(
-                                            content: Text(
+                                            content: UpText(
                                                 '$quantity products added to cart'),
                                             duration:
                                                 const Duration(seconds: 3),
@@ -512,7 +504,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                           cubit.addToCart(item);
                                         } else {
                                           SnackBar snackBar = const SnackBar(
-                                            content: Text('Select quantity '),
+                                            content: UpText('Select quantity '),
                                             duration: Duration(seconds: 3),
                                           );
                                           ScaffoldMessenger.of(context)
@@ -520,10 +512,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                         }
                                       }
                                     },
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Add to cart"),
-                                    ),
+                                    text: "Add to cart",
                                   )
                                 : UpButton(
                                     onPressed: () {},
@@ -532,10 +521,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                       isRounded: true,
                                       borderRadius: 4,
                                     ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Add to cart"),
-                                    ),
+                                    text: "Add to cart",
                                   ),
                           ),
                           const SizedBox(
@@ -544,7 +530,6 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                           Center(
                             child: maxItems > 0
                                 ? UpButton(
-                                    type: UpButtonType.outlined,
                                     style: UpStyle(
                                       isRounded: true,
                                       borderRadius: 4,
@@ -554,23 +539,16 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                             .navigateToNamed(
                                       Routes.payment,
                                     ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Buy Now"),
-                                    ),
+                                    text: "Buy Now",
                                   )
                                 : UpButton(
-                                    type: UpButtonType.outlined,
                                     style: UpStyle(
                                       isDisabled: true,
                                       isRounded: true,
                                       borderRadius: 4,
                                     ),
                                     onPressed: () {},
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Buy Now"),
-                                    ),
+                                    text: "Buy Now",
                                   ),
                           ),
                           const SizedBox(
@@ -599,20 +577,20 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
 
 Widget _productDetais(Product product, BuildContext context) {
   return ExpansionTile(
-    title: const Text("Product Details"),
+    title: const UpText("Product Details"),
     children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text("Description: ${product.description}"),
+          child: UpText("Description: ${product.description}"),
         ),
       ),
       const Padding(
         padding: EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.topLeft,
-          child: Text("Fabric: cotton"),
+          child: UpText("Fabric: cotton"),
         ),
       ),
     ],
@@ -629,15 +607,16 @@ Widget ourServices(BuildContext context) {
           Row(
             children: [
               const Icon(Icons.fire_truck, size: 40),
-              Text("Shipping Charges",
-                  style: Theme.of(context).textTheme.headline1),
+              UpText("Shipping Charges",
+                  style: UpStyle(
+                      textFontSize: 25, textFontWeight: FontWeight.bold)),
             ],
           ),
           Padding(
             padding: const EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: Text(
+            child: UpText(
               "Flat Rs. 200 on all orders ",
-              style: Theme.of(context).textTheme.headline2,
+              style: UpStyle(textFontSize: 20),
             ),
           )
         ],
@@ -649,16 +628,19 @@ Widget ourServices(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              const Icon(Icons.hourglass_bottom, size: 40),
-              Text("Support 24/7", style: Theme.of(context).textTheme.headline1)
+            children: const [
+              Icon(Icons.hourglass_bottom, size: 40),
+              UpText(
+                "Support 24/7",
+                // style: Theme.of(context).textTheme.headline1)
+              )
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: Text(
+          const Padding(
+            padding: EdgeInsets.only(left: 40, top: 0, bottom: 10),
+            child: UpText(
               "Contact us 24/7 hours",
-              style: Theme.of(context).textTheme.headline2,
+              // style: Theme.of(context).textTheme.headline2,
             ),
           )
         ],
@@ -670,17 +652,18 @@ Widget ourServices(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              const Icon(Icons.pin_drop, size: 40),
-              Text("Track Your Order",
-                  style: Theme.of(context).textTheme.headline1),
+            children: const [
+              Icon(Icons.pin_drop, size: 40),
+              UpText(
+                "Track Your Order",
+              ), // style: Theme.of(context).textTheme.headline1),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: Text(
+          const Padding(
+            padding: EdgeInsets.only(left: 40, top: 0, bottom: 10),
+            child: UpText(
               "track your order for quick updates",
-              style: Theme.of(context).textTheme.headline2,
+              // style: Theme.of(context).textTheme.headline2,
             ),
           )
         ],
@@ -847,75 +830,3 @@ class ProductImagesState extends State<ProductImages> {
 //     side: BorderSide(color: Colors.black),
 //   ),
 // ),
-
-  // Row(
-  //   children: [
-  //     Text(
-  //       "Availability: ",
-  //       style: Theme.of(context).textTheme.headline4,
-  //     ),
-  //     totalStock > 0
-  //         ? Row(
-  //             children: [
-  //               Text(
-  //                 "In Stock",
-  //                 style: Theme.of(context).textTheme.headline5,
-  //               ),
-  //               Text("(Hurry up only $maxItems items left)",
-  //                   style: Theme.of(context)
-  //                       .textTheme
-  //                       .headline5!
-  //                       .copyWith(color: Colors.red))
-  //             ],
-  //           )
-  //         : Text("oUT OF STOCK",
-  //             style: Theme.of(context)
-  //                 .textTheme
-  //                 .headline5!
-  //                 .copyWith(color: Colors.red))
-  //   ],
-  // ),
-
-// Visibility(
-  //   visible: product.variations.isNotEmpty,
-  //   child: Column(
-  //     children: product.variations.keys.map(
-  //       (variationId) {
-  //         Variation variation = variations
-  //             .where((element) => element.id == variationId)
-  //             .first;
-  //         return VariationSelector(
-  //             variation: Variation(
-  //                 variation.id,
-  //                 variation.createdOn,
-  //                 variation.createdBy,
-  //                 variation.lastUpdatedOn,
-  //                 variation.lastUpdatedBy,
-  //                 variation.name,
-  //                 product.variations[variationId].join(","),
-  //                 variation.type),
-  //             maxSelectCount: 1,
-  //             onChange: (s) => onVariationChange(variationId, s));
-  //       },
-  //     ).toList(),
-  //   ),
-  // ),
-
-  // if (selectedVariationsValues.isNotEmpty &&
-  //     selectedVariationsValues[0] != 0 &&
-  //     selectedVariationsValues[1] != 0) {
-  //   maxItems = 0;
-  //   int? selectedProductVariationId = widget.product.variations
-  //       .where((v) => (v.color ==
-  //               selectedVariationsValues[VariationTypes.color.index] &&
-  //           v.color == selectedVariationsValues[VariationTypes.size.index]))
-  //       .map((e) => e.id)
-  //       .first;
-  //   maxItems = widget.stock
-  //       .where((s) => s.productVariation == selectedProductVariationId)
-  //       .map((e) => e.quantity)
-  //       .first;
-
-  //   setState(() {
-  //     maxItems = maxItems;
-  //   });

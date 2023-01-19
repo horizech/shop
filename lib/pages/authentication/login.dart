@@ -1,11 +1,8 @@
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_up/enums/up_button_type.dart';
-import 'package:flutter_up/enums/up_color_type.dart';
-import 'package:flutter_up/enums/up_input_type.dart';
 import 'package:flutter_up/themes/up_style.dart';
+import 'package:flutter_up/validation/up_valdation.dart';
 import 'package:flutter_up/widgets/up_button.dart';
-import 'package:flutter_up/widgets/up_checkbox.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 
 import 'package:flutter_up/locator.dart';
@@ -78,30 +75,18 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(8.0),
               child: UpTextField(
                 controller: _emailController,
-                minLength: 6,
+                label: 'Email',
+                validation: UpValidation(isRequired: true, isEmail: true),
                 onSaved: (input) => _email = input ?? "",
               ),
-            ),
-            UpCheckbox(
-              style: UpStyle(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: UpTextField(
-                type: UpInputType.outline,
-                style: UpStyle(
-                  borderRadius: 8,
-                  iconColor: Colors.red,
-                  iconSize: 45,
-                ),
-                colorType: UpColorType.primary,
                 label: "Password",
                 controller: _passwordController,
-                minLength: 6,
+                validation: UpValidation(isRequired: true, minLength: 6),
                 maxLines: 1,
-                // prefixIcon: Icons.add,
-                // suffixIcon: Icons.add,
-                // icon: Icons.add,
                 onSaved: (input) => _password = input ?? "",
                 obscureText: true,
               ),
@@ -116,12 +101,6 @@ class _LoginPageState extends State<LoginPage> {
                     style: UpStyle(
                       isRounded: true,
                       borderRadius: 8,
-                    ),
-                    type: UpButtonType.elevated,
-                    colorType: UpColorType.primary,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Log in"),
                     ),
                     onPressed: () => _login(),
                   )),

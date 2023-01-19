@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/widgets/products/product_info.dart';
 
@@ -21,7 +22,7 @@ class ProductsList extends StatelessWidget {
         child: SizedBox(
             width: 200,
             height: 200,
-            child: Center(child: Text("No Product Available"))),
+            child: Center(child: UpText("No Product Available"))),
       );
     } else {
       return Container(

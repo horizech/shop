@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_up/enums/up_button_type.dart';
-import 'package:flutter_up/enums/up_color_type.dart';
-import 'package:flutter_up/themes/up_style.dart';
+import 'package:flutter_up/widgets/up_app_bar.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/pages/authentication/login.dart';
@@ -37,55 +35,35 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   Widget getView() {
     List<Widget> view = [
-      Expanded(
-        flex: 2,
-        child: Align(
-          alignment: Alignment.center,
-          child: _mode == Constants.authLogin
-              ? const LoginPage()
-              : const SignupPage(),
-        ),
+      _mode == Constants.authLogin ? const LoginPage() : const SignupPage(),
+      const SizedBox(
+        height: 15,
       ),
-      Expanded(
-        flex: 1,
-        child: Center(
-          child: SizedBox(
-            width: 192,
-            child: UpButton(
-              text:
-                  "${_mode == Constants.authLogin ? 'Signup' : 'Login'} instead",
-              style: UpStyle(
-                  isRounded: true,
-                  borderRadius: 8,
-                  hoverForegroundColor: Colors.pink),
-              type: UpButtonType.elevated,
-              colorType: UpColorType.secondary,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "${_mode == Constants.authLogin ? 'Signup' : 'Login'} instead"),
-              ),
-              onPressed: () =>
-                  _mode == Constants.authLogin ? _gotoSignup() : _gotoLogin(),
-            ),
-          ),
+      SizedBox(
+        width: 192,
+        child: UpButton(
+          text: "${_mode == Constants.authLogin ? 'Signup' : 'Login'} instead",
+          onPressed: () =>
+              _mode == Constants.authLogin ? _gotoSignup() : _gotoLogin(),
         ),
       )
     ];
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: view,
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0, left: 8.0, right: 8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: view,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        // title: const Text(Constants.title),
+      appBar: const UpAppBar(
+        title: 'Shop',
       ),
       body: getView(),
     );

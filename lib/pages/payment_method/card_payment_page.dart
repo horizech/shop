@@ -3,6 +3,7 @@ import 'package:flutter_up/services/up_navigation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/validation/up_valdation.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
 import 'package:shop/widgets/cart/cart_display.dart';
@@ -151,7 +152,7 @@ class _CardPaymentFormState extends State<CardPaymentForm> {
                               controller: cardNoController,
                               keyboardType: TextInputType.text,
                               label: "cardno",
-                              minLength: 1,
+                              validation: UpValidation(isRequired: true),
                               // onSaved: (input) => cardNo = input ?? "",
                             ),
                           ),
@@ -292,7 +293,7 @@ class _CardPaymentFormState extends State<CardPaymentForm> {
                           controller: cvnController,
                           keyboardType: TextInputType.text,
                           label: "CVN",
-                          minLength: 1,
+                          validation: UpValidation(isRequired: true),
                           // onSaved: (input) => cvn = input ?? "",
                           // decoration: const InputDecoration(
                           //   labelText: "CVN",

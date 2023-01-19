@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter_up/locator.dart';
+import 'package:flutter_up/models/up_radio_button_items.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_up/widgets/up_radio.dart';
+import 'package:flutter_up/validation/up_valdation.dart';
+
+import 'package:flutter_up/widgets/up_radio_button.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -521,11 +524,16 @@ class _PaymentFormState extends State<PaymentForm> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           runAlignment: WrapAlignment.center,
                           children: [
-                            UpRadio(
-                              label: "Primary Information",
+                            UpRadioButton(
                               value: "primary",
-                              // isSelected: true,
-                              groupValue: _groupValue,
+                              items: [
+                                UpRadioButtonItem(
+                                    label: 'Primary Information',
+                                    value: 'primary'),
+                                UpRadioButtonItem(
+                                    label: 'Secondary Information',
+                                    value: 'secondary'),
+                              ],
                               onChange: (radioValue) {
                                 setState(() {
                                   _groupValue = radioValue.toString();
@@ -544,25 +552,25 @@ class _PaymentFormState extends State<PaymentForm> {
                             const SizedBox(
                               width: 10,
                             ),
-                            UpRadio(
-                                value: "secondary",
-                                groupValue: _groupValue,
-                                label: "Secondary Information",
-                                onChange: (radioValue) {
-                                  setState(() {
-                                    _groupValue = radioValue.toString();
-                                  });
+                            // UpRadio(
+                            //     value: "secondary",
+                            //     groupValue: _groupValue,
+                            //     label: "Secondary Information",
+                            //     onChange: (radioValue) {
+                            //       setState(() {
+                            //         _groupValue = radioValue.toString();
+                            //       });
 
-                                  if (radioValue == "secondary") {
-                                    initailizeForm(
-                                        widget.customerProfile!.secondaryInfo);
-                                    setState(() {
-                                      isSecondaryInfo = true;
-                                      isPrimaryInfo = false;
-                                    });
-                                  }
-                                }),
-                            const Text("Secondary Information"),
+                            //       if (radioValue == "secondary") {
+                            //         initailizeForm(
+                            //             widget.customerProfile!.secondaryInfo);
+                            //         setState(() {
+                            //           isSecondaryInfo = true;
+                            //           isPrimaryInfo = false;
+                            //         });
+                            //       }
+                            //     }),
+                            // const Text("Secondary Information"),
                           ],
                         ),
                       )
@@ -576,8 +584,8 @@ class _PaymentFormState extends State<PaymentForm> {
                       controller: _emailController,
                       autofillHint: AutofillHints.email,
                       keyboardType: TextInputType.emailAddress,
-                      minLength: 1,
-                      label: "email",
+                      validation: UpValidation(isEmail: true),
+                      label: "Email",
                       // onSaved: (input) => email = input ?? "",
                       // decoration: const InputDecoration(
                       //   labelText: "Email",
@@ -599,8 +607,8 @@ class _PaymentFormState extends State<PaymentForm> {
                               controller: _fnameController,
                               autofillHint: AutofillHints.name,
                               keyboardType: TextInputType.text,
-                              minLength: 1,
-                              label: "first Name",
+                              validation: UpValidation(isRequired: true),
+                              label: "First Name",
                               // decoration: const InputDecoration(
                               //   labelText: "First Name",
                               // ),
@@ -619,8 +627,8 @@ class _PaymentFormState extends State<PaymentForm> {
                               controller: _lnameController,
                               keyboardType: TextInputType.text,
                               autofillHint: AutofillHints.middleName,
-                              label: "last Name",
-                              minLength: 1,
+                              label: "Last Name",
+
                               // decoration: const InputDecoration(
                               //   labelText: "Last Name",
                               // ),
@@ -682,8 +690,8 @@ class _PaymentFormState extends State<PaymentForm> {
                       controller: _addressController,
                       keyboardType: TextInputType.text,
                       autofillHint: AutofillHints.streetAddressLine1,
-                      minLength: 1,
-                      label: "address",
+                      validation: UpValidation(isRequired: true),
+                      label: "Address",
                       // onSaved: (input) => address = input ?? "",
                       // decoration: const InputDecoration(
                       //   labelText: "Address",
@@ -705,8 +713,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               controller: _cityController,
                               autofillHint: AutofillHints.addressCity,
                               keyboardType: TextInputType.text,
-                              label: "city",
-                              minLength: 1,
+                              label: "City",
+                              validation: UpValidation(isRequired: true),
+
                               // onSaved: (input) => city = input ?? "",
                               // decoration: const InputDecoration(
                               //   labelText: "City",
@@ -724,8 +733,9 @@ class _PaymentFormState extends State<PaymentForm> {
                               controller: _postalCodeController,
                               autofillHint: AutofillHints.postalCode,
                               keyboardType: TextInputType.text,
-                              label: "postal code",
-                              minLength: 1,
+                              label: "Postal code",
+                              validation: UpValidation(isRequired: true),
+
                               // decoration: const InputDecoration(
                               //   labelText: "Postal Code",
                               // ),
@@ -744,8 +754,9 @@ class _PaymentFormState extends State<PaymentForm> {
                       controller: _phoneNoController,
                       keyboardType: TextInputType.number,
                       autofillHint: AutofillHints.telephoneNumber,
-                      minLength: 1,
-                      label: "phone no",
+                      validation: UpValidation(isRequired: true),
+
+                      label: "Phone no",
                       // onSaved: (input) => phoneNo = input ?? "",
                       // decoration: const InputDecoration(
                       //   labelText: "Phone No",
