@@ -525,7 +525,7 @@ class _PaymentFormState extends State<PaymentForm> {
                           runAlignment: WrapAlignment.center,
                           children: [
                             UpRadioButton(
-                              value: "primary",
+                              initialValue: "primary",
                               items: [
                                 UpRadioButtonItem(
                                     label: 'Primary Information',

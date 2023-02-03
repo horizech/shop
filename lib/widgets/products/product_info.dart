@@ -70,7 +70,7 @@ Widget getWebInfo(BuildContext context, Product product, int? collection) {
                   children: [
                     UpText(
                       product.name,
-                      style: UpStyle(textFontSize: 20),
+                      style: UpStyle(textSize: 20),
                     ),
                     PriceWidget(
                       price: product.price,

@@ -365,8 +365,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                             child: UpText(
                               widget.product.name,
                               style: UpStyle(
-                                  textFontSize: 25,
-                                  textFontWeight: FontWeight.w900),
+                                  textSize: 25, textWeight: FontWeight.w900),
                             ),
                           ),
                           const SizedBox(
@@ -394,7 +393,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                 children: [
                                   UpText(
                                     "Size",
-                                    style: UpStyle(textFontSize: 20),
+                                    style: UpStyle(textSize: 20),
                                   ),
                                   SizeVariationWidget(
                                     sizeVariations: sizeVariation,
@@ -407,7 +406,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                                   ),
                                   UpText(
                                     "Color",
-                                    style: UpStyle(textFontSize: 16),
+                                    style: UpStyle(textSize: 16),
                                   ),
                                   ColorVariationWidget(
                                     colorVariations: colorVariation,
@@ -608,15 +607,14 @@ Widget ourServices(BuildContext context) {
             children: [
               const Icon(Icons.fire_truck, size: 40),
               UpText("Shipping Charges",
-                  style: UpStyle(
-                      textFontSize: 25, textFontWeight: FontWeight.bold)),
+                  style: UpStyle(textSize: 25, textWeight: FontWeight.bold)),
             ],
           ),
           Padding(
             padding: const EdgeInsets.only(left: 40, top: 0, bottom: 10),
             child: UpText(
               "Flat Rs. 200 on all orders ",
-              style: UpStyle(textFontSize: 20),
+              style: UpStyle(textSize: 20),
             ),
           )
         ],

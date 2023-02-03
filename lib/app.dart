@@ -1,11 +1,12 @@
 import 'package:apiraiser/apiraiser.dart';
-import 'package:flutter_up/flutter_up_app.dart';
+
 import 'package:flutter_up/models/up_route.dart';
 import 'package:flutter_up/models/up_router_state.dart';
 import 'package:flutter_up/themes/up_themes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/up_app.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
@@ -31,7 +32,7 @@ class ShopApp extends StatelessWidget {
         create: (_) => CartCubit(),
         child: BlocProvider(
           create: (_) => StoreCubit(),
-          child: FlutterUpApp(
+          child: UpApp(
               theme: UpThemes.generateThemeByColor(primaryColor: Colors.purple),
               title: 'Shop',
               initialRoute: Routes.simplehome,
