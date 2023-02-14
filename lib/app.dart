@@ -14,7 +14,8 @@ import 'package:shop/pages/payment/payment.dart';
 import 'package:shop/pages/payment_method/card_payment_page.dart';
 import 'package:shop/pages/payment_method/payment_method_page.dart';
 import 'package:shop/pages/product/product.dart';
-import 'package:shop/pages/products/products.dart';
+import 'package:shop/pages/products/products_automobile_grid.dart';
+import 'package:shop/pages/products/products_automobile_list.dart';
 import 'package:shop/pages/simple_home/simple_homepage.dart';
 import 'package:shop/pages/store_dependant_page.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
@@ -33,7 +34,7 @@ class ShopApp extends StatelessWidget {
         child: BlocProvider(
           create: (_) => StoreCubit(),
           child: UpApp(
-              theme: UpThemes.generateThemeByColor(primaryColor: Colors.purple),
+              theme: UpThemes.generateThemeByColor(primaryColor: Colors.black),
               title: 'Shop',
               initialRoute: Routes.simplehome,
               upRoutes: [
@@ -91,7 +92,7 @@ class ShopApp extends StatelessWidget {
                   path: Routes.products,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       StoreDependantPage(
-                    page: Products(
+                    page: ProductsAutomobileGrid(
                       queryParams: state.queryParams,
                     ),
                   ),

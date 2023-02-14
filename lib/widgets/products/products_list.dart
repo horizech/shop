@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/widgets/products/product_info.dart';
+import 'package:shop/widgets/products/product_list_item.dart';
 
 class ProductsList extends StatelessWidget {
   final List<Product> products;
@@ -39,7 +39,8 @@ Widget _allProductsList(
       child: ListView.builder(
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return ProductInfo(product: products[index], collection: collection);
+          return ProductListItem(
+              product: products[index], collection: collection);
         },
         itemCount: products.length,
       ));

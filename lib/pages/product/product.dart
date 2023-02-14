@@ -1,10 +1,8 @@
 import 'dart:typed_data';
-
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_circualar_progress.dart';
-
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +19,7 @@ import 'package:shop/models/stock.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
 import 'package:shop/widgets/counter.dart';
+import 'package:shop/widgets/drawer/MenuDrawer.dart';
 import 'package:shop/widgets/drawer/drawer.dart';
 import 'package:shop/widgets/error/error.dart';
 import 'package:shop/widgets/header/header.dart';
@@ -52,7 +51,7 @@ class ProductPage extends StatelessWidget {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldKey,
-      drawer: const CustomDrawer(),
+      drawer: const MenuDrawer(),
       appBar: CustomAppbar(
         scaffoldKey: scaffoldKey,
       ),
@@ -305,24 +304,29 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
         listener: (context, state) {},
         builder: (context, state) {
           //All sizes get
-          int? sizeOption = state.productOptions!
-              .firstWhere((element) => element.name == "Size")
-              .id;
-          List<ProductOptionValue> allSizes = state.productOptionValues!
-              .where((e) =>
-                  e.productOption == sizeOption &&
-                  e.collection == widget.product.collection)
-              .toList();
+          int? sizeOption = null;
+
+          // state.productOptions!
+          //     .firstWhere((element) => element.name == "Size")
+          //     .id;
+          List<ProductOptionValue> allSizes = [];
+          // state.productOptionValues!
+          //     .where((e) =>
+          //         e.productOption == sizeOption &&
+          //         e.collection == widget.product.collection)
+          //     .toList();
 
           //All colors get
-          int? colorOption = state.productOptions!
-              .firstWhere((element) => element.name == "Color")
-              .id;
-          List<ProductOptionValue> allColors = state.productOptionValues!
-              .where((e) =>
-                  e.productOption == colorOption &&
-                  e.collection == widget.product.collection)
-              .toList();
+          int? colorOption = null;
+          // state.productOptions!
+          //     .firstWhere((element) => element.name == "Color")
+          //     .id;
+          List<ProductOptionValue> allColors = [];
+          // state.productOptionValues!
+          //     .where((e) =>
+          //         e.productOption == colorOption &&
+          //         e.collection == widget.product.collection)
+          //     .toList();
 
           if (colorVariation.isEmpty && sizeVariation.isEmpty) {
             try {

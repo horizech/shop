@@ -168,6 +168,13 @@ class _HeaderWidgetState extends State<HeaderWidget> {
               return const MainMenu();
             })
         : const Text("");
+    // return width > 600
+    // ? BlocConsumer<StoreCubit, StoreState>(
+    //     listener: (context, state) {},
+    //     builder: (context, state) {
+    //       return const MainMenu();
+    //     })
+    // : const Text("");
   }
 }
 

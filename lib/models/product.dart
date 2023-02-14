@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +21,7 @@ class Product extends Equatable {
   final DateTime? discountStartDate;
   final DateTime? discountEndDate;
   final String? sku;
+  final Map<String, int> options;
 
   // final int? media;
 
@@ -40,6 +43,7 @@ class Product extends Equatable {
     this.discountStartDate,
     this.discountEndDate,
     this.sku,
+    this.options,
   );
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -115,6 +119,10 @@ class Product extends Equatable {
                 : json['DiscountEndDate']
             : null,
         json['SKU'] as String?,
+        json['Options'] != null && (json['Options'] as String).isNotEmpty
+            ? (jsonDecode(json['Options'] as String) as Map<String, dynamic>)
+                .cast<String, int>()
+            : {},
 
         // json['Media'] as int?,
       );
@@ -161,6 +169,7 @@ class Product extends Equatable {
       'DiscountStartDate': instance.discountStartDate,
       'DiscountEndDate': instance.discountEndDate,
       'SKU': instance.sku,
+      'Options': instance.options,
 
       // 'Variations': jsonEncode(variationsMap),
       // 'Media': instance.media

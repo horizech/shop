@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
+import 'package:shop/widgets/products/products_grid.dart';
 import 'package:shop/widgets/products/products_list.dart';
 import 'package:shop/widgets/products/products_service.dart';
 
@@ -43,7 +44,7 @@ class SearchPage extends StatelessWidget {
                   );
                 }
                 return snapshot.hasData
-                    ? ProductsList(
+                    ? ProductsGrid(
                         products: snapshot.data!,
                       )
                     : const CircularProgressIndicator();
