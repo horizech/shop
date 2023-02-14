@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/widgets/up_checkbox.dart';
+import 'package:flutter_up/widgets/up_expansion_tile.dart';
 import 'package:shop/models/product_option_value.dart';
+import 'package:shop/models/product_options.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
-import 'package:shop/widgets/variations/color_variation.dart';
-import 'package:shop/widgets/variations/size_variation.dart';
 import 'package:shop/widgets/variations/variation_controller.dart';
-import 'package:shop/widgets/variations/variation_selection_mode.dart';
 import 'package:shop/widgets/variations/variation_types.dart';
 
 class FilterPage extends StatelessWidget {
@@ -19,33 +19,114 @@ class FilterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ProductOptionValue> sizeVariations;
+    List<ProductOptionValue> colorVariations;
+    List<ProductOptionValue> otherVariations = [];
+
     return BlocConsumer<StoreCubit, StoreState>(
       listener: (context, state) {},
       builder: (context, state) {
-        List<ProductOptionValue> sizeVariations;
-        List<ProductOptionValue> colorVariations;
+        List<ProductOption> productOptions = [];
+        if (state.productOptions != null && state.productOptions!.isNotEmpty) {
+          productOptions = state.productOptions!.toList();
+        }
+        if (state.productOptionValues != null &&
+            state.productOptionValues!.isNotEmpty) {
+          // sizeVariations = state.productOptionValues!
+          //     .where(
+          //       (c) =>
+          //           c.collection == collection &&
+          //           c.productOption ==
+          //               state.productOptions!
+          //                   .where(
+          //                     (element) => element.name.toLowerCase() == 'size',
+          //                   )
+          //                   .first
+          //                   .id,
+          //     )
+          //     .toList();
+          // colorVariations = state.productOptionValues!
+          //     .where(
+          //       (c) =>
+          //           c.collection == collection &&
+          //           c.productOption ==
+          //               state.productOptions?
+          //                   .where(
+          //                     (element) =>
+          //                         element.name.toLowerCase() == 'color',
+          //                   )
+          //                   .first
+          //                   .id,
+          //     )
+          //     .toList();
+          otherVariations = state.productOptionValues!
+              .where(
+                (c) => c.collection == collection,
+              )
+              .toList();
+        }
 
-        sizeVariations = state.productOptionValues!
-            .where((c) => c.collection == collection && c.productOption == 1)
-            .toList();
-        colorVariations = state.productOptionValues!
-            .where((c) => c.collection == collection && c.productOption == 2)
-            .toList();
-        return Visibility(
-          visible: (sizeVariations != [] && sizeVariations.isNotEmpty) ||
-              (colorVariations != [] && colorVariations.isNotEmpty),
-          child: Column(
-            children: [
-              VariationFilter(
-                change: change,
-                sizeVariations: sizeVariations,
-                colorVariations: colorVariations,
-              ),
-            ],
-          ),
+        return VariationViewWidget(
+          otherVariations: otherVariations,
+          productOptions: productOptions,
         );
+
+        // return Visibility(
+        //   visible: otherVariations.isNotEmpty,
+        //   child: VariationFilter(otherVariations: otherVariations),
+        // );
+
+        // Visibility(
+        //   visible: (sizeVariations != [] && sizeVariations.isNotEmpty) ||
+        //       (colorVariations != [] && colorVariations.isNotEmpty),
+        //   child: Column(
+        //     children: [
+        //       VariationFilter(
+        //         change: change,
+        //         sizeVariations: sizeVariations,
+        //         colorVariations: colorVariations,
+        //       ),
+        //     ],
+        //   ),
+        // );
       },
     );
+  }
+}
+
+class VariationViewWidget extends StatelessWidget {
+  final List<ProductOptionValue>? otherVariations;
+  final List<ProductOption>? productOptions;
+
+  const VariationViewWidget(
+      {Key? key, this.otherVariations, this.productOptions})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Widget variationView(
+      ProductOption productOption,
+    ) {
+      if (otherVariations != null &&
+          otherVariations!
+              .any((element) => element.productOption == element.id)) {
+        return UpExpansionTile(
+            title: productOption.name,
+            children: otherVariations!
+                .where((e) => e.productOption == productOption.id)
+                .map((e) => Text(e.name))
+                .toList());
+      } else {
+        return const SizedBox();
+      }
+    }
+
+    return const Text("");
+    // productOptions?.forEach((element) {
+    //   if (otherVariations!.any((v) => v.productOption == element.id)) {
+    //     return variationView(element);
+    //   }
+    // });
   }
 }
 
@@ -53,12 +134,15 @@ class VariationFilter extends StatefulWidget {
   // int? category;
   List<ProductOptionValue>? sizeVariations;
   List<ProductOptionValue>? colorVariations;
+  List<ProductOptionValue>? otherVariations;
+
   Function? change;
   VariationFilter(
       {Key? key,
       // required this.category,
       this.sizeVariations,
       this.colorVariations,
+      this.otherVariations,
       //  required this.variations,
       this.change})
       : super(key: key);
@@ -92,6 +176,16 @@ class _VariationFilterState extends State<VariationFilter> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.otherVariations != null && widget.otherVariations!.isNotEmpty) {
+      widget.otherVariations!.sort(((a, b) {
+        return a.productOption - b.productOption;
+      }));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (variationControllers.isEmpty) {
       for (var element in VariationTypes.values) {
@@ -109,31 +203,47 @@ class _VariationFilterState extends State<VariationFilter> {
       children: [
         Column(
           children: [
-            Wrap(children: [
-              widget.sizeVariations != null && widget.sizeVariations!.isNotEmpty
-                  ? const Text("Sizes : ")
-                  : const Text(""),
-              SizeVariationWidget(
-                sizeVariations: widget.sizeVariations,
-                onChange: (s) =>
-                    onVariationChange(VariationTypes.size.index, s),
-                mode: VariationSelectionMode.filter,
-                controller: variationControllers[VariationTypes.size.index],
+            // Wrap(children: [
+            //   widget.sizeVariations != null && widget.sizeVariations!.isNotEmpty
+            //       ? const Text("Sizes : ")
+            //       : const Text(""),
+            //   SizeVariationWidget(
+            //     sizeVariations: widget.sizeVariations,
+            //     onChange: (s) =>
+            //         onVariationChange(VariationTypes.size.index, s),
+            //     mode: VariationSelectionMode.filter,
+            //     controller: variationControllers[VariationTypes.size.index],
+            //   ),
+            // ]),
+            // Wrap(children: [
+            //   widget.colorVariations != null &&
+            //           widget.colorVariations!.isNotEmpty
+            //       ? const Text("Colors : ")
+            //       : const Text(""),
+            //   ColorVariationWidget(
+            //     colorVariations: widget.colorVariations,
+            //     onChange: (c) =>
+            //         onVariationChange(VariationTypes.color.index, c),
+            //     mode: VariationSelectionMode.filter,
+            //     controller: variationControllers[VariationTypes.color.index],
+            //   ),
+            // ]),
+            Visibility(
+              visible: widget.otherVariations != null &&
+                  widget.otherVariations!.isNotEmpty,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  children: widget.otherVariations!
+                      .map(
+                        (e) => UpCheckbox(
+                          label: e.name,
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
-            ]),
-            Wrap(children: [
-              widget.colorVariations != null &&
-                      widget.colorVariations!.isNotEmpty
-                  ? const Text("Colors : ")
-                  : const Text(""),
-              ColorVariationWidget(
-                colorVariations: widget.colorVariations,
-                onChange: (c) =>
-                    onVariationChange(VariationTypes.color.index, c),
-                mode: VariationSelectionMode.filter,
-                controller: variationControllers[VariationTypes.color.index],
-              ),
-            ]),
+            ),
             GestureDetector(
               onTap: onReset,
               child: Wrap(
@@ -159,7 +269,9 @@ class _VariationFilterState extends State<VariationFilter> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                  onPressed: onChange, child: const Text("Apply Filter")),
+                onPressed: onChange,
+                child: const Text("Apply Filter"),
+              ),
             ),
           ],
         )
@@ -168,6 +280,14 @@ class _VariationFilterState extends State<VariationFilter> {
   }
 }
 
+class OtherVariationsFilterWidget extends StatelessWidget {
+  const OtherVariationsFilterWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
 
 // class VariationFilter extends StatefulWidget {
 //   int? category;
@@ -278,7 +398,7 @@ class _VariationFilterState extends State<VariationFilter> {
 //                   onPressed: onChange, child: const Text("Apply Filter")),
 //             ),
 //           ],
-        // )
+// )
 //       ],
 //     );
 //   }
