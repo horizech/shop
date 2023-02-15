@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/up_app.dart';
 import 'package:shop/constants.dart';
-import 'package:shop/pages/admin/admin.dart';
+import 'package:shop/pages/admin/admin_automobile.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
 import 'package:shop/pages/payment/payment.dart';
@@ -18,7 +18,6 @@ import 'package:shop/pages/payment_method/card_payment_page.dart';
 import 'package:shop/pages/payment_method/payment_method_page.dart';
 import 'package:shop/pages/product/product.dart';
 import 'package:shop/pages/products/products_automobile_grid.dart';
-import 'package:shop/pages/products/products_automobile_list.dart';
 import 'package:shop/pages/simple_home/simple_homepage.dart';
 import 'package:shop/pages/store_dependant_page.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
@@ -62,7 +61,7 @@ class ShopApp extends StatelessWidget {
                       const LoginSignupPage(),
                   name: Routes.loginSignup,
                   shouldRedirect: () => Apiraiser.authentication.isSignedIn(),
-                  redirectRoute: Routes.simplehome,
+                  redirectRoute: Routes.admin,
                 ),
                 // UpRoute(
                 //   name: Routes.login,
@@ -82,6 +81,8 @@ class ShopApp extends StatelessWidget {
                 UpRoute(
                   name: Routes.simplehome,
                   path: Routes.simplehome,
+                  shouldRedirect: () => Apiraiser.authentication.isSignedIn(),
+                  redirectRoute: Routes.loginSignup,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       const StoreDependantPage(
                     page: SimpleHomePage(),
@@ -100,7 +101,7 @@ class ShopApp extends StatelessWidget {
                   path: Routes.admin,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       const StoreDependantPage(
-                    page: AdminPage(),
+                    page: AdminAutoMobilePage(),
                   ),
                 ),
                 UpRoute(
