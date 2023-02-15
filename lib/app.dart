@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/up_app.dart';
 import 'package:shop/constants.dart';
+import 'package:shop/pages/admin/admin.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
 import 'package:shop/pages/payment/payment.dart';
@@ -92,6 +93,14 @@ class ShopApp extends StatelessWidget {
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       StoreDependantPage(
                     page: CartPage(),
+                  ),
+                ),
+                UpRoute(
+                  name: Routes.admin,
+                  path: Routes.admin,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      const StoreDependantPage(
+                    page: AdminPage(),
                   ),
                 ),
                 UpRoute(

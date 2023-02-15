@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/widgets/up_orientational_column_row.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/services/variation.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/drawer/MenuDrawer.dart';
 import 'package:shop/widgets/error/error.dart';
 import 'package:shop/widgets/filters/filter.dart';
-import 'package:shop/widgets/header/header.dart';
-import 'package:shop/widgets/keywords/keywords.dart';
 import 'package:shop/widgets/products/products_grid.dart';
 import 'package:shop/widgets/products/products_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
@@ -25,17 +25,20 @@ class ProductsAutomobileGrid extends StatefulWidget {
 
 class _AllProductsState extends State<ProductsAutomobileGrid> {
   int? selectedKeywordId = 0;
-  Map<int, List<int>> selectedVariationsValues = {};
+  Map<String, List<int>> selectedVariationsValues = {};
   List<Product>? filteredProducts;
   List<Product>? products;
 
-  change(int? id, Map<int, List<int>>? s) {
-    setState(() {
-      selectedKeywordId = id;
-      selectedVariationsValues = s ?? {};
-      // filteredProducts!= filteredProducts(
-      //     products, selectedVariationsValues, selectedKeywordId);
-    });
+  change(int? id, Map<String, List<int>>? s) {
+    selectedVariationsValues = {};
+    // setState(() {
+    selectedKeywordId = id;
+    selectedVariationsValues = s ?? {};
+    // filteredProducts!= filteredProducts(
+    // products, selectedVariationsValues, selectedKeywordId);
+    // });'
+
+    ServiceManager<VariationService>().setVariation(s ?? {});
   }
 
   List<int> _getCollectionsByParent(
@@ -130,52 +133,63 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
                                   //     selectedKeywordId: selectedKeywordId,
                                   //   ),
                                   // ),
-                                  FutureBuilder<List<Product>>(
-                                    future: ProductService.getProducts(
-                                        collections,
-                                        selectedVariationsValues,
-                                        selectedKeywordId,
-                                        ""),
+
+                                  StreamBuilder(
+                                    stream: ServiceManager<VariationService>()
+                                        .variationStream$,
                                     builder: (BuildContext context,
-                                        AsyncSnapshot<List<Product>> snapshot) {
-                                      products = snapshot.data;
-                                      // filteredProducts ??= products;
+                                        storedVariationsValues) {
+                                      return FutureBuilder<List<Product>>(
+                                        future: ProductService.getProducts(
+                                            collections,
+                                            storedVariationsValues.data ?? {},
+                                            selectedKeywordId,
+                                            ""),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<Product>>
+                                                snapshot) {
+                                          products = snapshot.data;
+                                          // filteredProducts ??= products;
 
-                                      if (snapshot.connectionState !=
-                                          ConnectionState.done) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(30.0),
-                                          child: GridView.builder(
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                            ),
-                                            itemCount: 3,
-                                            shrinkWrap: true,
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(0),
-                                                child: SizedBox(
-                                                  height: 300,
-                                                  width: 300,
-                                                  child: Container(
-                                                      color: Colors.grey[200]),
+                                          if (snapshot.connectionState !=
+                                              ConnectionState.done) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(30.0),
+                                              child: GridView.builder(
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
                                                 ),
-                                              );
-                                            },
+                                                itemCount: 3,
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(0),
+                                                    child: SizedBox(
+                                                      height: 300,
+                                                      width: 300,
+                                                      child: Container(
+                                                          color:
+                                                              Colors.grey[200]),
+                                                    ),
+                                                  );
+                                                },
 
-                                            // itemCount: 6,
-                                          ),
-                                        );
-                                      }
-                                      return snapshot.hasData
-                                          ? ProductsGrid(
-                                              // products: filteredProducts!,
-                                              collection: collection,
-                                              products: snapshot.data!,
-                                            )
-                                          : const CircularProgressIndicator();
+                                                // itemCount: 6,
+                                              ),
+                                            );
+                                          }
+                                          return snapshot.hasData
+                                              ? ProductsGrid(
+                                                  // products: filteredProducts!,
+                                                  collection: collection,
+                                                  products: snapshot.data!,
+                                                )
+                                              : const CircularProgressIndicator();
+                                        },
+                                      );
                                     },
                                   ),
                                 ],

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_up/themes/up_style.dart';
-import 'package:flutter_up/widgets/up_checkbox.dart';
-import 'package:flutter_up/widgets/up_expansion_tile.dart';
+import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
+import 'package:shop/widgets/filters/variation_view.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
 import 'package:shop/widgets/variations/variation_controller.dart';
-import 'package:shop/widgets/variations/variation_types.dart';
 
 class FilterPage extends StatelessWidget {
   final int? collection;
@@ -67,16 +65,11 @@ class FilterPage extends StatelessWidget {
               .toList();
         }
 
-        return VariationViewWidget(
+        return VariationFilter(
           otherVariations: otherVariations,
           productOptions: productOptions,
+          change: change,
         );
-
-        // return Visibility(
-        //   visible: otherVariations.isNotEmpty,
-        //   child: VariationFilter(otherVariations: otherVariations),
-        // );
-
         // Visibility(
         //   visible: (sizeVariations != [] && sizeVariations.isNotEmpty) ||
         //       (colorVariations != [] && colorVariations.isNotEmpty),
@@ -95,77 +88,38 @@ class FilterPage extends StatelessWidget {
   }
 }
 
-class VariationViewWidget extends StatelessWidget {
-  final List<ProductOptionValue>? otherVariations;
-  final List<ProductOption>? productOptions;
-
-  const VariationViewWidget(
-      {Key? key, this.otherVariations, this.productOptions})
-      : super(key: key);
-
-  Widget variationView(
-    ProductOption productOption,
-  ) {
-    return UpExpansionTile(
-        title: productOption.name,
-        children: otherVariations!
-            .where((e) => e.productOption == productOption.id)
-            .map(
-              (e) => UpCheckbox(
-                label: e.name,
-              ),
-            )
-            .toList());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // return const Text("");
-    return Column(
-      children: productOptions?.map(
-            (element) {
-              if (otherVariations!.any((v) => v.productOption == element.id)) {
-                return variationView(element);
-              } else {
-                return Container();
-              }
-            },
-          ).toList() ??
-          [],
-    );
-  }
-}
-
 class VariationFilter extends StatefulWidget {
   // int? category;
-  List<ProductOptionValue>? sizeVariations;
-  List<ProductOptionValue>? colorVariations;
-  List<ProductOptionValue>? otherVariations;
-
-  Function? change;
-  VariationFilter(
-      {Key? key,
-      // required this.category,
-      this.sizeVariations,
-      this.colorVariations,
-      this.otherVariations,
-      //  required this.variations,
-      this.change})
-      : super(key: key);
+  final List<ProductOptionValue>? sizeVariations;
+  final List<ProductOptionValue>? colorVariations;
+  final List<ProductOptionValue>? otherVariations;
+  final List<ProductOption>? productOptions;
+  final Function? change;
+  const VariationFilter({
+    Key? key,
+    this.sizeVariations,
+    this.colorVariations,
+    this.otherVariations,
+    this.productOptions,
+    this.change,
+  }) : super(key: key);
 
   @override
   State<VariationFilter> createState() => _VariationFilterState();
 }
 
 class _VariationFilterState extends State<VariationFilter> {
-  Map<int, List<int>> selectedVariationsValues = {};
+  Map<String, List<int>> selectedVariationsValues = {};
   Map<int, VariationController> variationControllers = {};
+  Map<int, VariationController> newVariation = {};
 
-  onVariationChange(int? key, List<int> values) {
+  onVariationChange(String key, List<int> values) {
     debugPrint("you clicked on $values for $key");
-    setState(() {
-      selectedVariationsValues[key!] = values;
-    });
+    if (values.isEmpty) {
+      selectedVariationsValues.removeWhere((key, value) => key == key);
+    } else {
+      selectedVariationsValues[key] = values;
+    }
   }
 
   onChange() {
@@ -182,32 +136,24 @@ class _VariationFilterState extends State<VariationFilter> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.otherVariations != null && widget.otherVariations!.isNotEmpty) {
-      widget.otherVariations!.sort(((a, b) {
-        return a.productOption - b.productOption;
-      }));
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (variationControllers.isEmpty) {
-      for (var element in VariationTypes.values) {
-        variationControllers[element.index] = VariationController();
-      }
-    }
+    // if (variationControllers.isEmpty) {
+    //   for (var element in VariationTypes.values) {
+    //     variationControllers[element.index] = VariationController();
+    //   }
+    // }
 
-    if (selectedVariationsValues.isEmpty) {
-      for (var element in VariationTypes.values) {
-        selectedVariationsValues[element.index] = [];
-      }
-    }
+    // if (selectedVariationsValues.isEmpty) {
+    //   for (var element in VariationTypes.values) {
+    //     selectedVariationsValues[element.index] = [];
+    //   }
+    // }
 
     return Wrap(
       children: [
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Wrap(children: [
             //   widget.sizeVariations != null && widget.sizeVariations!.isNotEmpty
@@ -234,22 +180,28 @@ class _VariationFilterState extends State<VariationFilter> {
             //     controller: variationControllers[VariationTypes.color.index],
             //   ),
             // ]),
-            Visibility(
-              visible: widget.otherVariations != null &&
-                  widget.otherVariations!.isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  children: widget.otherVariations!
-                      .map(
-                        (e) => UpCheckbox(
-                          label: e.name,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
+            // VariationViewWidget(
+            //   productOptions: widget.productOptions,
+            //   otherVariations: widget.otherVariations,
+            //   change: (key, values) => onVariationChange(key, values),
+            // ),
+            ...widget.productOptions?.map(
+                  (element) {
+                    if (widget.otherVariations!
+                        .any((v) => v.productOption == element.id)) {
+                      return VariationViewWidget(
+                        productOption: element,
+                        otherVariations: widget.otherVariations,
+                        change: (values) =>
+                            onVariationChange(element.name, values),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ).toList() ??
+                [],
+
             GestureDetector(
               onTap: onReset,
               child: Wrap(
@@ -274,9 +226,9 @@ class _VariationFilterState extends State<VariationFilter> {
             // ElevatedButton(onPressed: onReset, child: const Text("remove filter")),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
+              child: UpButton(
                 onPressed: onChange,
-                child: const Text("Apply Filter"),
+                text: "Apply Filter",
               ),
             ),
           ],
@@ -286,14 +238,7 @@ class _VariationFilterState extends State<VariationFilter> {
   }
 }
 
-class OtherVariationsFilterWidget extends StatelessWidget {
-  const OtherVariationsFilterWidget({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
 
 // class VariationFilter extends StatefulWidget {
 //   int? category;

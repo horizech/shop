@@ -2,12 +2,11 @@ import 'package:apiraiser/apiraiser.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/widgets/variations/variation_types.dart';
 
 class ProductService {
   static Future<List<Product>> getProducts(
     List<int>? collections,
-    Map<int, List<int>>? selectedVariationsValues,
+    Map<String, List<int>>? selectedVariationsValues,
     int? selectedKeywordId,
     String? name,
   ) async {
@@ -33,31 +32,48 @@ class ProductService {
       }
 
 //"ARRAY[${1,2,3}]";
-      List<String> filters = [];
+      Map<String, String> filters = {};
 
       if (selectedVariationsValues!.isNotEmpty) {
-        if (selectedVariationsValues[VariationTypes.size.index] != null &&
-            selectedVariationsValues[VariationTypes.size.index]!.isNotEmpty) {
-          String sizes = "";
-          sizes =
-              selectedVariationsValues[VariationTypes.size.index]!.join(",");
+        selectedVariationsValues.forEach((key, value) {
+          filters[key] = "{${selectedVariationsValues[key]!.join(",")}}";
+        });
+        // String value = selectedVariationsValues[VariationTypes.size.index]!.join(",");
 
-          // jsonQuery["sizes"] = "ARRAY[$sizes]";
-          filters.add('"Size": "{$sizes}"');
-        }
-        if (selectedVariationsValues[VariationTypes.color.index] != null &&
-            selectedVariationsValues[VariationTypes.color.index]!.isNotEmpty) {
-          String colors = "";
-          colors =
-              selectedVariationsValues[VariationTypes.color.index]!.join(",");
+        // jsonQuery["sizes"] = "ARRAY[$sizes]";
 
-          // jsonQuery["colors"] = "ARRAY[$colors]";
-          filters.add('"Color": "{$colors}"');
-        }
       }
+
+      // if (selectedVariationsValues!.isNotEmpty) {
+      //   if (selectedVariationsValues[VariationTypes.size.index] != null &&
+      //       selectedVariationsValues[VariationTypes.size.index]!.isNotEmpty) {
+      //     String sizes = "";
+      //     sizes =
+      //         selectedVariationsValues[VariationTypes.size.index]!.join(",");
+
+      //     // jsonQuery["sizes"] = "ARRAY[$sizes]";
+      //     filters.add('"Size": "{$sizes}"');
+      //   }
+      //   if (selectedVariationsValues[VariationTypes.color.index] != null &&
+      //       selectedVariationsValues[VariationTypes.color.index]!.isNotEmpty) {
+      //     String colors = "";
+      //     colors =
+      //         selectedVariationsValues[VariationTypes.color.index]!.join(",");
+
+      //     // jsonQuery["colors"] = "ARRAY[$colors]";
+      //     filters.add('"Color": "{$colors}"');
+      //   }
+      // }
       if (filters.isNotEmpty) {
         // SELECT * FROM find_products(null, 'pla', '{"Color": "{8, 9, 10}"}'::JSONB, ARRAY[1]);
-        jsonQuery["filters"] = "'{${filters.join(',')}}'::jsonb";
+        String filtersStr = filters.keys
+            .map((key) {
+              return '"$key": "${filters[key]}"';
+            })
+            .toList()
+            .join(', ');
+
+        jsonQuery["filters"] = "'{$filtersStr}'::JSONB";
       }
 
       if (selectedKeywordId != null && selectedKeywordId > 0) {

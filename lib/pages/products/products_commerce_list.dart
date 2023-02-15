@@ -25,11 +25,11 @@ class ProductsCommerceList extends StatefulWidget {
 
 class _AllProductsState extends State<ProductsCommerceList> {
   int? selectedKeywordId = 0;
-  Map<int, List<int>> selectedVariationsValues = {};
+  Map<String, List<int>> selectedVariationsValues = {};
   List<Product>? filteredProducts;
   List<Product>? products;
 
-  change(int? id, Map<int, List<int>>? s) {
+  change(int? id, Map<String, List<int>>? s) {
     setState(() {
       selectedKeywordId = id;
       selectedVariationsValues = s ?? {};
