@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/config/up_config.dart';
+import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/locator.dart';
+import 'package:flutter_up/themes/up_style.dart';
+import 'package:shop/services/variation.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
@@ -127,6 +132,10 @@ class _VariationFilterState extends State<VariationFilter> {
   }
 
   onReset() {
+    setState(() {
+      ServiceManager<VariationService>().removeVariation();
+    });
+
     variationControllers.values
         .toList()
         .forEach((controller) => controller.reset!());
@@ -202,33 +211,53 @@ class _VariationFilterState extends State<VariationFilter> {
                 ).toList() ??
                 [],
 
-            GestureDetector(
-              onTap: onReset,
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                runAlignment: WrapAlignment.center,
-                children: [
-                  const Padding(padding: EdgeInsets.all(10.0)),
-                  const Icon(
-                    Icons.delete_outline,
-                    size: 30,
-                  ),
-                  Text(
-                    "Clear Filters",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline2!
-                        .copyWith(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: onReset,
+            //   child: Wrap(
+            //     crossAxisAlignment: WrapCrossAlignment.center,
+            //     runAlignment: WrapAlignment.center,
+            //     children: [
+            //       const Padding(padding: EdgeInsets.all(10.0)),
+            //       const Icon(
+            //         Icons.delete_outline,
+            //         size: 30,
+            //       ),
+            //       Text(
+            //         "Clear Filters",
+            //         style: Theme.of(context)
+            //             .textTheme
+            //             .headline2!
+            //             .copyWith(fontSize: 16),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             // ElevatedButton(onPressed: onReset, child: const Text("remove filter")),
             Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              child: Center(
+                child: UpButton(
+                  icon: Icons.delete,
+                  style: UpStyle(
+                      buttonWidth: 250, buttonBorderColor: Colors.white),
+                  onPressed: onReset,
+                  text: "Clear Filters",
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(8.0),
-              child: UpButton(
-                onPressed: onChange,
-                text: "Apply Filter",
+              child: Center(
+                child: UpButton(
+                  icon: Icons.photo_filter_rounded,
+                  style: UpStyle(
+                      buttonWidth: 250,
+                      buttonBackgroundColor:
+                          UpConfig.of(context).theme.secondaryColor,
+                      buttonBorderColor: Colors.white),
+                  onPressed: onChange,
+                  text: "Apply Filters",
+                ),
               ),
             ),
           ],

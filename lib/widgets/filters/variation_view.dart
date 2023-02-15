@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_checkbox.dart';
 import 'package:flutter_up/widgets/up_expansion_tile.dart';
 import 'package:shop/models/product_option_value.dart';
@@ -59,6 +60,10 @@ class _VariationViewWidgetState extends State<VariationViewWidget> {
             expandedAlignment: Alignment.topLeft,
             childrenPadding: const EdgeInsets.all(8),
             title: widget.productOption.name,
+            style: UpStyle(
+                textColor: Colors.white,
+                expansionTileCollapsedIconColor: Colors.white,
+                expansionTileIconColor: Colors.white),
             children: widget.otherVariations!
                 .asMap()
                 .entries
@@ -66,6 +71,9 @@ class _VariationViewWidgetState extends State<VariationViewWidget> {
                 .map(
                   (variation) => UpCheckbox(
                     label: variation.value.name,
+                    style: UpStyle(
+                      checkboxLabelColor: Colors.white,
+                    ),
                     initialValue: checkboxesValues[variation.key],
                     onChange: (newCheck) =>
                         onChange(variation.value.id, newCheck, variation.key),

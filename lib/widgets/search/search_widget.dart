@@ -22,15 +22,17 @@ class SearchWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 12, 0, 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(
                   Icons.search,
-                  color: Color.fromRGBO(200, 16, 46, 1.0),
+                  color: UpConfig.of(context).theme.primaryColor,
                 ),
                 Text(
                   "Make/Model Seach",
                   // style: UpConfig.of(context).theme.primaryColor,
-                  style: TextStyle(color: Color.fromRGBO(200, 16, 46, 1.0)),
+                  style: TextStyle(
+                    color: UpConfig.of(context).theme.primaryColor,
+                  ),
                 )
               ],
             ),
@@ -39,12 +41,7 @@ class SearchWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 52, vertical: 4),
             child: UpDropDown(
               // value: value,
-              style: UpStyle(
-                  backgroundColor: Colors.pink,
-                  foregroundColor: Colors.white,
-                  dropdownLabelColor: Colors.white,
-                  dropdownBorderColor: Colors.white),
-              itemList: [],
+              itemList: const [],
               label: "Make",
               onChanged: ((value) {}),
             ),
@@ -53,7 +50,7 @@ class SearchWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 52, vertical: 4),
             child: UpDropDown(
               // value: value,
-              itemList: [],
+              itemList: const [],
               label: "Model",
               onChanged: ((value) {}),
             ),
