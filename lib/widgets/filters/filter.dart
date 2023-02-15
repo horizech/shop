@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_checkbox.dart';
 import 'package:flutter_up/widgets/up_expansion_tile.dart';
 import 'package:shop/models/product_option_value.dart';
@@ -102,31 +103,36 @@ class VariationViewWidget extends StatelessWidget {
       {Key? key, this.otherVariations, this.productOptions})
       : super(key: key);
 
+  Widget variationView(
+    ProductOption productOption,
+  ) {
+    return UpExpansionTile(
+        title: productOption.name,
+        children: otherVariations!
+            .where((e) => e.productOption == productOption.id)
+            .map(
+              (e) => UpCheckbox(
+                label: e.name,
+              ),
+            )
+            .toList());
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget variationView(
-      ProductOption productOption,
-    ) {
-      if (otherVariations != null &&
-          otherVariations!
-              .any((element) => element.productOption == element.id)) {
-        return UpExpansionTile(
-            title: productOption.name,
-            children: otherVariations!
-                .where((e) => e.productOption == productOption.id)
-                .map((e) => Text(e.name))
-                .toList());
-      } else {
-        return const SizedBox();
-      }
-    }
-
-    return const Text("");
-    // productOptions?.forEach((element) {
-    //   if (otherVariations!.any((v) => v.productOption == element.id)) {
-    //     return variationView(element);
-    //   }
-    // });
+    // return const Text("");
+    return Column(
+      children: productOptions?.map(
+            (element) {
+              if (otherVariations!.any((v) => v.productOption == element.id)) {
+                return variationView(element);
+              } else {
+                return Container();
+              }
+            },
+          ).toList() ??
+          [],
+    );
   }
 }
 

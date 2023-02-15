@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/themes/up_style.dart';
@@ -8,14 +10,34 @@ import 'package:shop/models/product.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/drawer/MenuDrawer.dart';
 import 'package:shop/widgets/header/header.dart';
+import 'package:shop/widgets/search/search_widget.dart';
 import 'package:shop/widgets/slider/parent_category_slider.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
 import 'package:shop/widgets/products/product_grid_item.dart';
+import 'package:video_player/video_player.dart';
 
-class SimpleHomePage extends StatelessWidget {
+class SimpleHomePage extends StatefulWidget {
   const SimpleHomePage({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<SimpleHomePage> createState() => _SimpleHomePageState();
+}
+
+class _SimpleHomePageState extends State<SimpleHomePage> {
+  // late VideoPlayerController _controller;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _controller = VideoPlayerController.asset('assets/car_vid.mp4')
+  //     ..initialize().then((_) {
+  //       _controller.play();
+  //       // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+  //       // setState(() {});
+  //     });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +45,12 @@ class SimpleHomePage extends StatelessWidget {
     List<Collection> root = [];
     return Container(
       decoration: const BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/bg.jpg"),
-        fit: BoxFit.fill,
-      )),
+        color: Color.fromRGBO(1, 33, 105, 1),
+        //     image: DecorationImage(
+        //   image: AssetImage("assets/bg.jpg"),
+        //   fit: BoxFit.fill,
+        // )
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         key: scaffoldKey,
@@ -38,6 +62,16 @@ class SimpleHomePage extends StatelessWidget {
         endDrawerEnableOpenDragGesture: false,
         body: Column(
           children: [
+            // SizedBox.expand(
+            //   child: FittedBox(
+            //     fit: BoxFit.cover,
+            //     child: SizedBox(
+            //       width: _controller.value.size.width,
+            //       height: _controller.value.size.height,
+            //       child: VideoPlayer(_controller),
+            //     ),
+            //   ),
+            // ),
             CustomAppbar(
               scaffoldKey: scaffoldKey,
             ),
@@ -46,72 +80,24 @@ class SimpleHomePage extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-                    const HeaderWidget(),
+                    Container(),
+                    // const HeaderWidget(),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(
                         height: 250,
                         width: 400,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 12, 0, 4),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    Icons.search,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    "Make/Model Seach",
-                                    style: TextStyle(color: Colors.black),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 52, vertical: 4),
-                              child: UpDropDown(
-                                // value: value,
-                                style: UpStyle(
-                                    backgroundColor: Colors.pink,
-                                    foregroundColor: Colors.white,
-                                    dropdownLabelColor: Colors.white,
-                                    dropdownBorderColor: Colors.white),
-                                itemList: [],
-                                label: "Make",
-                                onChanged: ((value) {}),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 52, vertical: 4),
-                              child: UpDropDown(
-                                // value: value,
-                                itemList: [],
-                                label: "Model",
-                                onChanged: ((value) {}),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-                              child: UpButton(
-                                onPressed: () {},
-                                style: UpStyle(buttonWidth: 100),
-                                text: "Search",
-                              ),
-                            )
-                          ],
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color.fromRGBO(200, 16, 46, 1.0),
+                            width: 2,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8),
+                          ),
                         ),
+                        child: const SearchWidget(),
                       ),
                     ),
                     SizedBox(

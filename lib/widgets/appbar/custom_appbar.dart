@@ -17,7 +17,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(color: Colors.black),
+      decoration: BoxDecoration(color: const Color.fromRGBO(200, 16, 46, 1.0)),
       height: 80,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

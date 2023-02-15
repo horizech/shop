@@ -1,10 +1,9 @@
-import 'package:flutter_up/enums/up_button_type.dart';
+import 'package:flutter_up/config/up_config.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expandable_tree_menu/expandable_tree_menu.dart';
-import 'package:flutter_up/widgets/up_button.dart';
 import 'package:shop/constants.dart';
 import 'package:shop/models/collection_tree.dart';
 import 'package:shop/models/collection_tree_item.dart';
@@ -38,6 +37,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
             )
             .toList();
         return Drawer(
+          backgroundColor: UpConfig.of(context).theme.secondaryColor,
+
           // backgroundColor: Colors.black,
           child: Column(
             children: [
@@ -48,7 +49,11 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           .navigateToNamed(Routes.simplehome);
                     });
                   },
-                  child: const Text("Home")),
+                  child: Text(
+                    "Home",
+                    style: TextStyle(
+                        color: UpConfig.of(context).theme.primaryColor),
+                  )),
               ExpandableTree(
                 childIndent: 8,
                 // twistyPosition: TwistyPosition.after,
@@ -62,15 +67,15 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 ),
                 submenuMargin: const EdgeInsets.all(3),
                 childrenMargin: const EdgeInsets.all(3),
-                openTwistyColor: Colors.black,
-                closedTwistyColor: Colors.black,
+                openTwistyColor: UpConfig.of(context).theme.primaryColor,
+                closedTwistyColor: UpConfig.of(context).theme.primaryColor,
                 nodes: nodes,
                 nodeBuilder: (context, nodeValue) => Text(
                   (nodeValue as CollectionTreeItem).name.toString(),
                   style: Theme.of(context).textTheme.headline6!.copyWith(
                       backgroundColor: Colors.transparent,
                       fontSize: 14,
-                      color: Colors.black),
+                      color: UpConfig.of(context).theme.primaryColor),
                 ),
                 onSelect: (node) {
                   ServiceManager<UpNavigationService>()

@@ -2,6 +2,8 @@ import 'package:apiraiser/apiraiser.dart';
 
 import 'package:flutter_up/models/up_route.dart';
 import 'package:flutter_up/models/up_router_state.dart';
+import 'package:flutter_up/themes/up_style.dart';
+import 'package:flutter_up/themes/up_theme_data.dart';
 import 'package:flutter_up/themes/up_themes.dart';
 
 import 'package:flutter/material.dart';
@@ -27,6 +29,18 @@ class ShopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UpThemeData theme = UpThemes.generateThemeByColor(
+      primaryColor: const Color.fromRGBO(
+        64,
+        64,
+        64,
+        1.0,
+      ),
+    );
+    theme.primaryStyle = theme.primaryStyle.copyWith(
+      UpStyle(textColor: Colors.white, iconColor: Colors.white),
+    );
+
     return BlocProvider(
       create: (_) => Mediacubit(),
       child: BlocProvider(
@@ -34,7 +48,10 @@ class ShopApp extends StatelessWidget {
         child: BlocProvider(
           create: (_) => StoreCubit(),
           child: UpApp(
-              theme: UpThemes.generateThemeByColor(primaryColor: Colors.black),
+              theme: UpThemes.generateThemeByColor(
+                primaryColor: const Color.fromRGBO(200, 16, 46, 1.0),
+                secondaryColor: const Color.fromRGBO(1, 33, 105, 1),
+              ),
               title: 'Shop',
               initialRoute: Routes.simplehome,
               upRoutes: [

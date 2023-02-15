@@ -40,15 +40,19 @@ Widget getWebInfo(BuildContext context, Product product, int? collection) {
           height: 300,
           width: 300,
           decoration: BoxDecoration(
-              color: Colors.greenAccent,
-              border: Border.all(width: 2, color: Colors.black)),
-          child: Row(
+              color: Colors.white,
+              border: Border.all(
+                width: 4,
+                color: const Color.fromRGBO(200, 16, 46, 1.0),
+              ),
+              borderRadius: BorderRadius.circular(8)),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 128,
-                height: 128,
+                width: 280,
+                height: 192,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: MediaWidget(

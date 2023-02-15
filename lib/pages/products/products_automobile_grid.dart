@@ -79,10 +79,12 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
 
     return Container(
       decoration: const BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/car.jpg"),
-        fit: BoxFit.fill,
-      )),
+        color: Color.fromRGBO(1, 33, 105, 1),
+        // image: DecorationImage(
+        //   image: AssetImage("assets/car.jpg"),
+        //   fit: BoxFit.fill,
+        // ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         key: scaffoldKey,
@@ -107,7 +109,7 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
                       }
                       return Column(
                         children: [
-                          const HeaderWidget(),
+                          // const HeaderWidget(),
                           UpOrientationalColumnRow(
                             widths: const [300, 0],
                             children: [
@@ -120,14 +122,14 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
                               ),
                               Column(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Keywords(
-                                      categoryId: collection,
-                                      onChange: (k) => change(k, {}),
-                                      selectedKeywordId: selectedKeywordId,
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.all(8.0),
+                                  //   child: Keywords(
+                                  //     categoryId: collection,
+                                  //     onChange: (k) => change(k, {}),
+                                  //     selectedKeywordId: selectedKeywordId,
+                                  //   ),
+                                  // ),
                                   FutureBuilder<List<Product>>(
                                     future: ProductService.getProducts(
                                         collections,
