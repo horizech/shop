@@ -111,14 +111,14 @@ class VariationFilter extends StatefulWidget {
 class _VariationFilterState extends State<VariationFilter> {
   Map<String, List<int>> selectedVariationsValues = {};
   Map<int, VariationController> variationControllers = {};
-  Map<int, VariationController> newVariation = {};
+  Map<String, List<int>> oldVariations = {};
 
   onVariationChange(String key, List<int> values) {
     debugPrint("you clicked on $values for $key");
-    if (values.isEmpty) {
-      selectedVariationsValues.removeWhere((key, value) => key == key);
-    } else {
-      selectedVariationsValues[key] = values;
+
+    selectedVariationsValues[key] = values;
+    if (selectedVariationsValues[key]!.isEmpty) {
+      selectedVariationsValues.remove(key);
     }
   }
 
