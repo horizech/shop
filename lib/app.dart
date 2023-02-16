@@ -19,6 +19,7 @@ import 'package:shop/pages/payment_method/card_payment_page.dart';
 import 'package:shop/pages/payment_method/payment_method_page.dart';
 import 'package:shop/pages/product/product.dart';
 import 'package:shop/pages/products/products_automobile_grid.dart';
+import 'package:shop/pages/search/automobile_search.dart';
 import 'package:shop/pages/simple_home/simple_homepage.dart';
 import 'package:shop/pages/store_dependant_page.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
@@ -51,7 +52,8 @@ class ShopApp extends StatelessWidget {
           child: UpApp(
               theme: UpThemes.generateThemeByColor(
                 primaryColor: const Color.fromRGBO(200, 16, 46, 1.0),
-                secondaryColor: const Color.fromRGBO(1, 33, 105, 1),
+                // secondaryColor: Color.fromARGB(255, 0, 0, 0),
+                linkColor: Colors.white,
               ),
               title: 'Shop',
               initialRoute: Routes.simplehome,
@@ -87,6 +89,14 @@ class ShopApp extends StatelessWidget {
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       const StoreDependantPage(
                     page: SimpleHomePage(),
+                  ),
+                ),
+                UpRoute(
+                  name: Routes.searchAutomobile,
+                  path: Routes.searchAutomobile,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      const StoreDependantPage(
+                    page: AutomobileSearchPage(),
                   ),
                 ),
                 UpRoute(

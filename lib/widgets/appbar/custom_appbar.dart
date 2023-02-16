@@ -1,11 +1,7 @@
-import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_up/themes/up_style.dart';
-import 'package:flutter_up/widgets/up_app_bar.dart';
 import 'package:shop/constants.dart';
-import 'package:shop/widgets/search/search.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final int? collection;
@@ -17,7 +13,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: BoxDecoration(color: const Color.fromRGBO(200, 16, 46, 1.0)),
+      decoration: const BoxDecoration(color: Color.fromRGBO(200, 16, 46, 1.0)),
       height: 80,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -32,18 +28,25 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
               scaffoldKey!.currentState!.openDrawer();
             },
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Image(
-              image: AssetImage("assets/logo.png"),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                ServiceManager<UpNavigationService>()
+                    .navigateToNamed(Routes.simplehome);
+              },
+              child: const MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Image(
+                  image: AssetImage("assets/logo.png"),
+                ),
+              ),
             ),
           ),
           IconButton(
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(collectionId: collection),
-              );
+              ServiceManager<UpNavigationService>()
+                  .navigateToNamed(Routes.searchAutomobile);
             },
             icon: const Icon(
               Icons.search,

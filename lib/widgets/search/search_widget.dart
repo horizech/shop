@@ -14,12 +14,16 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:
-          BoxDecoration(border: Border.all(color: Colors.red, width: 2)),
+      decoration: BoxDecoration(
+          border: Border.all(
+              color: UpConfig.of(context).theme.primaryColor, width: 4),
+          borderRadius: BorderRadius.circular(4)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 12, 0, 4),
+            padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

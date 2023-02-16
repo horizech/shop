@@ -1,15 +1,17 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/config/up_config.dart';
 import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
+import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/models/collection.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/drawer/MenuDrawer.dart';
 import 'package:shop/widgets/header/header.dart';
+import 'package:shop/widgets/search/search_by_body.dart';
 import 'package:shop/widgets/search/search_widget.dart';
 import 'package:shop/widgets/slider/parent_category_slider.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
@@ -44,8 +46,8 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     List<Collection> root = [];
     return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(1, 33, 105, 1),
+      decoration: BoxDecoration(
+        color: UpConfig.of(context).theme.secondaryColor,
         //     image: DecorationImage(
         //   image: AssetImage("assets/bg.jpg"),
         //   fit: BoxFit.fill,
@@ -75,6 +77,7 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
             CustomAppbar(
               scaffoldKey: scaffoldKey,
             ),
+
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -83,17 +86,37 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                     Container(),
                     // const HeaderWidget(),
                     Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                      UpConfig.of(context).theme.primaryColor,
+                                  width: 4),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 12, left: 8),
+                                  child: UpText("Body Type"),
+                                ),
+                                SearchByBodyWidget(),
+                              ],
+                            ),
+                          )),
+                    ),
+                    Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(
                         height: 250,
                         width: 400,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(
-                            color: const Color.fromRGBO(200, 16, 46, 1.0),
-                            width: 2,
-                          ),
-                          borderRadius: const BorderRadius.all(
+                          borderRadius: BorderRadius.all(
                             Radius.circular(8),
                           ),
                         ),

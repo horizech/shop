@@ -7,6 +7,7 @@ class Routes {
   static const String payment = '/payment';
   static const String admin = '/admin_automobile';
   static const String addEditAutomobile = '/add_edit_automobile';
+  static const String searchAutomobile = '/search';
 }
 
 class Constants {
