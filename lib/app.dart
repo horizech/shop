@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/up_app.dart';
 import 'package:shop/constants.dart';
+import 'package:shop/pages/admin/add_edit_automobile_product.dart';
 import 'package:shop/pages/admin/admin_automobile.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
@@ -103,6 +104,20 @@ class ShopApp extends StatelessWidget {
                       const StoreDependantPage(
                     page: AdminAutoMobilePage(),
                   ),
+                  redirectRoute: Routes.loginSignup,
+                  shouldRedirect: () => !Apiraiser.authentication.isSignedIn(),
+                ),
+                UpRoute(
+                  name: Routes.addEditAutomobile,
+                  path: Routes.addEditAutomobile,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      StoreDependantPage(
+                    page: AddEditAutoMobileProduct(
+                      queryParams: state.queryParams,
+                    ),
+                  ),
+                  redirectRoute: Routes.loginSignup,
+                  shouldRedirect: () => !Apiraiser.authentication.isSignedIn(),
                 ),
                 UpRoute(
                   name: Routes.product,

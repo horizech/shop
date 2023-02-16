@@ -24,7 +24,7 @@ class KeywordsService {
 
         List<int> keywordsList = [];
         for (int i = 0; i < products.length; i++) {
-          keywordsList.addAll(products[i].keywords);
+          keywordsList.addAll(products[i].keywords ?? []);
         }
 
         return keywordsList.toSet().toList();

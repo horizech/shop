@@ -80,7 +80,7 @@ class _SizeVariationWidgetState extends State<SizeVariationWidget> {
     if (selectableVariations.isEmpty) {
       selectableVariations = (widget.mode == VariationSelectionMode.cart)
           ? widget.selectedValues ?? []
-          : (widget.sizeVariations ?? []).map((s) => s.id).toList();
+          : (widget.sizeVariations ?? []).map((s) => s.id!).toList();
     }
     return Padding(
       padding: const EdgeInsets.only(

@@ -76,7 +76,7 @@ class _VariationViewWidgetState extends State<VariationViewWidget> {
                     ),
                     initialValue: checkboxesValues[variation.key],
                     onChange: (newCheck) =>
-                        onChange(variation.value.id, newCheck, variation.key),
+                        onChange(variation.value.id!, newCheck, variation.key),
                   ),
                 )
                 .toList(),

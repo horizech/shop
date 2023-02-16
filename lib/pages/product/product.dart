@@ -20,7 +20,6 @@ import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
 import 'package:shop/widgets/counter.dart';
 import 'package:shop/widgets/drawer/MenuDrawer.dart';
-import 'package:shop/widgets/drawer/drawer.dart';
 import 'package:shop/widgets/error/error.dart';
 import 'package:shop/widgets/header/header.dart';
 import 'package:shop/widgets/media/media_service.dart';
@@ -154,7 +153,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
         setState(() {
           disabledSizes = sizeVariation
               .where((element) => !allowedSizes.contains(element.id))
-              .map((e) => e.id)
+              .map((e) => e.id!)
               .toList();
           if (disabledSizes
               .contains(selectedVariationsValues[VariationTypes.size.index])) {
@@ -185,7 +184,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
         setState(() {
           disabledColors = colorVariation
               .where((element) => !allowedColors.contains(element.id))
-              .map((e) => e.id)
+              .map((e) => e.id!)
               .toList();
           if (disabledColors
               .contains(selectedVariationsValues[VariationTypes.color.index])) {
@@ -304,7 +303,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
         listener: (context, state) {},
         builder: (context, state) {
           //All sizes get
-          int? sizeOption = null;
+          int? sizeOption;
 
           // state.productOptions!
           //     .firstWhere((element) => element.name == "Size")
@@ -317,7 +316,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
           //     .toList();
 
           //All colors get
-          int? colorOption = null;
+          int? colorOption;
           // state.productOptions!
           //     .firstWhere((element) => element.name == "Color")
           //     .id;

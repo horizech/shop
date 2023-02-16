@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Product extends Equatable {
-  final int id;
+  final int? id;
   final DateTime? createdOn;
   final int? createdBy;
   final DateTime? lastUpdatedOn;
@@ -13,38 +13,38 @@ class Product extends Equatable {
   final String? description;
   final double? price;
   final bool isVariedProduct;
-  final int? thumbnail;
-  final int? gallery;
+  final int thumbnail;
+  final int gallery;
   final int collection;
-  final List<int> keywords;
+  final List<int>? keywords;
   final double? discounPrice;
   final DateTime? discountStartDate;
   final DateTime? discountEndDate;
-  final String? sku;
-  final Map<String, int> options;
+  final String sku;
+  final Map<String, int>? options;
 
   // final int? media;
 
-  const Product(
+  const Product({
     this.id,
     this.createdOn,
     this.createdBy,
     this.lastUpdatedOn,
     this.lastUpdatedBy,
-    this.name,
+    required this.name,
     this.description,
     this.price,
-    this.isVariedProduct,
-    this.collection,
-    this.thumbnail,
-    this.keywords,
-    this.gallery,
+    this.isVariedProduct = false,
+    required this.collection,
+    required this.thumbnail,
+    required this.keywords,
+    required this.gallery,
     this.discounPrice,
     this.discountStartDate,
     this.discountEndDate,
-    this.sku,
+    required this.sku,
     this.options,
-  );
+  });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     try {
@@ -67,59 +67,53 @@ class Product extends Equatable {
       // }
 
       Product product = Product(
-        json['Id'] as int,
-        json['CreatedOn'] != null
+        id: json['Id'] as int,
+        createdOn: json['CreatedOn'] != null
             ? (json['CreatedOn'] is String)
                 ? DateTime.parse(json['CreatedOn'] as String)
                 : json['CreatedOn']
             : null,
-        json['CreatedBy'] as int?,
-        json['LastUpdatedOn'] != null
+        createdBy: json['CreatedBy'] as int?,
+        lastUpdatedOn: json['LastUpdatedOn'] != null
             ? (json['LastUpdatedOn'] is String)
                 ? DateTime.parse(json['LastUpdatedOn'] as String)
                 : json['LastUpdatedOn']
             : null,
-        json['LastUpdatedBy'] as int?,
-        json['Name'] as String,
-        json['Description'] as String?,
+        lastUpdatedBy: json['LastUpdatedBy'] as int?,
+        name: json['Name'] as String,
+        description: json['Description'] as String?,
 
         // // json['Image'] as String,
         // // json['Image'] != null
         // //     ? (json['Image'] as List<dynamic>).map((e) => e as int).toList()
         // //     : null,
-        json['Price'] as double?,
-        json['IsVariedProduct'] as bool,
-        json['Collection'] as int,
-        json['Thumbnail'] as int?,
+        price: json['Price'] as double?,
+        isVariedProduct: json['IsVariedProduct'] as bool,
+        collection: json['Collection'] as int,
+        thumbnail: json['Thumbnail'] as int,
 
-        // variations,
-        // // json['Variations'] != null
-        // //     ? (json['Variations'] as dynamic)
-        // //         .map((e) => convertToInt(e))
-        // //         .toList()
-        // //     // ? (json['Variations'] as List<int>)
-        // //     : [],
-        json['Keywords'] != null
+        keywords: json['Keywords'] != null
             ? (json['Keywords'] as List<dynamic>)
                 .map((e) => convertToInt(e))
                 .toList()
             // ? (json['Variations'] as List<int>)
             : [],
-        json['Gallery'] as int?,
+        gallery: json['Gallery'] as int,
 
-        json['DiscountPrice'] as double?,
-        json['DiscountStartDate'] != null
+        discounPrice: json['DiscountPrice'] as double?,
+        discountStartDate: json['DiscountStartDate'] != null
             ? (json['DiscountStartDate'] is String)
                 ? DateTime.parse(json['DiscountStartDate'] as String)
                 : json['DiscountStartDate']
             : null,
-        json['DiscountEndDate'] != null
+        discountEndDate: json['DiscountEndDate'] != null
             ? (json['DiscountEndDate'] is String)
                 ? DateTime.parse(json['DiscountEndDate'] as String)
                 : json['DiscountEndDate']
             : null,
-        json['SKU'] as String?,
-        json['Options'] != null && (json['Options'] as String).isNotEmpty
+        sku: json['SKU'] as String,
+        options: json['Options'] != null &&
+                (json['Options'] as String).isNotEmpty
             ? (jsonDecode(json['Options'] as String) as Map<String, dynamic>)
                 .cast<String, int>()
             : {},
@@ -139,12 +133,12 @@ class Product extends Equatable {
   }
 
   static Map<String, dynamic> toJson(Product instance) {
-    // Map<String, dynamic> variationsMap = {};
-    // if (instance.variations.isNotEmpty) {
-    //   for (var entry in instance.variations.entries) {
-    //     variationsMap["${entry.key}"] = entry.value.join(",");
-    //   }
-    // }
+    Map<String, dynamic> optionsMap = {};
+    if (instance.options != null && instance.options!.isNotEmpty) {
+      for (var entry in instance.options!.entries) {
+        optionsMap[entry.key] = entry.value;
+      }
+    }
 
     return <String, dynamic>{
       'Id': instance.id,
@@ -169,7 +163,7 @@ class Product extends Equatable {
       'DiscountStartDate': instance.discountStartDate,
       'DiscountEndDate': instance.discountEndDate,
       'SKU': instance.sku,
-      'Options': instance.options,
+      'Options': jsonEncode(optionsMap),
 
       // 'Variations': jsonEncode(variationsMap),
       // 'Media': instance.media

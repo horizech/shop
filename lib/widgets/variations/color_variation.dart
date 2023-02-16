@@ -80,7 +80,7 @@ class _ColorVariationWidgetState extends State<ColorVariationWidget> {
     if (selectableVariations.isEmpty) {
       selectableVariations = (widget.mode == VariationSelectionMode.cart)
           ? widget.selectedValues ?? []
-          : (widget.colorVariations ?? []).map((s) => s.id).toList();
+          : (widget.colorVariations ?? []).map((s) => s.id!).toList();
     }
 
     return Padding(

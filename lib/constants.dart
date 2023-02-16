@@ -6,6 +6,7 @@ class Routes {
   static const String cart = '/cart';
   static const String payment = '/payment';
   static const String admin = '/admin_automobile';
+  static const String addEditAutomobile = '/add_edit_automobile';
 }
 
 class Constants {
