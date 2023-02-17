@@ -160,8 +160,12 @@ class Product extends Equatable {
       'Keyword': instance.keywords,
       'Gallery': instance.gallery,
       'DiscountPrice': instance.discounPrice,
-      'DiscountStartDate': instance.discountStartDate,
-      'DiscountEndDate': instance.discountEndDate,
+      'DiscountStartDate': instance.discountStartDate != null
+          ? instance.discountStartDate!.toIso8601String()
+          : null,
+      'DiscountEndDate': instance.discountEndDate != null
+          ? instance.discountEndDate!.toIso8601String()
+          : null,
       'SKU': instance.sku,
       'Options': jsonEncode(optionsMap),
 

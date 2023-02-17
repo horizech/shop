@@ -46,7 +46,7 @@ class ProductPage extends StatelessWidget {
       productId = int.parse(queryParams!['productId']!);
     }
 
-    List<ProductVariation>? productVariations = [];
+    // List<ProductVariation>? productVariations = [];
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldKey,
@@ -208,7 +208,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
                     selectedVariationsValues[VariationTypes.color.index] &&
                 v.options["Size"] ==
                     selectedVariationsValues[VariationTypes.size.index]))
-            .id;
+            .id!;
         if (widget.productVariations != null &&
             widget.productVariations!.isNotEmpty) {
           gallery = widget.productVariations!
@@ -303,7 +303,7 @@ class _ProductDetailedInfoState extends State<ProductDetailedInfo> {
         listener: (context, state) {},
         builder: (context, state) {
           //All sizes get
-          int? sizeOption;
+          // int? sizeOption;
 
           // state.productOptions!
           //     .firstWhere((element) => element.name == "Size")

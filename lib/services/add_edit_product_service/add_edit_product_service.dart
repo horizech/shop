@@ -1,12 +1,44 @@
 import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shop/models/product.dart';
 import 'package:shop/models/product_options.dart';
+import 'package:shop/models/product_variation.dart';
 
 class AddEditProductService {
-  static Future<APIResult?> addProductOptionValues(
-    Map<String, dynamic> data,
-  ) async {
-    APIResult result = await Apiraiser.data.insert("ProductOptionValues", data);
+  static Future<APIResult?> addProductOptionValues({
+    int? productOptionValueId,
+    required Map<String, dynamic> data,
+  }) async {
+    APIResult? result;
+    if (productOptionValueId != null) {
+      result = await Apiraiser.data
+          .delete("ProductOptionValues", productOptionValueId);
+    } else {
+      result = await Apiraiser.data.insert("ProductOptionValues", data);
+    }
+
+    if (result.success) {
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<APIResult?> deleteProductOption(int productOptionId) async {
+    APIResult result =
+        await Apiraiser.data.delete("ProductOptions", productOptionId);
+
+    if (result.success) {
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<APIResult?> deleteProductOptionValue(
+      int productOptionValueId) async {
+    APIResult result = await Apiraiser.data
+        .delete("ProductOptionValues", productOptionValueId);
 
     if (result.success) {
       return result;
@@ -24,6 +56,25 @@ class AddEditProductService {
       result = await Apiraiser.data.update("Products", productId, data);
     } else {
       result = await Apiraiser.data.insert("Products", data);
+    }
+
+    if (result.success) {
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<APIResult?> addEditProductVariation(
+    Map<String, dynamic> data,
+    int? productVariationId,
+  ) async {
+    APIResult result;
+    if (productVariationId != null) {
+      result = await Apiraiser.data
+          .update("ProductVariations", productVariationId, data);
+    } else {
+      result = await Apiraiser.data.insert("ProductVariations", data);
     }
 
     if (result.success) {
@@ -60,6 +111,45 @@ class AddEditProductService {
           .map((p) => ProductOption.fromJson(p as Map<String, dynamic>))
           .first;
       return productOption;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<ProductVariation?> getProductVariationById(
+      int productVariationId) async {
+    List<QuerySearchItem> conditions = [
+      QuerySearchItem(
+          name: "Id",
+          condition: ColumnCondition.equal,
+          value: productVariationId)
+    ];
+    APIResult result =
+        await Apiraiser.data.getByConditions("ProductVariations", conditions);
+
+    if (result.success) {
+      ProductVariation productVariation = (result.data as List<dynamic>)
+          .map((p) => ProductVariation.fromJson(p as Map<String, dynamic>))
+          .first;
+      return productVariation;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Product?> getProductById(int productId) async {
+    List<QuerySearchItem> conditions = [
+      QuerySearchItem(
+          name: "Id", condition: ColumnCondition.equal, value: productId)
+    ];
+    APIResult result =
+        await Apiraiser.data.getByConditions("Products", conditions);
+
+    if (result.success) {
+      Product product = (result.data as List<dynamic>)
+          .map((p) => Product.fromJson(p as Map<String, dynamic>))
+          .first;
+      return product;
     } else {
       return null;
     }

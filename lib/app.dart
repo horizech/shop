@@ -10,8 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/up_app.dart';
 import 'package:shop/constants.dart';
-import 'package:shop/pages/admin/add_edit_automobile_product.dart';
-import 'package:shop/pages/admin/admin_automobile.dart';
+import 'package:shop/pages/admin/add_edit_product.dart';
+import 'package:shop/pages/admin/add_edit_product_variation.dart';
+import 'package:shop/pages/admin/admin_product_options.dart';
+import 'package:shop/pages/admin/admin_product_variations.dart';
+import 'package:shop/pages/admin/admin_products.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
 import 'package:shop/pages/payment/payment.dart';
@@ -64,23 +67,8 @@ class ShopApp extends StatelessWidget {
                       const LoginSignupPage(),
                   name: Routes.loginSignup,
                   shouldRedirect: () => Apiraiser.authentication.isSignedIn(),
-                  redirectRoute: Routes.admin,
+                  redirectRoute: Routes.adminProduct,
                 ),
-                // UpRoute(
-                //   name: Routes.login,
-                //   path: Routes.login,
-                //   shouldRedirect: () =>
-                //       Apiraiser.authentication.isSignedIn() == true,
-                //   redirectRoute: SimpleHomePage.routeName,
-                //   pageBuilder: (BuildContext context, UpRouterState state) =>
-                //       const LoginPage(),
-                // ),
-                // UpRoute(
-                //   name: Routes.signup,
-                //   path: Routes.signup,
-                //   pageBuilder: (BuildContext context, UpRouterState state) =>
-                //       const SignupPage(),
-                // ),
                 UpRoute(
                   name: Routes.simplehome,
                   path: Routes.simplehome,
@@ -108,21 +96,45 @@ class ShopApp extends StatelessWidget {
                   ),
                 ),
                 UpRoute(
-                  name: Routes.admin,
-                  path: Routes.admin,
+                  name: Routes.adminProduct,
+                  path: Routes.adminProduct,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       const StoreDependantPage(
-                    page: AdminAutoMobilePage(),
+                    page: AdminPage(),
                   ),
                   redirectRoute: Routes.loginSignup,
                   shouldRedirect: () => !Apiraiser.authentication.isSignedIn(),
                 ),
                 UpRoute(
-                  name: Routes.addEditAutomobile,
-                  path: Routes.addEditAutomobile,
+                  name: Routes.addEditProduct,
+                  path: Routes.addEditProduct,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       StoreDependantPage(
-                    page: AddEditAutoMobileProduct(
+                    page: AddEditProduct(
+                      queryParams: state.queryParams,
+                    ),
+                  ),
+                  redirectRoute: Routes.loginSignup,
+                  shouldRedirect: () => !Apiraiser.authentication.isSignedIn(),
+                ),
+                UpRoute(
+                  name: Routes.adminProductVariations,
+                  path: Routes.adminProductVariations,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      StoreDependantPage(
+                    page: AdminProductvariationsPage(
+                      queryParams: state.queryParams,
+                    ),
+                  ),
+                  redirectRoute: Routes.loginSignup,
+                  shouldRedirect: () => !Apiraiser.authentication.isSignedIn(),
+                ),
+                UpRoute(
+                  name: Routes.addEditProductVariaton,
+                  path: Routes.addEditProductVariaton,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      StoreDependantPage(
+                    page: AddEditProductVariation(
                       queryParams: state.queryParams,
                     ),
                   ),
@@ -137,6 +149,14 @@ class ShopApp extends StatelessWidget {
                     page: ProductPage(
                       queryParams: state.queryParams,
                     ),
+                  ),
+                ),
+                UpRoute(
+                  name: Routes.adminProductOptions,
+                  path: Routes.adminProductOptions,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      const StoreDependantPage(
+                    page: AdminProductOptionsPage(),
                   ),
                 ),
                 UpRoute(

@@ -4,6 +4,7 @@ import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/models/up_label_value.dart';
 import 'package:flutter_up/models/up_row.dart';
 import 'package:flutter_up/services/up_navigation.dart';
+import 'package:flutter_up/themes/up_style.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_circualar_progress.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
@@ -15,14 +16,14 @@ import 'package:shop/models/product.dart';
 import 'package:shop/widgets/products/products_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
 
-class AdminAutoMobilePage extends StatefulWidget {
-  const AdminAutoMobilePage({Key? key}) : super(key: key);
+class AdminPage extends StatefulWidget {
+  const AdminPage({Key? key}) : super(key: key);
 
   @override
-  State<AdminAutoMobilePage> createState() => _AdminAutoMobilePageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _AdminAutoMobilePageState extends State<AdminAutoMobilePage> {
+class _AdminPageState extends State<AdminPage> {
   List<int>? selectedCollection;
   String currentCollection = "";
   List<UpLabelValuePair> collectionDropdown = [];
@@ -74,14 +75,17 @@ class _AdminAutoMobilePageState extends State<AdminAutoMobilePage> {
                           },
                         )),
                   ),
-                  UpButton(
-                      text: "Add Product",
-                      onPressed: () {
-                        ServiceManager<UpNavigationService>().navigateToNamed(
-                          Routes.addEditAutomobile,
-                          queryParams: {},
-                        );
-                      }),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: UpButton(
+                        text: "Add Product",
+                        onPressed: () {
+                          ServiceManager<UpNavigationService>().navigateToNamed(
+                            Routes.addEditProduct,
+                            queryParams: {},
+                          );
+                        }),
+                  ),
                   FutureBuilder<List<Product>>(
                     future: ProductService.getProducts(
                         selectedCollection, {}, null, ""),
@@ -97,7 +101,7 @@ class _AdminAutoMobilePageState extends State<AdminAutoMobilePage> {
                                     {
                                       ServiceManager<UpNavigationService>()
                                           .navigateToNamed(
-                                        Routes.addEditAutomobile,
+                                        Routes.addEditProduct,
                                         queryParams: {
                                           'productId':
                                               '${snapshot.data![index].id}',
@@ -109,7 +113,8 @@ class _AdminAutoMobilePageState extends State<AdminAutoMobilePage> {
                                   "Id",
                                   "Name",
                                   "Price",
-                                  'IsVariedProduct'
+                                  'IsVariedProduct',
+                                  'Variations'
                                 ],
                                 rows: [
                                   ...snapshot.data!.map(
@@ -135,6 +140,35 @@ class _AdminAutoMobilePageState extends State<AdminAutoMobilePage> {
                                             e.isVariedProduct.toString(),
                                           ),
                                         ),
+                                        e.isVariedProduct == false
+                                            ? SizedBox(
+                                                child: UpText(
+                                                  e.options.toString(),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    ServiceManager<
+                                                            UpNavigationService>()
+                                                        .navigateToNamed(
+                                                      Routes
+                                                          .adminProductVariations,
+                                                      queryParams: {
+                                                        'productId': '${e.id}',
+                                                      },
+                                                    );
+                                                  },
+                                                  child: UpText(
+                                                    "View Variations",
+                                                    style: UpStyle(
+                                                      textDecoration:
+                                                          TextDecoration
+                                                              .underline,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),

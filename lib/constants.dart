@@ -5,8 +5,12 @@ class Routes {
   static const String product = '/product';
   static const String cart = '/cart';
   static const String payment = '/payment';
-  static const String admin = '/admin_automobile';
-  static const String addEditAutomobile = '/add_edit_automobile';
+  static const String adminProduct = '/admin_product';
+  static const String adminProductOptions = '/admin_product_options';
+
+  static const String adminProductVariations = '/admin_product_variations';
+  static const String addEditProduct = '/add_edit_product';
+  static const String addEditProductVariaton = '/add_edit_product_variation';
   static const String searchAutomobile = '/search';
 }
 

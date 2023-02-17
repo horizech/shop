@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_up/config/up_config.dart';
+// import 'package:flutter_up/config/up_config.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/widgets/up_orientational_column_row.dart';
 import 'package:shop/models/product.dart';
@@ -118,7 +118,7 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
                             widths: const [300, 0],
                             children: [
                               Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     border: Border(
                                         right: BorderSide(
                                             color: Colors.white, width: 1),
