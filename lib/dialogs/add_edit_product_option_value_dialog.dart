@@ -85,7 +85,7 @@ class AddEditProductOptionValueDialog extends StatelessWidget {
           child: SizedBox(
             width: 100,
             child: UpButton(
-              text: "Add",
+              text: productOptionValue != null ? "Edit" : "Add",
               onPressed: () async {
                 ProductOptionValue newProductOptionValue = ProductOptionValue(
                   name: productOptionValuecontroller.text,
@@ -93,7 +93,7 @@ class AddEditProductOptionValueDialog extends StatelessWidget {
                   collection: currentCollection,
                 );
                 APIResult? result =
-                    await AddEditProductService.addProductOptionValues(
+                    await AddEditProductService.addEditProductOptionValues(
                         data:
                             newProductOptionValue.toJson(newProductOptionValue),
                         productOptionValueId: productOptionValue != null
@@ -103,7 +103,7 @@ class AddEditProductOptionValueDialog extends StatelessWidget {
                   if (result.success) {
                     showUpToast(
                       context: context,
-                      text: "Product Option Value Added Successfully",
+                      text: result.message ?? "",
                     );
                     Navigator.pop(context);
                   } else {

@@ -1,18 +1,17 @@
 import 'package:apiraiser/apiraiser.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/models/product_options.dart';
 import 'package:shop/models/product_variation.dart';
 
 class AddEditProductService {
-  static Future<APIResult?> addProductOptionValues({
+  static Future<APIResult?> addEditProductOptionValues({
     int? productOptionValueId,
     required Map<String, dynamic> data,
   }) async {
     APIResult? result;
     if (productOptionValueId != null) {
       result = await Apiraiser.data
-          .delete("ProductOptionValues", productOptionValueId);
+          .update("ProductOptionValues", productOptionValueId, data);
     } else {
       result = await Apiraiser.data.insert("ProductOptionValues", data);
     }
@@ -84,11 +83,15 @@ class AddEditProductService {
     }
   }
 
-  static Future<ProductOption?> addProductOption(
-    Map<String, dynamic> data,
-  ) async {
-    debugPrint(data.toString());
-    APIResult result = await Apiraiser.data.insert("ProductOptions", data);
+  static Future<ProductOption?> addEditProductOption(
+      {required Map<String, dynamic> data, int? productOptionId}) async {
+    APIResult? result;
+    if (productOptionId != null) {
+      result =
+          await Apiraiser.data.update("ProductOptions", productOptionId, data);
+    } else {
+      result = await Apiraiser.data.insert("ProductOptions", data);
+    }
 
     if (result.success) {
       ProductOption? productOption = await getProductOption(data["Name"]);

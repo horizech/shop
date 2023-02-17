@@ -7,7 +7,7 @@ import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
 import 'package:flutter_up/widgets/up_table.dart';
 import 'package:flutter_up/widgets/up_text.dart';
-import 'package:shop/dialogs/add_product_option_dialog.dart';
+import 'package:shop/dialogs/add_edit_product_option_dialog.dart';
 import 'package:shop/dialogs/add_edit_product_option_value_dialog.dart';
 import 'package:shop/dialogs/delete_product_option_dialog.dart';
 import 'package:shop/dialogs/delete_product_option_value_dialog.dart';
@@ -34,12 +34,13 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
 
   List<Collection> collections = [];
   //  product option add dialog
-  _productOptionAddDialog(String currentProductOption) {
+  _productOptionAddDialog({ProductOption? productOption}) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AddProductOptionDialog(
+        return AddEditProductOptionDialog(
+          productOption: productOption,
           productOptions: productOptions,
           currentCollection: currentCollection.isNotEmpty
               ? int.parse(currentCollection)
@@ -49,14 +50,16 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
     );
   }
 
-  _productOptionValueAddDialog(ProductOption productOption) {
+  _productOptionValueAddDialog(
+      {ProductOption? productOption, ProductOptionValue? productOptionValue}) {
     if (currentCollection.isNotEmpty) {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AddEditProductOptionValueDialog(
-            productOption: productOption,
+            productOptionValue: productOptionValue,
+            productOption: productOption!,
             currentCollection: int.parse(currentCollection),
           );
         },
@@ -86,6 +89,7 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
         );
       },
     );
+    setState(() {});
   }
 
   @override
@@ -128,7 +132,7 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
               currentCollection.isNotEmpty &&
               state.productOptionValues != null &&
               state.productOptionValues!.isNotEmpty) {
-            if (state.collections != null) {
+            if (state.productOptionValues != null) {
               productOptionValues = state.productOptionValues!
                   .where((element) =>
                       element.productOption ==
@@ -166,7 +170,7 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
                       ),
                       UpButton(
                         onPressed: () {
-                          _productOptionAddDialog(currentProductOption);
+                          _productOptionAddDialog();
                         },
                         type: UpButtonType.icon,
                         child: const Icon(Icons.add),
@@ -174,63 +178,59 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
                     ],
                   ),
                 ),
-                currentProductOption.isNotEmpty
-                    ? SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: UpTable(
-                          columns: const [
-                            "Id",
-                            "Name",
-                            "Actions",
-                          ],
-                          rows: [
-                            ...productOptions
-                                .where((element) =>
-                                    element.id ==
-                                    int.parse(currentProductOption))
-                                .map(
-                                  (e) => UpRow(
-                                    [
-                                      SizedBox(
-                                        child: UpText(
-                                          e.id.toString(),
-                                        ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: UpTable(
+                      columns: const [
+                        "Id",
+                        "Name",
+                        "Actions",
+                      ],
+                      rows: currentProductOption.isNotEmpty
+                          ? productOptions
+                              .where((element) =>
+                                  element.id == int.parse(currentProductOption))
+                              .map(
+                                (e) => UpRow(
+                                  [
+                                    SizedBox(
+                                      child: UpText(
+                                        e.id.toString(),
                                       ),
-                                      SizedBox(
-                                        child: UpText(
-                                          e.name.toString(),
-                                        ),
+                                    ),
+                                    SizedBox(
+                                      child: UpText(
+                                        e.name.toString(),
                                       ),
-                                      Row(
-                                        children: [
-                                          const SizedBox(
-                                              child: Icon(Icons.edit)),
-                                          SizedBox(
-                                            child: GestureDetector(
-                                              onTap: _deleteProductOptionDialog(
-                                                  e.id!),
-                                              child: const Icon(Icons.delete),
-                                            ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        UpButton(
+                                          onPressed: () {
+                                            _productOptionAddDialog(
+                                              productOption: e,
+                                            );
+                                          },
+                                          type: UpButtonType.icon,
+                                          child: const Icon(Icons.edit),
+                                        ),
+                                        SizedBox(
+                                          child: UpButton(
+                                            type: UpButtonType.icon,
+                                            onPressed: () {
+                                              _deleteProductOptionDialog(e.id!);
+                                            },
+                                            child: const Icon(Icons.delete),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                          ],
-                        ),
-                      )
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: const UpTable(
-                          columns: [
-                            "Id",
-                            "Name",
-                            "Actions",
-                          ],
-                          rows: [],
-                        ),
-                      ),
+                              )
+                              .toList()
+                          : const []),
+                ),
                 Visibility(
                   visible: currentProductOption.isNotEmpty,
                   child: Padding(
@@ -258,10 +258,12 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
                       const UpText("Product Option Value"),
                       UpButton(
                         onPressed: () {
-                          _productOptionValueAddDialog(productOptions
-                              .where((element) =>
-                                  element.id == int.parse(currentProductOption))
-                              .first);
+                          _productOptionValueAddDialog(
+                              productOption: productOptions
+                                  .where((element) =>
+                                      element.id ==
+                                      int.parse(currentProductOption))
+                                  .first);
                         },
                         type: UpButtonType.icon,
                         child: const Icon(Icons.add),
@@ -295,11 +297,28 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
                               ),
                               Row(
                                 children: [
-                                  const SizedBox(child: Icon(Icons.edit)),
                                   SizedBox(
-                                    child: GestureDetector(
-                                      onTap: _deleteProductOptionValueDialog(
-                                          p.id!),
+                                    child: UpButton(
+                                      type: UpButtonType.icon,
+                                      onPressed: () {
+                                        _productOptionValueAddDialog(
+                                            productOption: productOptions
+                                                .where((element) =>
+                                                    element.id ==
+                                                    int.parse(
+                                                        currentProductOption))
+                                                .first,
+                                            productOptionValue: p);
+                                      },
+                                      child: const Icon(Icons.edit),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    child: UpButton(
+                                      type: UpButtonType.icon,
+                                      onPressed: () {
+                                        _deleteProductOptionValueDialog(p.id!);
+                                      },
                                       child: const Icon(Icons.delete),
                                     ),
                                   ),

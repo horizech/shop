@@ -5,7 +5,7 @@ import 'package:flutter_up/models/up_label_value.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
 import 'package:flutter_up/widgets/up_text.dart';
-import 'package:shop/dialogs/add_product_option_dialog.dart';
+import 'package:shop/dialogs/add_edit_product_option_dialog.dart';
 import 'package:shop/dialogs/add_edit_product_option_value_dialog.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
@@ -52,7 +52,7 @@ class _AddEditProductOptionsWidgetState
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AddProductOptionDialog(
+        return AddEditProductOptionDialog(
           productOptions: productOptions,
           currentCollection: widget.currentCollection,
         );
