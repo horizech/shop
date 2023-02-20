@@ -1,6 +1,10 @@
 import 'package:apiraiser/apiraiser.dart';
+import 'package:shop/models/collection.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:shop/models/product_variation.dart';
 
 class AddEditProductService {
@@ -94,14 +98,14 @@ class AddEditProductService {
     }
 
     if (result.success) {
-      ProductOption? productOption = await getProductOption(data["Name"]);
+      ProductOption? productOption = await getProductOptionByName(data["Name"]);
       return productOption;
     } else {
       return null;
     }
   }
 
-  static Future<ProductOption?> getProductOption(String name) async {
+  static Future<ProductOption?> getProductOptionByName(String name) async {
     List<QuerySearchItem> conditions = [
       QuerySearchItem(
           name: "Name", condition: ColumnCondition.equal, value: name)
@@ -156,5 +160,115 @@ class AddEditProductService {
     } else {
       return null;
     }
+  }
+
+  static Future<List<ProductOptionValue>?> getProductOptionValues(
+      int? currentCollection, int? currentProductOption) async {
+    List<QuerySearchItem> conditions = [];
+    if (currentProductOption != null) {
+      conditions.add(
+        QuerySearchItem(
+          name: "ProductOption",
+          condition: ColumnCondition.equal,
+          value: currentProductOption,
+        ),
+      );
+    }
+
+    if (currentCollection != null) {
+      conditions.add(
+        QuerySearchItem(
+          name: "Collection",
+          condition: ColumnCondition.equal,
+          value: currentCollection,
+        ),
+      );
+    }
+
+    APIResult result =
+        await Apiraiser.data.getByConditions("ProductOptionValues", conditions);
+
+    if (result.success) {
+      List<ProductOptionValue> productOptionValues = (result.data
+              as List<dynamic>)
+          .map((p) => ProductOptionValue.fromJson(p as Map<String, dynamic>))
+          .toList();
+      return productOptionValues;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<Collection>?> getCollections() async {
+    APIResult result = await Apiraiser.data.get("Collections", -1);
+
+    if (result.success) {
+      List<Collection> collections = (result.data as List<dynamic>)
+          .map((p) => Collection.fromJson(p as Map<String, dynamic>))
+          .toList();
+      return collections;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<ProductOption>?> getProductOptions() async {
+    APIResult result = await Apiraiser.data.get("ProductOptions", -1);
+
+    if (result.success) {
+      List<ProductOption> productOptions = (result.data as List<dynamic>)
+          .map((p) => ProductOption.fromJson(p as Map<String, dynamic>))
+          .toList();
+      return productOptions;
+    } else {
+      return null;
+    }
+  }
+
+  static uploadFile(String path) async {
+    try {
+      http.MultipartRequest request = http.MultipartRequest("POST", Uri());
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('file_name', path);
+      request.files.add(multipartFile);
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
+      if (response.statusCode == 200) {
+        // return jsonDecode(response.body);
+      }
+    } catch (e) {
+      return null;
+    }
+    // // open a bytestream
+    // var stream = http.ByteStream(file.openRead());
+    // // get file length
+    // var length = await file.length();
+
+    // // string to uri
+    // var uri = Uri.parse("");
+
+    // // create multipart request
+    // var request = http.MultipartRequest("POST", uri);
+
+    // // multipart that takes file
+    // var multipartFile = http.MultipartFile('file', stream, length,
+    //     filename: file.path.split("/").last);
+
+    // // add file to multipart
+    // request.files.add(multipartFile);
+
+    // // send
+    // var response = await request.send();
+    // print(response.statusCode);
+
+    // // listen for response
+    // response.stream.transform(utf8.decoder).listen((value) {
+    //   print(value);
+    // });
+    // var request = http.MultipartRequest('POST', Uri.parse(""));
+    // request.files.add(http.MultipartFile('picture',
+    //     File(filePath).readAsBytes().asStream(), File(filePath).lengthSync(),
+    //     filename: filePath.split("/").last));
+    // var res = await request.send();
   }
 }

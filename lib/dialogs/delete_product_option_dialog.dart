@@ -66,7 +66,7 @@ class DeleteProductOptionDialog extends StatelessWidget {
                         productOptionId);
                 if (result != null && result.success) {
                   showUpToast(context: context, text: result.message ?? "");
-                  Navigator.pop(context);
+                  Navigator.pop(context, "success");
                 } else {
                   showUpToast(
                     context: context,

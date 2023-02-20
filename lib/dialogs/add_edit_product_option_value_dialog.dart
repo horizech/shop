@@ -105,13 +105,18 @@ class AddEditProductOptionValueDialog extends StatelessWidget {
                       context: context,
                       text: result.message ?? "",
                     );
-                    Navigator.pop(context);
+                    Navigator.pop(
+                      context,
+                      "success",
+                    );
                   } else {
                     showUpToast(
                       context: context,
                       text: result.message ?? "",
                     );
-                    Navigator.pop(context);
+                    Navigator.pop(
+                      context,
+                    );
                   }
                 } else {
                   showUpToast(

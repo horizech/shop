@@ -110,7 +110,7 @@ class AddEditProductOptionDialog extends StatelessWidget {
                           text: "Product Option Updated Successfully",
                         );
                         // context.read<StoreCubit>().getStore();
-                        Navigator.pop(context);
+                        Navigator.pop(context, "success");
                       } else {
                         ProductOptionValue newProductOptionValue =
                             ProductOptionValue(
@@ -128,8 +128,7 @@ class AddEditProductOptionDialog extends StatelessWidget {
                             context: context,
                             text: "Product Option Added Successfully",
                           );
-                          // context.read<StoreCubit>().getStore();
-                          Navigator.pop(context);
+                          Navigator.pop(context, "success");
                         } else {
                           showUpToast(
                             context: context,

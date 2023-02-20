@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apiraiser/apiraiser.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/material.dart';
@@ -171,6 +173,8 @@ class _AddEditProductState extends State<AddEditProduct> {
 
   _uploadThumbnail(BuildContext context) async {
     FilePickerCross? result = await FilePickerCross.importFromStorage();
+    File file = File(result.path ?? "");
+    AddEditProductService.uploadFile(result.path ?? "");
   }
 
   @override

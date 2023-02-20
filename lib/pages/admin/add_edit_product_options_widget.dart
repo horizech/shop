@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
 import 'package:flutter_up/models/up_label_value.dart';
 import 'package:flutter_up/widgets/up_button.dart';
+import 'package:flutter_up/widgets/up_circualar_progress.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
 import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/dialogs/add_edit_product_option_dialog.dart';
 import 'package:shop/dialogs/add_edit_product_option_value_dialog.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
-import 'package:shop/widgets/store/store_cubit.dart';
+import 'package:shop/services/add_edit_product_service/add_edit_product_service.dart';
 
 class AddEditProductOptionsWidget extends StatefulWidget {
   final int? currentCollection;
@@ -42,7 +42,11 @@ class _AddEditProductOptionsWidgetState
             currentCollection: widget.currentCollection!,
           );
         },
-      );
+      ).then((result) {
+        if (result == "success") {
+          getProductOptionValues();
+        }
+      });
     }
   }
 
@@ -57,7 +61,32 @@ class _AddEditProductOptionsWidgetState
           currentCollection: widget.currentCollection,
         );
       },
-    );
+    ).then((result) {
+      if (result == "success") {
+        getProductOptions();
+      }
+    });
+  }
+
+//by api
+  getProductOptions() async {
+    List<ProductOption>? newProductOptions =
+        await AddEditProductService.getProductOptions();
+
+    if (newProductOptions != null && newProductOptions.isNotEmpty) {
+      productOptions = newProductOptions;
+      getProductOptionValues();
+    } else {}
+  }
+
+  getProductOptionValues() async {
+    List<ProductOptionValue>? newProductOptionsValues =
+        await AddEditProductService.getProductOptionValues(
+            widget.currentCollection, null);
+    if (newProductOptionsValues != null && newProductOptionsValues.isNotEmpty) {
+      productOptionValues = newProductOptionsValues;
+      setState(() {});
+    }
   }
 
   @override
@@ -68,30 +97,15 @@ class _AddEditProductOptionsWidgetState
         newOptions[key] = value;
       });
     }
+    getProductOptions();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: BlocConsumer<StoreCubit, StoreState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state.productOptions != null &&
-                state.productOptions!.isNotEmpty) {
-              productOptions = state.productOptions!.toList();
-            }
-            if (state.productOptionValues != null &&
-                state.productOptionValues!.isNotEmpty &&
-                widget.currentCollection != null) {
-              productOptionValues = state.productOptionValues!
-                  .where(
-                    (c) => c.collection == widget.currentCollection,
-                  )
-                  .toList();
-            }
-
-            return Column(
+    return productOptions != null && productOptions!.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
               children: [
                 //product option
 
@@ -156,9 +170,8 @@ class _AddEditProductOptionsWidgetState
                   ),
                 ),
               ],
-            );
-          }),
-    );
+            ))
+        : const UpCircularProgress();
   }
 }
 
@@ -183,22 +196,24 @@ class ProductOptionDropdownWidget extends StatefulWidget {
 
 class _ProductOptionDropdownWidgetState
     extends State<ProductOptionDropdownWidget> {
-  Map<String, List<int>?>? selectedVariations = {};
-  List<int> selectedValues = [];
-  List<bool> checkboxesValues = [];
-  int totalLength = 0;
   String currentOption = "";
+  List<ProductOptionValue>? oldProductOptionValues = [];
   List<UpLabelValuePair> productOptionDropdown = [];
 
   @override
   void initState() {
     super.initState();
+    initialize();
+  }
+
+  initialize() {
     widget.productOptionValues!
         .where((e) => e.productOption == widget.productOption.id)
         .forEach((element) {
       productOptionDropdown
           .add(UpLabelValuePair(label: element.name, value: "${element.id}"));
     });
+    oldProductOptionValues = widget.productOptionValues;
 
     // in case of edit options not null
     if (widget.initialValue != null && widget.initialValue!.isNotEmpty) {
@@ -208,6 +223,9 @@ class _ProductOptionDropdownWidgetState
 
   @override
   Widget build(BuildContext context) {
+    if (widget.productOptionValues != oldProductOptionValues) {
+      initialize();
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Visibility(
