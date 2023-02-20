@@ -112,7 +112,6 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(
-                        height: 250,
                         width: 400,
                         decoration: const BoxDecoration(
                           color: Colors.white,
