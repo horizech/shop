@@ -55,8 +55,7 @@ class ShopApp extends StatelessWidget {
           child: UpApp(
               theme: UpThemes.generateThemeByColor(
                 primaryColor: const Color.fromRGBO(200, 16, 46, 1.0),
-                // secondaryColor: Color.fromARGB(255, 0, 0, 0),
-                linkColor: Colors.white,
+                secondaryColor: Colors.white,
               ),
               title: 'Shop',
               initialRoute: Routes.simplehome,

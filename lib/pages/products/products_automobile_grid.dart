@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/config/up_config.dart';
 // import 'package:flutter_up/config/up_config.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/widgets/up_orientational_column_row.dart';
@@ -82,8 +83,8 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(1, 33, 105, 1),
+      decoration: BoxDecoration(
+        color: UpConfig.of(context).theme.secondaryColor,
         // image: DecorationImage(
         //   image: AssetImage("assets/car.jpg"),
         //   fit: BoxFit.fill,
@@ -93,121 +94,144 @@ class _AllProductsState extends State<ProductsAutomobileGrid> {
         backgroundColor: Colors.transparent,
         key: scaffoldKey,
         drawer: const MenuDrawer(),
-        appBar: CustomAppbar(
-          scaffoldKey: scaffoldKey,
-          collection: collection,
-        ),
         drawerEnableOpenDragGesture: false,
         endDrawerEnableOpenDragGesture: false,
-        body: isCollectionFilter
-            ? SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: BlocConsumer<StoreCubit, StoreState>(
-                    listener: (context, state) {},
-                    builder: (context, state) {
-                      collections = [];
-                      if (collection != null) {
-                        int parent = collection;
-                        collections =
-                            _getCollectionsByParent(state, parent, []);
-                      }
-                      return Column(
-                        children: [
-                          // const HeaderWidget(),
-                          UpOrientationalColumnRow(
-                            widths: const [300, 0],
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(
-                                            color: Colors.white, width: 1),
-                                        bottom: BorderSide(
-                                            color: Colors.white, width: 1))),
-                                // color: Colors.red[400],
-                                child: FilterPage(
-                                  collection: collection,
-                                  change: (v) => change(0, v),
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  // Padding(
-                                  //   padding: const EdgeInsets.all(8.0),
-                                  //   child: Keywords(
-                                  //     categoryId: collection,
-                                  //     onChange: (k) => change(k, {}),
-                                  //     selectedKeywordId: selectedKeywordId,
-                                  //   ),
-                                  // ),
+        body: Column(
+          children: [
+            CustomAppbar(
+              scaffoldKey: scaffoldKey,
+            ),
+            Expanded(
+              child: isCollectionFilter
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: BlocConsumer<StoreCubit, StoreState>(
+                          listener: (context, state) {},
+                          builder: (context, state) {
+                            collections = [];
+                            if (collection != null) {
+                              int parent = collection;
+                              collections =
+                                  _getCollectionsByParent(state, parent, []);
+                            }
+                            return Column(
+                              children: [
+                                // const HeaderWidget(),
+                                UpOrientationalColumnRow(
+                                  widths: const [300, 0],
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide(
+                                            color: UpConfig.of(context)
+                                                .theme
+                                                .primaryColor,
+                                            width: 1,
+                                          ),
+                                          bottom: BorderSide(
+                                            color: UpConfig.of(context)
+                                                .theme
+                                                .primaryColor,
+                                            width: 1,
+                                          ),
+                                        ),
+                                      ),
+                                      // color: Colors.red[400],
+                                      child: FilterPage(
+                                        collection: collection,
+                                        change: (v) => change(0, v),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Keywords(
+                                        //     categoryId: collection,
+                                        //     onChange: (k) => change(k, {}),
+                                        //     selectedKeywordId: selectedKeywordId,
+                                        //   ),
+                                        // ),
 
-                                  StreamBuilder(
-                                    stream: ServiceManager<VariationService>()
-                                        .variationStream$,
-                                    builder: (BuildContext context,
-                                        storedVariationsValues) {
-                                      return FutureBuilder<List<Product>>(
-                                        future: ProductService.getProducts(
-                                            collections,
-                                            storedVariationsValues.data ?? {},
-                                            selectedKeywordId,
-                                            ""),
-                                        builder: (BuildContext context,
-                                            AsyncSnapshot<List<Product>>
-                                                snapshot) {
-                                          products = snapshot.data;
-                                          // filteredProducts ??= products;
+                                        StreamBuilder(
+                                          stream:
+                                              ServiceManager<VariationService>()
+                                                  .variationStream$,
+                                          builder: (BuildContext context,
+                                              storedVariationsValues) {
+                                            return FutureBuilder<List<Product>>(
+                                              future:
+                                                  ProductService.getProducts(
+                                                      collections,
+                                                      storedVariationsValues
+                                                              .data ??
+                                                          {},
+                                                      selectedKeywordId,
+                                                      ""),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<List<Product>>
+                                                      snapshot) {
+                                                products = snapshot.data;
+                                                // filteredProducts ??= products;
 
-                                          if (snapshot.connectionState !=
-                                              ConnectionState.done) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(30.0),
-                                              child: GridView.builder(
-                                                gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                ),
-                                                itemCount: 3,
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) {
+                                                if (snapshot.connectionState !=
+                                                    ConnectionState.done) {
                                                   return Padding(
                                                     padding:
-                                                        const EdgeInsets.all(0),
-                                                    child: SizedBox(
-                                                      height: 300,
-                                                      width: 300,
-                                                      child: Container(
-                                                          color:
-                                                              Colors.grey[200]),
+                                                        const EdgeInsets.all(
+                                                            30.0),
+                                                    child: GridView.builder(
+                                                      gridDelegate:
+                                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 2,
+                                                      ),
+                                                      itemCount: 3,
+                                                      shrinkWrap: true,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(0),
+                                                          child: SizedBox(
+                                                            height: 300,
+                                                            width: 300,
+                                                            child: Container(
+                                                                color: Colors
+                                                                    .grey[200]),
+                                                          ),
+                                                        );
+                                                      },
+
+                                                      // itemCount: 6,
                                                     ),
                                                   );
-                                                },
-
-                                                // itemCount: 6,
-                                              ),
+                                                }
+                                                return snapshot.hasData
+                                                    ? ProductsGrid(
+                                                        // products: filteredProducts!,
+                                                        collection: collection,
+                                                        products:
+                                                            snapshot.data!,
+                                                      )
+                                                    : const CircularProgressIndicator();
+                                              },
                                             );
-                                          }
-                                          return snapshot.hasData
-                                              ? ProductsGrid(
-                                                  // products: filteredProducts!,
-                                                  collection: collection,
-                                                  products: snapshot.data!,
-                                                )
-                                              : const CircularProgressIndicator();
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }),
-              )
-            : const NotFoundErrorWidget(),
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }),
+                    )
+                  : const NotFoundErrorWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -239,7 +239,14 @@ class _VariationFilterState extends State<VariationFilter> {
                 child: UpButton(
                   icon: Icons.delete,
                   style: UpStyle(
-                      buttonWidth: 250, buttonBorderColor: Colors.white),
+                      buttonTextSize: 16,
+                      buttonHoverBorderColor:
+                          UpConfig.of(context).theme.primaryColor,
+                      buttonHoverBackgroundColor:
+                          UpConfig.of(context).theme.primaryColor.shade300,
+                      buttonWidth: 250,
+                      buttonBorderColor:
+                          UpConfig.of(context).theme.secondaryColor),
                   onPressed: onReset,
                   text: "Clear Filters",
                 ),
@@ -251,10 +258,17 @@ class _VariationFilterState extends State<VariationFilter> {
                 child: UpButton(
                   icon: Icons.photo_filter_rounded,
                   style: UpStyle(
-                      buttonWidth: 250,
-                      buttonBackgroundColor:
-                          UpConfig.of(context).theme.secondaryColor,
-                      buttonBorderColor: Colors.white),
+                    buttonTextSize: 16,
+                    buttonHoverBorderColor:
+                        UpConfig.of(context).theme.primaryColor,
+                    buttonHoverBackgroundColor:
+                        UpConfig.of(context).theme.primaryColor.shade300,
+                    buttonWidth: 250,
+                    buttonBackgroundColor:
+                        UpConfig.of(context).theme.primaryColor,
+                    buttonBorderColor:
+                        UpConfig.of(context).theme.secondaryColor,
+                  ),
                   onPressed: onChange,
                   text: "Apply Filters",
                 ),
