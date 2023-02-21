@@ -86,31 +86,37 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                     Container(),
                     // const HeaderWidget(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12),
+                      padding: const EdgeInsets.only(top: 24),
                       child: Container(
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color:
                                       UpConfig.of(context).theme.primaryColor,
                                   width: 4),
-                              color: Colors.white,
+                              color:const Color.fromARGB(64, 249, 153, 153),
                               borderRadius: BorderRadius.circular(8)),
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Padding(
-                                  padding: EdgeInsets.only(bottom: 12, left: 8),
-                                  child: UpText("Body Type"),
+                                  padding: const EdgeInsets.only(
+                                      bottom: 12, left: 8),
+                                  child: UpText(
+                                    "Body Type",
+                                    style: UpStyle(
+                                        textSize: 18,
+                                        textWeight: FontWeight.bold),
+                                  ),
                                 ),
-                                SearchByBodyWidget(),
+                                const SearchByBodyWidget(),
                               ],
                             ),
                           )),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Container(
                         width: 400,
                         decoration: const BoxDecoration(
@@ -122,21 +128,21 @@ class _SimpleHomePageState extends State<SimpleHomePage> {
                         child: const SearchWidget(),
                       ),
                     ),
-                    SizedBox(
-                      child: BlocConsumer<StoreCubit, StoreState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          root = state.collections!
-                              .where(
-                                  ((e) => e.parent == null && e.media != null))
-                              .toList();
+                    // SizedBox(
+                    //   child: BlocConsumer<StoreCubit, StoreState>(
+                    //     listener: (context, state) {},
+                    //     builder: (context, state) {
+                    //       root = state.collections!
+                    //           .where(
+                    //               ((e) => e.parent == null && e.media != null))
+                    //           .toList();
 
-                          return ParentCollectionSlider(
-                            root: root,
-                          );
-                        },
-                      ),
-                    ),
+                    //       return ParentCollectionSlider(
+                    //         root: root,
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

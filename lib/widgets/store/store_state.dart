@@ -30,4 +30,6 @@ class StoreState {
     this.productOptionValues,
     this.mediaGroups,
   );
+
+  get productOptionsValuesMod => null;
 }

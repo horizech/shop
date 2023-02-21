@@ -35,4 +35,5 @@ Map<String, String> automobilePerformance = {
 
 Map<String, String> automobileFeatures = {
   "SatNav": "Satellite-navigation",
+  "CC": "Climate Control",
 };

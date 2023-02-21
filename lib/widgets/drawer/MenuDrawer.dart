@@ -126,12 +126,35 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           width: 1,
                           color: UpConfig.of(context).theme.primaryColor),
                     )),
-                child: const UpExpansionTile(
+                child: UpExpansionTile(
+                  leading: const Icon(Icons.payments),
                   title: "Finance",
+                  style: UpStyle(textSize: 24),
                   children: [
-                    UpText("Car Finance"),
-                    UpText("Finance Explaned"),
-                    UpText("Free Finance CheckerS")
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            UpText(
+                              "Car Finance",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Finance Explaned",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Free Finance Checker",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            )
+                          ]),
+                    ),
                   ],
                 ),
               ),
@@ -143,11 +166,30 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           width: 1,
                           color: UpConfig.of(context).theme.primaryColor),
                     )),
-                child: const UpExpansionTile(
+                child: UpExpansionTile(
+                  leading: const Icon(Icons.price_check),
+                  style: UpStyle(textSize: 24),
                   title: "Valuation",
                   children: [
-                    UpText("Part Exchange"),
-                    UpText("Sell Your Car"),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          UpText(
+                            "Part Exchange",
+                            style: UpStyle(
+                                textSize: 16, textWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 4),
+                          UpText(
+                            "Sell Your Car",
+                            style: UpStyle(
+                                textSize: 16, textWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -159,14 +201,47 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           width: 1,
                           color: UpConfig.of(context).theme.primaryColor),
                     )),
-                child: const UpExpansionTile(
+                child: UpExpansionTile(
+                  leading: const Icon(Icons.account_circle),
+                  style: UpStyle(textSize: 24),
                   title: "About Us",
                   children: [
-                    UpText("About Us"),
-                    UpText("Reviews"),
-                    UpText("Blog"),
-                    UpText("Careers"),
-                    UpText("Working with Us"),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            UpText(
+                              "About Us",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Reviews",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Blog",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Careers",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 4),
+                            UpText(
+                              "Working with Us",
+                              style: UpStyle(
+                                  textSize: 16, textWeight: FontWeight.bold),
+                            ),
+                          ]),
+                    )
                   ],
                 ),
               ),
