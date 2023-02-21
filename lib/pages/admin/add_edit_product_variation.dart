@@ -14,6 +14,7 @@ import 'package:shop/models/product_variation.dart';
 import 'package:shop/pages/admin/add_edit_product_options_widget.dart';
 import 'package:shop/services/add_edit_product_service/add_edit_product_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
+import 'package:shop/widgets/unauthorized_widget.dart';
 
 class AddEditProductVariation extends StatefulWidget {
   final Map<String, String>? queryParams;
@@ -41,6 +42,7 @@ class _AddEditProductVariationState extends State<AddEditProductVariation> {
   List<ProductOptionValue> productOptionsValue = [];
   int? productVariationId, productId;
   int? currentCollection;
+  User? user;
   Map<String, int> options = {};
 
   Future<DateTime> _picker() async {
@@ -179,6 +181,7 @@ class _AddEditProductVariationState extends State<AddEditProductVariation> {
       productVariationId =
           int.parse(widget.queryParams!['productVariationId']!);
     }
+    user ??= Apiraiser.authentication.getCurrentUser();
 
     if (widget.queryParams != null &&
         widget.queryParams!.isNotEmpty &&
@@ -194,139 +197,143 @@ class _AddEditProductVariationState extends State<AddEditProductVariation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: BlocConsumer<StoreCubit, StoreState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state.productOptions != null &&
-                  state.productOptions!.isNotEmpty) {
-                productOptions = state.productOptions!.toList();
-              }
-              if (state.productOptionValues != null &&
-                  state.productOptionValues!.isNotEmpty &&
-                  currentCollection != null) {
-                productOptionsValue = state.productOptionValues!
-                    .where(
-                      (c) => c.collection == (currentCollection),
-                    )
-                    .toList();
-              }
+      body: user != null &&
+              user!.roleIds != null &&
+              (user!.roleIds!.contains(2) || user!.roleIds!.contains(1))
+          ? SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: BlocConsumer<StoreCubit, StoreState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (state.productOptions != null &&
+                        state.productOptions!.isNotEmpty) {
+                      productOptions = state.productOptions!.toList();
+                    }
+                    if (state.productOptionValues != null &&
+                        state.productOptionValues!.isNotEmpty &&
+                        currentCollection != null) {
+                      productOptionsValue = state.productOptionValues!
+                          .where(
+                            (c) => c.collection == (currentCollection),
+                          )
+                          .toList();
+                    }
 
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: UpText("Product Variation"),
-                      ),
-                      // name
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                          controller: _nameController,
-                          label: "Name",
-                        ),
-                      ),
-                      // description
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                          controller: _descriptionController,
-                          label: "Description",
-                        ),
-                      ),
-                      // price
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                          keyboardType: TextInputType.number,
-                          controller: _priceController,
-                          label: "Price",
-                        ),
-                      ),
-                      // sku
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                          controller: _skuController,
-                          label: "Sku",
-                        ),
-                      ),
-                      // discount price
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                          controller: _discountPriceController,
-                          label: "Discound Price",
-                        ),
-                      ),
-                      // discount start date
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                            controller: _discountStartController,
-                            prefixIcon: const Icon(Icons.calendar_today),
-                            label: "Discound Start Date",
-                            onTap: () {
-                              _discountStartDate();
-                            }),
-                      ),
-                      // discount end date
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpTextField(
-                            controller: _discountEndController,
-                            prefixIcon: const Icon(Icons.calendar_today),
-                            label: "Discound End Date",
-                            onTap: () {
-                              _discountEndDate();
-                            }),
-                      ),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: UpText("Product Variation"),
+                            ),
+                            // name
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                controller: _nameController,
+                                label: "Name",
+                              ),
+                            ),
+                            // description
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                controller: _descriptionController,
+                                label: "Description",
+                              ),
+                            ),
+                            // price
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                keyboardType: TextInputType.number,
+                                controller: _priceController,
+                                label: "Price",
+                              ),
+                            ),
+                            // sku
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                controller: _skuController,
+                                label: "Sku",
+                              ),
+                            ),
+                            // discount price
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                controller: _discountPriceController,
+                                label: "Discound Price",
+                              ),
+                            ),
+                            // discount start date
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                  controller: _discountStartController,
+                                  prefixIcon: const Icon(Icons.calendar_today),
+                                  label: "Discound Start Date",
+                                  onTap: () {
+                                    _discountStartDate();
+                                  }),
+                            ),
+                            // discount end date
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpTextField(
+                                  controller: _discountEndController,
+                                  prefixIcon: const Icon(Icons.calendar_today),
+                                  label: "Discound End Date",
+                                  onTap: () {
+                                    _discountEndDate();
+                                  }),
+                            ),
 
-                      // product option values
+                            // product option values
 
-                      Visibility(
-                        visible: currentCollection != null,
-                        child: AddEditProductOptionsWidget(
-                          change: (newOptions) {
-                            options = newOptions;
-                          },
-                          options: options,
-                          currentCollection: currentCollection,
+                            Visibility(
+                              visible: currentCollection != null,
+                              child: AddEditProductOptionsWidget(
+                                change: (newOptions) {
+                                  options = newOptions;
+                                },
+                                options: options,
+                                currentCollection: currentCollection,
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                child: UpButton(
+                                  onPressed: () => _uploadThumbnail(context),
+                                  text: 'Upload Gallery',
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: UpButton(
+                                text: productVariationId != null
+                                    ? "Edit Product Variation"
+                                    : "Add Product Variation",
+                                onPressed: () {
+                                  addEditProductVariation();
+                                },
+                              ),
+                            )
+                          ],
                         ),
                       ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          child: UpButton(
-                            onPressed: () => _uploadThumbnail(context),
-                            text: 'Upload Gallery',
-                          ),
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpButton(
-                          text: productVariationId != null
-                              ? "Edit Product Variation"
-                              : "Add Product Variation",
-                          onPressed: () {
-                            addEditProductVariation();
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              );
-            }),
-      ),
+                    );
+                  }),
+            )
+          : const UnAuthorizedWidget(),
     );
   }
 }

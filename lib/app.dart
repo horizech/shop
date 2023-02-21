@@ -20,7 +20,7 @@ import 'package:shop/pages/cart/cart.dart';
 import 'package:shop/pages/payment/payment.dart';
 import 'package:shop/pages/payment_method/card_payment_page.dart';
 import 'package:shop/pages/payment_method/payment_method_page.dart';
-import 'package:shop/pages/product/product.dart';
+import 'package:shop/pages/product/product_automobile.dart';
 import 'package:shop/pages/products/products_automobile_grid.dart';
 import 'package:shop/pages/search/automobile_search.dart';
 import 'package:shop/pages/simple_home/simple_homepage.dart';
@@ -145,7 +145,7 @@ class ShopApp extends StatelessWidget {
                   path: Routes.product,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       StoreDependantPage(
-                    page: ProductPage(
+                    page: ProductAutomobilePage(
                       queryParams: state.queryParams,
                     ),
                   ),

@@ -84,4 +84,36 @@ class ProductDetailService {
       }
     }
   }
+
+  static Future<Product?> getProductById(int productId) async {
+    List<QuerySearchItem> productConditions = [];
+
+    Product? product;
+
+    productConditions = [
+      QuerySearchItem(
+        name: "Id",
+        condition: ColumnCondition.equal,
+        value: productId,
+      )
+    ];
+    try {
+      APIResult result =
+          await Apiraiser.data.getByConditions("Products", productConditions);
+
+      if (result.success &&
+          result.data != null &&
+          (result.data as List<dynamic>).isNotEmpty) {
+        product = (result.data as List<dynamic>)
+            .map((k) => Product.fromJson(k as Map<String, dynamic>))
+            .first;
+
+        return product;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+    return null;
+  }
 }

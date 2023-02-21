@@ -16,9 +16,10 @@ import 'package:shop/models/product.dart';
 import 'package:shop/models/product_detail.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
+import 'package:shop/pages/admin/add_edit_product_meta_widget.dart';
 import 'package:shop/pages/admin/add_edit_product_options_widget.dart';
 import 'package:shop/services/add_edit_product_service/add_edit_product_service.dart';
-import 'package:shop/widgets/products/product_detail_service.dart';
+import 'package:shop/services/product_detail_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
 
 class AddEditProduct extends StatefulWidget {
@@ -330,6 +331,10 @@ class _AddEditProductState extends State<AddEditProduct> {
                             text: 'Upload thumbnail',
                           ),
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AddEditProductMetaWidget(),
                       ),
                       // add edit button
                       Padding(

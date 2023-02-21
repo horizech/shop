@@ -1,3 +1,4 @@
+import 'package:apiraiser/apiraiser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_up/enums/up_button_type.dart';
 import 'package:flutter_up/models/up_label_value.dart';
@@ -15,6 +16,7 @@ import 'package:shop/models/collection.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
 import 'package:shop/services/add_edit_product_service/add_edit_product_service.dart';
+import 'package:shop/widgets/unauthorized_widget.dart';
 
 class AdminProductOptionsPage extends StatefulWidget {
   const AdminProductOptionsPage({Key? key}) : super(key: key);
@@ -30,6 +32,7 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
   List<ProductOptionValue> productOptionValues = [];
   List<UpLabelValuePair> collectionDropdown = [];
   List<UpLabelValuePair> productOptionDropdown = [];
+  User? user;
   bool isProductOptinsLoading = false;
   //  product option add dialog
   _productOptionAddDialog({ProductOption? productOption}) {
@@ -55,6 +58,8 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
   @override
   void initState() {
     super.initState();
+    user ??= Apiraiser.authentication.getCurrentUser();
+
     getProductOptions();
   }
 
@@ -180,226 +185,229 @@ class _AdminProductOptionsPageState extends State<AdminProductOptionsPage> {
       getCollection();
     }
     return Scaffold(
-      body: productOptionDropdown.isNotEmpty
-          ? SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Padding(
+      body: user != null &&
+              user!.roleIds != null &&
+              (user!.roleIds!.contains(2) || user!.roleIds!.contains(1))
+          ? productOptionDropdown.isNotEmpty
+              ? SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: 200,
+                                child: UpDropDown(
+                                  label: "Product Option",
+                                  value: currentProductOption,
+                                  itemList: productOptionDropdown,
+                                  onChanged: (value) {
+                                    currentProductOption = value.toString();
+                                    getProductOptionValues();
+                                    if (currentCollection.isNotEmpty &&
+                                        currentProductOption.isNotEmpty) {
+                                      isProductOptinsLoading = true;
+                                    }
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                            UpButton(
+                              onPressed: () {
+                                _productOptionAddDialog();
+                              },
+                              type: UpButtonType.icon,
+                              child: const Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: UpTable(
+                            columns: const [
+                              "Id",
+                              "Name",
+                              "Actions",
+                            ],
+                            rows: currentProductOption.isNotEmpty
+                                ? productOptions
+                                    .where((element) =>
+                                        element.id ==
+                                        int.parse(currentProductOption))
+                                    .map(
+                                      (e) => UpRow(
+                                        [
+                                          SizedBox(
+                                            child: UpText(
+                                              e.id.toString(),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            child: UpText(
+                                              e.name.toString(),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              UpButton(
+                                                onPressed: () {
+                                                  _productOptionAddDialog(
+                                                    productOption: e,
+                                                  );
+                                                },
+                                                type: UpButtonType.icon,
+                                                child: const Icon(Icons.edit),
+                                              ),
+                                              SizedBox(
+                                                child: UpButton(
+                                                  type: UpButtonType.icon,
+                                                  onPressed: () {
+                                                    _deleteProductOptionDialog(
+                                                        e.id!);
+                                                  },
+                                                  child:
+                                                      const Icon(Icons.delete),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList()
+                                : const []),
+                      ),
+                      Visibility(
+                        visible: currentProductOption.isNotEmpty,
+                        child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
                             width: 200,
                             child: UpDropDown(
-                              label: "Product Option",
-                              value: currentProductOption,
-                              itemList: productOptionDropdown,
+                              label: "Collection",
+                              value: currentCollection,
+                              itemList: collectionDropdown,
                               onChanged: (value) {
-                                currentProductOption = value.toString();
+                                currentCollection = value.toString();
                                 getProductOptionValues();
                                 if (currentCollection.isNotEmpty &&
                                     currentProductOption.isNotEmpty) {
                                   isProductOptinsLoading = true;
+                                  setState(() {});
                                 }
-                                setState(() {});
+                                // setState(() {});
                               },
                             ),
                           ),
                         ),
-                        UpButton(
-                          onPressed: () {
-                            _productOptionAddDialog();
-                          },
-                          type: UpButtonType.icon,
-                          child: const Icon(Icons.add),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: UpTable(
-                        columns: const [
-                          "Id",
-                          "Name",
-                          "Actions",
-                        ],
-                        rows: currentProductOption.isNotEmpty
-                            ? productOptions
-                                .where((element) =>
-                                    element.id ==
-                                    int.parse(currentProductOption))
-                                .map(
-                                  (e) => UpRow(
-                                    [
-                                      SizedBox(
-                                        child: UpText(
-                                          e.id.toString(),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: UpText(
-                                          e.name.toString(),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          UpButton(
-                                            onPressed: () {
-                                              _productOptionAddDialog(
-                                                productOption: e,
-                                              );
-                                            },
-                                            type: UpButtonType.icon,
-                                            child: const Icon(Icons.edit),
-                                          ),
-                                          SizedBox(
-                                            child: UpButton(
-                                              type: UpButtonType.icon,
-                                              onPressed: () {
-                                                _deleteProductOptionDialog(
-                                                    e.id!);
-                                              },
-                                              child: const Icon(Icons.delete),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList()
-                            : const []),
-                  ),
-                  Visibility(
-                    visible: currentProductOption.isNotEmpty,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: 200,
-                        child: UpDropDown(
-                          label: "Collection",
-                          value: currentCollection,
-                          itemList: collectionDropdown,
-                          onChanged: (value) {
-                            currentCollection = value.toString();
-                            getProductOptionValues();
-                            if (currentCollection.isNotEmpty &&
-                                currentProductOption.isNotEmpty) {
-                              isProductOptinsLoading = true;
-                              setState(() {});
-                            }
-                            // setState(() {});
-                          },
+                      ),
+                      Visibility(
+                        visible: currentCollection.isNotEmpty &&
+                            currentProductOption.isNotEmpty,
+                        child: Row(
+                          children: [
+                            const UpText("Product Option Value"),
+                            UpButton(
+                              onPressed: () {
+                                _productOptionValueAddDialog(
+                                    productOption: productOptions
+                                        .where((element) =>
+                                            element.id ==
+                                            int.parse(currentProductOption))
+                                        .first);
+                              },
+                              type: UpButtonType.icon,
+                              child: const Icon(Icons.add),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: currentCollection.isNotEmpty &&
-                        currentProductOption.isNotEmpty,
-                    child: Row(
-                      children: [
-                        const UpText("Product Option Value"),
-                        UpButton(
-                          onPressed: () {
-                            _productOptionValueAddDialog(
-                                productOption: productOptions
-                                    .where((element) =>
-                                        element.id ==
-                                        int.parse(currentProductOption))
-                                    .first);
-                          },
-                          type: UpButtonType.icon,
-                          child: const Icon(Icons.add),
-                        ),
-                      ],
-                    ),
-                  ),
-                  isProductOptinsLoading
-                      ? const UpCircularProgress()
-                      : Visibility(
-                          visible: currentCollection.isNotEmpty &&
-                              currentProductOption.isNotEmpty,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: UpTable(
-                              columns: const [
-                                "Id",
-                                "Name",
-                                "Actions",
-                              ],
-                              rows: productOptionValues.isNotEmpty
-                                  ? productOptionValues
-                                      .map(
-                                        (p) => UpRow(
-                                          [
-                                            SizedBox(
-                                              child: UpText(
-                                                p.id.toString(),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              child: UpText(
-                                                p.name.toString(),
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
+                      isProductOptinsLoading
+                          ? const UpCircularProgress()
+                          : Visibility(
+                              visible: currentCollection.isNotEmpty &&
+                                  currentProductOption.isNotEmpty,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: UpTable(
+                                  columns: const [
+                                    "Id",
+                                    "Name",
+                                    "Actions",
+                                  ],
+                                  rows: productOptionValues.isNotEmpty
+                                      ? productOptionValues
+                                          .map(
+                                            (p) => UpRow(
+                                              [
                                                 SizedBox(
-                                                  child: UpButton(
-                                                    type: UpButtonType.icon,
-                                                    onPressed: () {
-                                                      _productOptionValueAddDialog(
-                                                          productOption:
-                                                              productOptions
-                                                                  .where(
-                                                                    (element) =>
-                                                                        element
-                                                                            .id ==
-                                                                        int.parse(
-                                                                            currentProductOption),
-                                                                  )
-                                                                  .first,
-                                                          productOptionValue:
-                                                              p);
-                                                    },
-                                                    child:
-                                                        const Icon(Icons.edit),
+                                                  child: UpText(
+                                                    p.id.toString(),
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  child: UpButton(
-                                                    type: UpButtonType.icon,
-                                                    onPressed: () {
-                                                      _deleteProductOptionValueDialog(
-                                                          p.id!);
-                                                    },
-                                                    child: const Icon(
-                                                        Icons.delete),
+                                                  child: UpText(
+                                                    p.name.toString(),
                                                   ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      child: UpButton(
+                                                        type: UpButtonType.icon,
+                                                        onPressed: () {
+                                                          _productOptionValueAddDialog(
+                                                              productOption:
+                                                                  productOptions
+                                                                      .where(
+                                                                        (element) =>
+                                                                            element.id ==
+                                                                            int.parse(currentProductOption),
+                                                                      )
+                                                                      .first,
+                                                              productOptionValue:
+                                                                  p);
+                                                        },
+                                                        child: const Icon(
+                                                            Icons.edit),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      child: UpButton(
+                                                        type: UpButtonType.icon,
+                                                        onPressed: () {
+                                                          _deleteProductOptionValueDialog(
+                                                              p.id!);
+                                                        },
+                                                        child: const Icon(
+                                                            Icons.delete),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      )
-                                      .toList()
-                                  : [],
-                            ),
-                          ),
-                        )
-                ],
-              ),
-            )
-          : const Center(
-              child: UpCircularProgress(),
-            ),
+                                          )
+                                          .toList()
+                                      : [],
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
+                )
+              : const Center(
+                  child: UpCircularProgress(),
+                )
+          : const UnAuthorizedWidget(),
     );
   }
 }

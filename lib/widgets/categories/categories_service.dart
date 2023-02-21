@@ -19,22 +19,6 @@ class CategoryService {
       ];
 
       result = await Apiraiser.data.getByConditions("Categories", conditions);
-
-      // if (result.success) {
-      //   List<int> parentIds = (result.data as List<dynamic>)
-      //       .map((x) => (x as Map<String, dynamic>)['Id'] as int)
-      //       .toList();
-      //   conditions = [
-      //     {
-      //       'Name': "Parent",
-      //       'Condition': 3,
-      //       'Value': parentIds,
-      //     }
-      //   ];
-
-      //   result = await Apiraiser.table
-      //       .getByConditions("Categories", token, conditions);
-      // }
     } else {
       List<QuerySearchItem> conditions = [
         QuerySearchItem(
@@ -45,8 +29,6 @@ class CategoryService {
       ];
 
       result = await Apiraiser.data.getByConditions("Categories", conditions);
-
-      // result = await Apiraiser.data.get("Categories", token, limit);
     }
 
     List<Collection> collection = (result.data as List<dynamic>)

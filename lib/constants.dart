@@ -9,7 +9,7 @@ class Routes {
   static const String adminProductOptions = '/admin_product_options';
 
   static const String adminProductVariations = '/admin_product_variations';
-  static const String addEditProduct = '/add_edit_product';
+  static const String addEditProduct = '/add_edit_products';
   static const String addEditProductVariaton = '/add_edit_product_variation';
   static const String searchAutomobile = '/search';
 }
@@ -21,3 +21,18 @@ class Constants {
   static const String authSignup = "Signup";
   static const String workItems = "Work Items";
 }
+
+Map<String, String> automobilePerformance = {
+  "MP": "Max Power",
+  "MT": "Max Torque",
+  "MS": "Max Speed",
+  "0-60T": "0-60 Time",
+  "MPGE": "MPG Extra",
+  "MPGC": "MPG Combined",
+  "MPGU": "MPG Urban",
+  "SatNav": "Satellite-navigation"
+};
+
+Map<String, String> automobileFeatures = {
+  "SatNav": "Satellite-navigation",
+};
