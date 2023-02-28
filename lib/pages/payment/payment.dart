@@ -19,7 +19,7 @@ import 'package:shop/pages/payment_method/payment_method_page.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/cart/cart_cubit.dart';
 import 'package:shop/widgets/cart/cart_display.dart';
-import 'package:shop/widgets/customer_profile/customer_profile_services.dart';
+import 'package:shop/services/customer_profile/customer_profile_services.dart';
 
 class PaymentPage extends StatelessWidget {
   const PaymentPage({Key? key}) : super(key: key);

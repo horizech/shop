@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_up/widgets/up_orientational_column_row.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/drawer/drawer.dart';
@@ -7,7 +8,7 @@ import 'package:shop/widgets/error/error.dart';
 import 'package:shop/widgets/filters/filter.dart';
 import 'package:shop/widgets/header/header.dart';
 import 'package:shop/widgets/keywords/keywords.dart';
-import 'package:shop/widgets/orientation_switcher.dart';
+
 import 'package:shop/widgets/products/products_list.dart';
 import 'package:shop/widgets/products/products_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
@@ -100,7 +101,7 @@ class _AllProductsState extends State<ProductsCommerceList> {
                     return Column(
                       children: [
                         const HeaderWidget(),
-                        OrientationSwitcher(
+                        UpOrientationalColumnRow(
                           widths: const [200, -1],
                           children: [
                             Center(

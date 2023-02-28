@@ -13,7 +13,6 @@ import 'package:flutter_up/widgets/up_dropdown.dart';
 import 'package:flutter_up/widgets/up_textfield.dart';
 import 'package:shop/models/collection.dart';
 import 'package:shop/models/product.dart';
-import 'package:shop/models/product_detail.dart';
 import 'package:shop/models/product_option_value.dart';
 import 'package:shop/models/product_options.dart';
 import 'package:shop/pages/admin/add_edit_product_meta_widget.dart';
@@ -32,7 +31,7 @@ class AddEditProduct extends StatefulWidget {
 }
 
 class _AddEditProductState extends State<AddEditProduct> {
-  ProductDetail? productDetail;
+  Product? product;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -54,6 +53,7 @@ class _AddEditProductState extends State<AddEditProduct> {
   int? productId;
   bool isVariedProduct = false;
   Map<String, int> options = {};
+  Map<String, dynamic> meta = {};
 
   Future<DateTime> _getPicker() async {
     DateTime? pickedDate = await UpDateTimeHelper.upDatePicker(
@@ -100,34 +100,30 @@ class _AddEditProductState extends State<AddEditProduct> {
 // in case of edit
   getProductDetail() async {
     if (productId != null) {
-      productDetail =
-          await ProductDetailService.getProductDetail(productId ?? 0);
-      if (productDetail != null && productDetail!.product != null) {
+      product = await ProductDetailService.getProductById(productId ?? 0);
+      if (product != null && product != null) {
         setState(() {
-          _nameController.text = productDetail!.product!.name;
-          _descriptionController.text =
-              productDetail!.product!.description ?? "";
-          isVariedProduct = productDetail!.product!.isVariedProduct;
-          _priceController.text = productDetail!.product!.price.toString();
-          _skuController.text = productDetail!.product!.sku.toString();
+          _nameController.text = product!.name;
+          _descriptionController.text = product!.description ?? "";
+          isVariedProduct = product!.isVariedProduct;
+          _priceController.text = product!.price.toString();
+          _skuController.text = product!.sku.toString();
 
-          currentCollection = "${productDetail!.product!.collection}";
-          _discountPriceController.text =
-              productDetail!.product!.discounPrice != null
-                  ? productDetail!.product!.discounPrice.toString()
-                  : "";
-          _discountStartController.text =
-              productDetail!.product!.discountStartDate != null
-                  ? productDetail!.product!.discountStartDate.toString()
-                  : "";
-          _discountEndController.text =
-              productDetail!.product!.discountEndDate != null
-                  ? productDetail!.product!.discountEndDate.toString()
-                  : "";
-          gallery = productDetail!.product!.gallery;
-          thumbnail = productDetail!.product!.thumbnail;
-          keywords = productDetail!.product!.keywords ?? [];
-          options = productDetail!.product!.options ?? {};
+          currentCollection = "${product!.collection}";
+          _discountPriceController.text = product!.discounPrice != null
+              ? product!.discounPrice.toString()
+              : "";
+          _discountStartController.text = product!.discountStartDate != null
+              ? product!.discountStartDate.toString()
+              : "";
+          _discountEndController.text = product!.discountEndDate != null
+              ? product!.discountEndDate.toString()
+              : "";
+          gallery = product!.gallery;
+          thumbnail = product!.thumbnail;
+          keywords = product!.keywords ?? [];
+          options = product!.options ?? {};
+          meta = product!.meta ?? {};
         });
       }
     }
@@ -155,6 +151,7 @@ class _AddEditProductState extends State<AddEditProduct> {
       discounPrice: _discountPriceController.text.isNotEmpty
           ? double.parse(_discountPriceController.text)
           : null,
+      meta: meta,
     );
 
     APIResult? result = await AddEditProductService.addEditProduct(
@@ -332,10 +329,27 @@ class _AddEditProductState extends State<AddEditProduct> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AddEditProductMetaWidget(),
-                      ),
+                      productId != null
+                          ? product != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AddEditProductMetaWidget(
+                                    meta: meta,
+                                    onChange: (value) {
+                                      meta = value;
+                                    },
+                                  ),
+                                )
+                              : const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AddEditProductMetaWidget(
+                                meta: meta,
+                                onChange: (value) {
+                                  meta = value;
+                                },
+                              ),
+                            ),
                       // add edit button
                       Padding(
                         padding: const EdgeInsets.all(8.0),

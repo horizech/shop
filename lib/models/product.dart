@@ -116,6 +116,12 @@ class Product extends Equatable {
         optionsMap[entry.key] = entry.value;
       }
     }
+    Map<String, dynamic> metaMap = {};
+    if (instance.meta != null && instance.meta!.isNotEmpty) {
+      for (var entry in instance.meta!.entries) {
+        metaMap[entry.key] = entry.value;
+      }
+    }
 
     return <String, dynamic>{
       'Id': instance.id,
@@ -140,6 +146,7 @@ class Product extends Equatable {
           : null,
       'SKU': instance.sku,
       'Options': jsonEncode(optionsMap),
+      'Meta': jsonEncode(metaMap),
     };
   }
 

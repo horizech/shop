@@ -20,6 +20,7 @@ import 'package:shop/widgets/error/error.dart';
 import 'package:shop/widgets/media/media_service.dart';
 import 'package:shop/services/product_detail_service.dart';
 import 'package:shop/widgets/store/store_cubit.dart';
+import 'package:video_player/video_player.dart';
 
 class ProductAutomobilePage extends StatelessWidget {
   final Map<String, String>? queryParams;
@@ -432,6 +433,8 @@ class __ProductDetail extends State<_ProductDetail> {
       return performanceView();
     } else if (view == 4) {
       return featuresView();
+    } else if (view == 5) {
+      return galleryView();
     } else {
       return detailView();
     }
@@ -441,6 +444,10 @@ class __ProductDetail extends State<_ProductDetail> {
     setState(() {
       view = id;
     });
+  }
+
+  galleryView() {
+    return const SizedBox();
   }
 
   @override
@@ -511,6 +518,25 @@ class __ProductDetail extends State<_ProductDetail> {
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
                 onTap: () {
+                  onViewChange(5);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: UpText(
+                    "Gallery",
+                    style: UpStyle(
+                      textWeight:
+                          view == 5 ? FontWeight.bold : FontWeight.normal,
+                      textSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
                   onViewChange(2);
                 },
                 child: Padding(
@@ -534,80 +560,6 @@ class __ProductDetail extends State<_ProductDetail> {
       ],
     );
   }
-}
-
-Widget ourServices(BuildContext context) {
-  return Wrap(spacing: 10.0, children: [
-    Container(
-      color: Colors.white30,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.fire_truck, size: 40),
-              UpText("Shipping Charges",
-                  style: UpStyle(textSize: 25, textWeight: FontWeight.bold)),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: UpText(
-              "Flat Rs. 200 on all orders ",
-              style: UpStyle(textSize: 20),
-            ),
-          )
-        ],
-      ),
-    ),
-    Container(
-      color: Colors.white30,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: const [
-              Icon(Icons.hourglass_bottom, size: 40),
-              UpText(
-                "Support 24/7",
-                // style: Theme.of(context).textTheme.headline1)
-              )
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: UpText(
-              "Contact us 24/7 hours",
-              // style: Theme.of(context).textTheme.headline2,
-            ),
-          )
-        ],
-      ),
-    ),
-    Container(
-      color: Colors.white30,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: const [
-              Icon(Icons.pin_drop, size: 40),
-              UpText(
-                "Track Your Order",
-              ), // style: Theme.of(context).textTheme.headline1),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 40, top: 0, bottom: 10),
-            child: UpText(
-              "track your order for quick updates",
-              // style: Theme.of(context).textTheme.headline2,
-            ),
-          )
-        ],
-      ),
-    )
-  ]);
 }
 
 class GetMedia extends StatelessWidget {
@@ -638,7 +590,7 @@ class GetMedia extends StatelessWidget {
           );
         }
         return snapshot.hasData
-            ? ProductImages(
+            ? ProductMediaWidget(
                 mediaList: snapshot.data!,
               )
             : const CircularProgressIndicator();
@@ -647,8 +599,8 @@ class GetMedia extends StatelessWidget {
   }
 }
 
-class ProductImages extends StatefulWidget {
-  const ProductImages({
+class ProductMediaWidget extends StatefulWidget {
+  const ProductMediaWidget({
     Key? key,
     required this.mediaList,
   }) : super(key: key);
@@ -656,11 +608,25 @@ class ProductImages extends StatefulWidget {
   final List<Media> mediaList;
 
   @override
-  ProductImagesState createState() => ProductImagesState();
+  ProductMediaWidgetState createState() => ProductMediaWidgetState();
 }
 
-class ProductImagesState extends State<ProductImages> {
+class ProductMediaWidgetState extends State<ProductMediaWidget> {
   int selectedImage = 0;
+  String type = ".mp4";
+  getMediaType(int index) {
+    if (widget.mediaList[index].url != null &&
+        widget.mediaList[index].url!.isNotEmpty) {
+      type = (widget.mediaList[index].url!.split("?")).first.split(".").last;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMediaType(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -675,19 +641,22 @@ class ProductImagesState extends State<ProductImages> {
                 tag: widget.mediaList[selectedImage].id.toString(),
                 child: widget.mediaList[selectedImage].img != null &&
                         widget.mediaList[selectedImage].img!.isNotEmpty
-                    ? Image.memory(
-                        Uint8List.fromList(
-                            widget.mediaList[selectedImage].img!),
-                        gaplessPlayback: true,
-                      )
-                    : FadeInImage.assetNetwork(
-                        placeholder: "assets/loading.gif",
-                        image: widget.mediaList[selectedImage].url!,
-                      ),
+                    ? type == "mp4"
+                        ? const VideoWidget(video: "")
+                        : Image.memory(
+                            Uint8List.fromList(
+                                widget.mediaList[selectedImage].img!),
+                            gaplessPlayback: true,
+                          )
+                    : type == "mp4"
+                        ? const VideoWidget(video: "")
+                        : FadeInImage.assetNetwork(
+                            placeholder: "assets/loading.gif",
+                            image: widget.mediaList[selectedImage].url!,
+                          ),
               ),
             ),
           ),
-          // SizedBox(height: getProportionateScreenWidth(20)),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Row(
@@ -707,12 +676,12 @@ class ProductImagesState extends State<ProductImages> {
     const kPrimaryColor = Color(0xFFFF8F00);
     return GestureDetector(
       onTap: () {
+        getMediaType(index);
         setState(() {
           selectedImage = index;
         });
       },
       child: Container(
-        // duration: const Duration(seconds: 2),
         margin: const EdgeInsets.only(right: 15),
         padding: const EdgeInsets.all(8),
         height: 48,
@@ -734,6 +703,76 @@ class ProductImagesState extends State<ProductImages> {
                 image: widget.mediaList[index].url!,
               ),
       ),
+    );
+  }
+}
+
+class VideoWidget extends StatefulWidget {
+  final String video;
+  const VideoWidget({super.key, required this.video});
+
+  @override
+  State<VideoWidget> createState() => _VideoWidgetState();
+}
+
+class _VideoWidgetState extends State<VideoWidget> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    );
+
+    _initializeVideoPlayerFuture = _controller.initialize();
+
+    _controller.setLooping(true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Stack(
+            children: [
+              VideoPlayer(_controller),
+              GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    if (_controller.value.isPlaying) {
+                      _controller.pause();
+                    } else {
+                      _controller.play();
+                    }
+                  });
+                }),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: UpIcon(
+                    icon: _controller.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

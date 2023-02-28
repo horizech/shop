@@ -1,16 +1,12 @@
-import 'dart:ui';
 import 'package:flutter_up/models/up_label_value.dart';
 import 'package:flutter_up/widgets/up_text.dart';
 import 'package:shop/constants.dart';
-import 'package:expandable_tree_menu/expandable_tree_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_up/config/up_config.dart';
 import 'package:flutter_up/locator.dart';
 import 'package:flutter_up/services/up_navigation.dart';
 import 'package:flutter_up/themes/up_style.dart';
-import 'package:flutter_up/up_app.dart';
 import 'package:flutter_up/widgets/up_button.dart';
 import 'package:flutter_up/widgets/up_dropdown.dart';
 import 'package:shop/models/product_option_value.dart';
@@ -18,7 +14,9 @@ import 'package:shop/widgets/store/store_cubit.dart';
 import 'package:shop/services/variation.dart';
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key});
+  const SearchWidget({
+    super.key,
+  });
 
   gotoMakeModel(id) {
     Map<String, List<int>> selectedVariationsValues = {
@@ -29,18 +27,25 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int collection = 0;
     List<ProductOptionValue> productOptionsValues = [];
     List<ProductOptionValue> productOptionsValuesMod = [];
     int? productOptionId;
     int? productOptionIdMod;
     String makeDropDownValue = "";
     String modelDropDownValue = "";
-    List<UpLabelValuePair> _dropDownMake = [];
-    List<UpLabelValuePair> _dropDownModel = [];
+    List<UpLabelValuePair> dropDownMake = [];
+    List<UpLabelValuePair> dropDownModel = [];
 
     return BlocConsumer<StoreCubit, StoreState>(
         listener: (context, state) {},
         builder: (context, state) {
+          if (state.collections != null && state.collections!.isNotEmpty) {
+            collection = state.collections!
+                .where((element) => element.name == "Used Cars")
+                .first
+                .id;
+          }
           if (state.productOptions != null &&
               state.productOptions!.isNotEmpty) {
             productOptionId = state.productOptions!
@@ -53,9 +58,9 @@ class SearchWidget extends StatelessWidget {
             productOptionsValues = state.productOptionValues!
                 .where((element) => element.productOption == productOptionId)
                 .toList();
-            if (_dropDownMake.isEmpty) {
+            if (dropDownMake.isEmpty) {
               for (var element in productOptionsValues) {
-                _dropDownMake.add(UpLabelValuePair(
+                dropDownMake.add(UpLabelValuePair(
                     label: element.name, value: "${element.id}"));
               }
             }
@@ -73,9 +78,9 @@ class SearchWidget extends StatelessWidget {
             productOptionsValuesMod = state.productOptionValues!
                 .where((element) => element.productOption == productOptionIdMod)
                 .toList();
-            if (_dropDownModel.isEmpty) {
+            if (dropDownModel.isEmpty) {
               for (var element in productOptionsValues) {
-                _dropDownModel.add(UpLabelValuePair(
+                dropDownModel.add(UpLabelValuePair(
                     label: element.name, value: "${element.id}"));
               }
             }
@@ -114,9 +119,9 @@ class SearchWidget extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 52, vertical: 4),
                   child: Visibility(
-                    visible: _dropDownMake.isNotEmpty,
+                    visible: dropDownMake.isNotEmpty,
                     child: UpDropDown(
-                      itemList: _dropDownMake,
+                      itemList: dropDownMake,
                       label: "Make",
                       value: makeDropDownValue,
                       onChanged: ((value) {
@@ -130,9 +135,9 @@ class SearchWidget extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 52, vertical: 4),
                   child: Visibility(
-                    visible: _dropDownModel.isNotEmpty,
+                    visible: dropDownModel.isNotEmpty,
                     child: UpDropDown(
-                      itemList: _dropDownModel,
+                      itemList: dropDownModel,
                       value: modelDropDownValue,
                       label: "Model",
                       onChanged: ((value) {
@@ -152,7 +157,7 @@ class SearchWidget extends StatelessWidget {
 
                       ServiceManager<UpNavigationService>()
                           .navigateToNamed(Routes.products, queryParams: {
-                        "collection": '9',
+                        "collection": '$collection',
                       });
                     },
                     style: UpStyle(buttonWidth: 100),

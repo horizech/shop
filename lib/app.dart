@@ -17,11 +17,13 @@ import 'package:shop/pages/admin/admin_product_variations.dart';
 import 'package:shop/pages/admin/admin_products.dart';
 import 'package:shop/pages/authentication/loginsignup.dart';
 import 'package:shop/pages/cart/cart.dart';
+import 'package:shop/pages/home/home_page_food.dart';
 import 'package:shop/pages/payment/payment.dart';
 import 'package:shop/pages/payment_method/card_payment_page.dart';
 import 'package:shop/pages/payment_method/payment_method_page.dart';
 import 'package:shop/pages/product/product_automobile.dart';
 import 'package:shop/pages/products/products_automobile_grid.dart';
+import 'package:shop/pages/products/food_products_list.dart';
 import 'package:shop/pages/search/automobile_search.dart';
 import 'package:shop/pages/simple_home/simple_homepage.dart';
 import 'package:shop/pages/store_dependant_page.dart';
@@ -192,6 +194,24 @@ class ShopApp extends StatelessWidget {
                   name: CardPaymentPage.routeName,
                   pageBuilder: (BuildContext context, UpRouterState state) =>
                       const CardPaymentPage(),
+                ),
+                // food routes
+
+                UpRoute(
+                  path: Routes.homePageFood,
+                  name: Routes.homePageFood,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      const StoreDependantPage(
+                    page: HomePageFood(),
+                  ),
+                ),
+                UpRoute(
+                  path: Routes.foodProducts,
+                  name: Routes.foodProducts,
+                  pageBuilder: (BuildContext context, UpRouterState state) =>
+                      const StoreDependantPage(
+                    page: FoodProducts(),
+                  ),
                 )
               ]
 

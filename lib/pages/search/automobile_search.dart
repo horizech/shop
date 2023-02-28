@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shop/models/collection.dart';
 import 'package:shop/widgets/appbar/custom_appbar.dart';
 import 'package:shop/widgets/drawer/MenuDrawer.dart';
 import 'package:shop/widgets/search/search_widget.dart';
@@ -19,7 +18,6 @@ class _AutomobileSearchPageState extends State<AutomobileSearchPage> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-    List<Collection> root = [];
     return Scaffold(
       key: scaffoldKey,
       drawer: const MenuDrawer(),

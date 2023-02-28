@@ -54,13 +54,13 @@ dependencies:
   expandable_tree_menu: ^0.1.0-dev.5
   url_strategy: ^0.2.0
   apiraiser: ^0.2.3
-  flutter_up:
-    # ^2.0.1
-    path: ../flutter_up
+  # flutter_up:
+  #   ^2.0.2
+  # path: ../flutter_up
   video_player: ^2.5.1
 
-  # flutter_up:
-  #   path: ../flutter_up
+  flutter_up:
+    path: ../flutter_up
 
 dev_dependencies:
   flutter_test:
